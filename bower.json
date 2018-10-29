@@ -1,6 +1,11 @@
 {
   "name": "multi-geo",
-  "description": "webcomponent geo charting library",
+  "version": "2.0.0",
+  "description": "polymer building blocks elements for building geo visualization (based on d3.js v5).",
+  "license": "MIT",
+  "authors": [
+    "christophe.geiser <christophe.geiser@e-smile.org>"
+  ],
   "main": "multi-geo.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
