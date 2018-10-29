@@ -1,0 +1,27 @@
+{
+  "name": "Multi-Chart",
+  "pages": [
+    {
+      "name": "Features",
+      "url": "multi-feature-demo",
+      "src": "multi-feature-demo.html",
+      "meta":
+      {
+        "title": "multi-geo – Feature Chart example",
+        "description": "a simple geo chart displaying geo features",
+        "image": ""
+      }
+    },  {
+      "name": "Choropleth Chart",
+      "url": "multi-choropleth-demo",
+      "src": "multi-choropleth-demo.html",
+      "meta":
+      {
+        "title": "multi-geo – Choropleth Chart example",
+        "description": "a simple choropleth chart",
+        "image": ""
+      }
+    }
+
+  ]
+}

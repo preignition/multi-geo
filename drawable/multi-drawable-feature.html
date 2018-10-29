@@ -1,0 +1,195 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../multi-chart/drawable/multi-drawable.html">
+<link rel="import" href="multi-drawable-geo-mixin.html">
+
+<dom-module id="multi-drawable-feature-style" theme-for="multi-container-svg">
+  <template>
+    <style>
+      
+      .multi-drawable-feature {
+        stroke: var(--multi-drawable-feature-stroke-color, var(--secondary-text-color, grey));
+        fill: var(--multi-drawable-feature-fill-color, none);
+        @apply --multi-drawable-feature;
+      }
+      
+    </style>
+  </template>
+</dom-module>
+
+<dom-module id="multi-drawable-feature">
+  <template>
+    <svg>
+      <g id="drawable" slot-svg="slot-g" class="drawable multi-drawable-feature" />
+    </svg>
+  </template>
+  <script>
+  (function() {
+
+    /**
+     * ## MultiDrawableFeature
+     *
+     * `<multi-drawable-feature>` polymer elements responsible for drawing choropleth area in a geo-chart
+     *
+     * ### Example
+     * ```html
+     *    <!-- fetch topojson features from  -->
+     *    <topojson-feature id="feature" feature="{{feature}}" data="{{geometries}}" name="countries" url="worldSimplify01.json"></topojson-feature>
+     *    <!-- configure transition for this chart  -->
+     *    <d3-transition transition="{{transition}}" duration="500"></d3-transition>
+     *    <!-- a multi-container-geo will expose path and projection -->
+     *    <multi-container-geo
+     *      id="chart"
+     *      projection="{{projection}}"
+     *      path="{{path}}"
+     *      projection-type="[[projectionType]]"
+     *      rotate="[[rotate]]"
+     *      translate="[[translate]]"
+     *      scale="[[scale]]"
+     *      >
+     *        <!-- group of geo elements. When feature changes, contained elements will redraw -->
+     *        <multi-container-g data="[[feature]]" >
+     *          <!-- draw features with projected to projection -->
+     *          <multi-drawable-feature transition="[[transition]]" projection="[[projection]]" path="[[path]]">
+     *          </multi-drawable-feature>
+     *        </multi-container-g>
+     *      </multi-container-geo>
+     * ```         
+     * 
+     * ### Styling
+     * `<multi-drawable-feature>` provides the following custom properties and mixins
+     * for styling:
+     * 
+     * Custom property | Description | Default
+     * ----------------|-------------|----------
+     * `--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey 
+     * `--multi-drawable-feature-fill-color` | fill color for features | none 
+     * `--multi-drawable-feature` | Mixin applied to features | `{}`
+     * 
+     * @memberof MultiChart
+     * @customElement
+     * @polymer
+     * @appliesMixin MultiChart.mixin.MultiGeoDrawable
+     * @demo /demo/#multi-feature-demo
+     **/
+    class MultiDrawableFeature extends 
+      MultiChart.mixin.MultiGeoDrawable(MultiChart.MultiDrawable) {
+
+      static get is() { return 'multi-drawable-feature'; }
+
+      static get properties() {
+
+        return {
+          /**
+           * `path` the [path](https://github.com/d3/d3-geo#geoPath) generator function
+           */
+          path: {
+            type: Function
+          },
+
+          /**
+           * `attrs` default attributes to be set on the chart
+           */
+          attrs: {
+            type: Object,
+            value: function() {
+              return null;
+            }
+          },
+
+          /* 
+           * `autoFit` if true, will recalculate the projectoin so as to fit features 
+           * within chart size. 
+           */
+          autoFit: {
+            type:Boolean
+          }
+        };
+      }
+
+      /* 
+       * `preDraw`  prevents to draw features if we miss path
+       */
+      preDraw(data) {
+        if (!this.path) {
+          this._warn('trying to draw but geo path is not yet set');
+          return false;
+        }
+        
+        if (!data && !this.drawableData) {
+          this._warn('data is not yet set');
+          return false;
+        }
+
+        if (!(data || this.drawableData).features) {
+          this._error('data must contain features');
+          return false;
+        }
+        if(!this._isDrawn) {
+          this.doFit();
+        }
+        return true;
+      }
+
+      get shapeName() {
+        return 'path';
+      }
+
+      get shapeClass() {
+        return 'feature';
+      }
+
+      draw(data) {
+
+        this._log('draw feature');
+
+        let chart = d3.select(this.targetElement).selectAll(`${this.shapeName}.${this.shapeClass}`);
+        chart = chart.data(data.features);
+
+        chart.exit().remove();
+
+        chart = chart.enter().append(this.shapeName)
+          .attr('class', `${this.shapeClass} selectable`)
+          .merge(chart);
+
+        if (this.shallTransition && this.transition) {
+          chart = this.applyTransition(chart, this.transition);
+        }
+
+        return chart
+          .attrs(this.attrs)
+          .attr('key', d => d.id)
+          .attr('id', d => d.id)
+          .attr('d', this.path);
+      }
+    
+      onResize() {
+        super.onResize();
+        this.doFit();
+      }
+
+      doFit() {
+        if(this.autoFit && this.drawableData && this.path && !this._isFitting)  {
+          this._isFitting = true;
+          const projection = this.path.projection();
+          projection.fitExtent([[0,0], [this.width, this.height]], this.drawableData);
+          projection.notifyChange();
+          this._isFitting = false;
+        }
+      }
+    }
+
+
+    customElements.define(MultiDrawableFeature.is, MultiDrawableFeature);
+
+    if (!window.MultiChart) {
+      window.MultiChart = {};
+    }
+
+    /* 
+     * @namespace MultiChart
+     */
+    window.MultiChart.MultiDrawableFeature = MultiDrawableFeature;
+
+  })();
+  </script>
+</dom-module>

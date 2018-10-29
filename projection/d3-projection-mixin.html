@@ -1,0 +1,88 @@
+<script>
+(function() {
+
+  /**
+   * ##  D3Projection
+   * 
+   * a mixin holding d3-projection properties 
+   * 
+   * @memberof MultiChart.mixin
+   * @polymer
+   * @mixinFunction
+   */
+  const D3Projection = superClass => {
+
+    return class extends superClass {
+
+      static get properties() {
+        return {
+          /**
+           * `projectionType` the type of the projection, one of `geoAlbers`,`geoAlbersUsa`,`geoAzimuthalEqualArea`,`geoAzimuthalEquidistant`,`geoConicConformal`,`geoConicEqualArea`,`geoConicEquidistant`,`geoEquirectangular`,`geoGnomonic`,`geoProjection`,`geoMercator`,`geoOrthographic`,`geoStereographic`,`geoTransverseMercator`
+           */
+          projectionType: {
+            type: String
+          },
+
+          /**
+           * [`clipAngle`](https:github.com/d3/d3-geo#projection_clipAngle)
+           */
+          clipAngle: {
+            type: Number
+          },
+          /**
+           * [`clipExtent`](https:github.com/d3/d3-geo#projection_clipExtent)
+           */
+          clipExtent: {
+            type: Array
+          },
+
+          /**
+           * [`center`](https:github.com/d3/d3-geo#projection_center)
+           */
+          center: {
+            type: Array,
+            notify: true
+          },
+          /**
+           * [`rotate`](https:github.com/d3/d3-geo#projection_rotate)
+           */
+          rotate: {
+            type: Number,
+            notify: true
+          },
+          /**
+           * [`precision`](https:github.com/d3/d3-geo#projection_precision)
+           */
+          precision: {
+            type: Number,
+            notify: true
+          },
+
+          /**
+           * [`translate`](https:github.com/d3/d3-geo#projection_translate)
+           */
+          translate: {
+            type: Array,
+            notify: true
+          }
+        };
+      }
+
+    };
+  };
+
+  if (!window.MultiChart) {
+    window.MultiChart = {};
+  }
+
+  /* 
+   * @namespace MultiChart.mixin
+   */
+  window.MultiChart.mixin = window.MultiChart.mixin || {};
+  /* 
+   * @mixinFunction
+   */
+  window.MultiChart.mixin.D3Projection = D3Projection;
+
+})();
+</script>

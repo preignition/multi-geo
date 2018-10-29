@@ -1,0 +1,78 @@
+<script>
+(function(){
+	
+	/**
+	 * ##  MultiGeoDrawable
+	 * 
+	 * a mixin fo multi geo drawable. It will mwke sure we redraw when data is set.
+	 * 
+	 * @memberof MultiChart.mixin
+   * @polymer
+   * @mixinFunction
+   */
+	const MultiGeoDrawable = superClass => {
+	  
+	  return class extends MultiChart.mixin.Logger(superClass) {
+
+	    static get properties() {
+	      return {
+	      	/* 
+	      	 * `geoData` data to use for drawing geo chart. 
+	      	 * we need another parameter as `data` because some chart - like chloropeth - need both geo path data 
+	      	 * and value data to display on the chart. 
+	      	 */
+	        geoData: {
+	        	type: Object
+	        },
+
+	        //@override MultiChart.Mixin.Logger
+	        logPrefix: {
+	        	type: String, 
+	        	value: '[multi-geo]'
+	        }
+	      };
+	    }
+
+	    static get observers() {
+	      return [
+	      	'_observeGeoData(geoData, geoData.*)'
+	      ];
+	    }
+
+	    _observeGeoData() {
+	    	this.debounceRender();
+	    	// this.render();
+	    }
+
+	    get drawableData() {
+	    	return this.geoData;
+	    }
+
+	    setData(data) {
+	    	if (data) {
+          // Note(cg): filter allows to dispay only a subset of the data. 
+          // This is usefull for instance when we want to display multiple groups. 
+          if(this.filter) {
+            this.geoData = data.filter(this.filter);
+          }
+          else {this.geoData = data ;}
+        }
+	    }
+	  };
+	};
+
+	if (!window.MultiChart) {
+	 window.MultiChart = {};
+	}
+
+	/* 
+	 * @namespace MultiChart.mixin
+	 */
+	window.MultiChart.mixin = window.MultiChart.mixin || {};
+	/* 
+	 * @mixinFunction
+	 */
+  window.MultiChart.mixin.MultiGeoDrawable = MultiGeoDrawable;
+
+	})();	
+</script>
