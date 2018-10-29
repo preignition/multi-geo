@@ -820,7 +820,7 @@
           "staticMethods": [],
           "demos": [
             {
-              "url": "/demo/#multi-feature-demo",
+              "url": "index.html#multi-feature-demo",
               "description": ""
             }
           ],
@@ -1095,7 +1095,7 @@
           "staticMethods": [],
           "demos": [
             {
-              "url": "/demo/#multi-choropleth-demo",
+              "url": "index.html#multi-choropleth-demo",
               "description": ""
             }
           ],
@@ -2644,11 +2644,11 @@
           "staticMethods": [],
           "demos": [
             {
-              "url": "/demo/#multi-choropleth-demo",
+              "url": "index.html#multi-choropleth-demo",
               "description": ""
             },
             {
-              "url": "/demo/#multi-feature-demo",
+              "url": "index.html#multi-feature-demo",
               "description": ""
             }
           ],
