@@ -17,12 +17,12 @@ While building vizualisation for the web, it is difficult to find the right bala
 
 ### Features
 <div>
-  <img src="https://raw.githubusercontent.com/PolymerEl/multi-chart/master/images/features.png" width="300"></img>
+  <img src="https://raw.githubusercontent.com/PolymerEl/multi-geo/master/images/features.png" width="300"></img>
 </div>
 
 ### Choropleth
 <div>
-  <img src="https://raw.githubusercontent.com/PolymerEl/multi-chart/master/images/choropleth.png" width="300"></img>
+  <img src="https://raw.githubusercontent.com/PolymerEl/multi-geo/master/images/choropleth.png" width="300"></img>
 </div>
 
 
