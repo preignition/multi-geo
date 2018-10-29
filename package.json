@@ -1,10 +1,10 @@
 {
   "name": "multi-geo",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "polymer building blocks elements for building geo visualization (based on d3.js v5).",
   "license": "MIT",
-  "repository" : "https://github.com/polymerEl/multi-geo",
-  "homepage" :"webcomponents.org/polymerEl/multi-geo",
+  "repository": "https://github.com/polymerEl/multi-geo",
+  "homepage": "webcomponents.org/polymerEl/multi-geo",
   "authors": [
     "christophe.geiser <christophe.geiser@e-smile.org>"
   ],
@@ -22,7 +22,6 @@
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
-    "paper-button": "PolymerElements/paper-button#^2.0.0",
     "paper-button": "PolymerElements/paper-radio-group#^2.0.0",
     "paper-input": "^3.0.1",
     "test-fixture": "PolymerElements/test-fixture#^3.0.0-rc.1",
@@ -32,12 +31,12 @@
   },
   "resolutions": {
     "polymer": "^2.0.0"
-  },  
+  },
   "keywords": [
     "web-component",
     "web-components",
     "d3.js",
-    "maps", 
+    "maps",
     "geo",
     "charts",
     "polymer",
@@ -46,6 +45,6 @@
     "dataviz"
   ],
   "scripts": {
-     "postpublish": "git push && git push --tags"
+    "postpublish": "git push && git push --tags"
   }
 }
