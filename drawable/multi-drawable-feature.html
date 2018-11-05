@@ -1,23 +1,20 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../multi-chart/drawable/multi-drawable.html">
 <link rel="import" href="multi-drawable-geo-mixin.html">
-
 <dom-module id="multi-drawable-feature-style" theme-for="multi-container-svg">
   <template>
     <style>
-      
-      .multi-drawable-feature {
-        stroke: var(--multi-drawable-feature-stroke-color, var(--secondary-text-color, grey));
-        fill: var(--multi-drawable-feature-fill-color, none);
-        @apply --multi-drawable-feature;
-      }
-      
+    .multi-drawable-feature {
+      stroke: var(--multi-drawable-feature-stroke-color, var(--secondary-text-color, grey));
+      fill: var(--multi-drawable-feature-fill-color, none);
+      @apply --multi-drawable-feature;
+    }
     </style>
   </template>
 </dom-module>
-
 <dom-module id="multi-drawable-feature">
   <template>
+    <multi-accessor accessor="{{featureAccessor}}" path="[[featureAccessorPath]]"></multi-accessor>
     <svg>
       <g id="drawable" slot-svg="slot-g" class="drawable multi-drawable-feature" />
     </svg>
@@ -71,8 +68,8 @@
      * @appliesMixin MultiChart.mixin.MultiGeoDrawable
      * @demo index.html#multi-feature-demo
      **/
-    class MultiDrawableFeature extends 
-      MultiChart.mixin.MultiGeoDrawable(MultiChart.MultiDrawable) {
+    class MultiDrawableFeature extends
+    MultiChart.mixin.MultiGeoDrawable(MultiChart.MultiDrawable) {
 
       static get is() { return 'multi-drawable-feature'; }
 
@@ -91,9 +88,7 @@
            */
           attrs: {
             type: Object,
-            value: function() {
-              return null;
-            }
+            value: null
           },
 
           /* 
@@ -101,8 +96,23 @@
            * within chart size. 
            */
           autoFit: {
-            type:Boolean
-          }
+            type: Boolean
+          },
+
+          /**
+           * `featureAccessorPath` the path for accessing the feature keys/ids
+           */
+          featureAccessorPath: {
+            type: String,
+            value: 'id'
+          },
+
+          /**
+           * `featureAccessor the accessor function from featureAccessorPath.
+           */
+          featureAccessor: {
+            type: Function
+          },
         };
       }
 
@@ -114,7 +124,7 @@
           this._warn('trying to draw but geo path is not yet set');
           return false;
         }
-        
+
         if (!data && !this.drawableData) {
           this._warn('data is not yet set');
           return false;
@@ -124,7 +134,7 @@
           this._error('data must contain features');
           return false;
         }
-        if(!this._isDrawn) {
+        if (!this._isDrawn) {
           this.doFit();
         }
         return true;
@@ -157,21 +167,23 @@
 
         return chart
           .attrs(this.attrs)
-          .attr('key', d => d.id)
-          .attr('id', d => d.id)
+          .attr('key', (d,i) => this.featureAccessor(d, i))
           .attr('d', this.path);
       }
-    
+
       onResize() {
         super.onResize();
         this.doFit();
       }
 
       doFit() {
-        if(this.autoFit && this.drawableData && this.path && !this._isFitting)  {
+        if (this.autoFit && this.drawableData && this.path && !this._isFitting) {
           this._isFitting = true;
           const projection = this.path.projection();
-          projection.fitExtent([[0,0], [this.width, this.height]], this.drawableData);
+          projection.fitExtent([
+            [0, 0],
+            [this.width, this.height]
+          ], this.drawableData);
           projection.notifyChange();
           this._isFitting = false;
         }

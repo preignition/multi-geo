@@ -23,13 +23,8 @@
 	      	 */
 	        geoData: {
 	        	type: Object
-	        },
-
-	        //@override MultiChart.Mixin.Logger
-	        logPrefix: {
-	        	type: String, 
-	        	value: '[multi-geo]'
 	        }
+
 	      };
 	    }
 
@@ -38,6 +33,11 @@
 	      	'_observeGeoData(geoData, geoData.*)'
 	      ];
 	    }
+
+	    //@override MultiChart.Mixin.Logger
+	    get logPrefix() {
+				return '[multi-geo]';
+			}
 
 	    _observeGeoData() {
 	    	this.debounceRender();

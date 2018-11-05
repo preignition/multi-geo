@@ -5,6 +5,7 @@
 <link rel="import" href="../../multi-chart/d3-scale/d3-scale-property-mixin.html">
 <dom-module id="multi-drawable-choropleth">
   <template>
+    <multi-accessor accessor="{{featureAccessor}}" path="[[featureAccessorPath]]"></multi-accessor>
     <multi-accessor accessor="{{valueAccessor}}" path="[[valueAccessorPath]]"></multi-accessor>
     <multi-accessor accessor="{{keyAccessor}}" path="[[keyAccessorPath]]"></multi-accessor>
     <multi-scale 
@@ -76,7 +77,7 @@
           },
 
           /**
-           * `valueAccessorPath` path for computing the `valueAccessor` function
+           * `valueAccessorPath` path for computing the `valueAccessor` function (returning values to me mapped choropleth)
            * a value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´ 
            * a value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´ 
            */
@@ -94,9 +95,11 @@
           },
 
           /**
-           * `keyAccessorPath` path for computing the `keyAccessor` function
+           * `keyAccessorPath` path for computing the `keyAccessor` function from dataset to be displayed on the map (colors of choropleth). 
            * a key of ´key´ will generate  an accessor function like ´function(d) {return d.key}´ 
            * a key of ´+key.count´ will generate  an accessor function like ´function(d) {return +d.key.count}´ 
+           *
+           * Keys returned by this function should correspond to ids of geo features (returned by featureAccessor)
            */
           keyAccessorPath: {
             type: String,
@@ -143,7 +146,7 @@
           });
 
           // Note(cg): we adjust scale domain only if the sacle is marked as elastic
-          if(this.elastic) {
+          if(this.elastic || !this.domain) {
             this.domain = [min,max];
           }
           this._map = map;
@@ -154,9 +157,9 @@
         let chart = super.draw(data);
 
         return chart
-          .attr('title', d=> this._map.get(d.id))
-          .attr('fill', d => {
-            return this.colorScale(this._map.get(d.id));
+          .attr('title', (d,i) => this._map.get(this.featureAccessor(d,i)))
+          .attr('fill', (d,i) => {
+            return this.colorScale(this._map.get(this.featureAccessor(d,i)));
           });
       }
     }

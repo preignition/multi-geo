@@ -1,6 +1,6 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../multi-chart/container/multi-container-svg.html">
-<link rel="import" href="../../multi-chart/d3-zoom/zoomable-properties-mixin.html">
+<link rel="import" href="../../multi-chart/d3-zoom/zoomable-property-mixin.html">
 <link rel="import" href="../projection/d3-projection.html">
 <link rel="import" href="../projection/d3-projection-mixin.html">
 <link rel="import" href="../d3-geo/d3-geo-path.html">
@@ -8,8 +8,12 @@
   <template>
     <style>
       :host {
-        display: flex;
-        flex-direction: column;
+        display: block;
+        @apply --layout-center-center;
+        flex:1;
+        height: 100%;
+        /*display: flex;
+        flex-direction: column;*/
       }
     </style>
     <d3-projection
@@ -47,12 +51,13 @@
      * @memberof MultiChart
      * @customElement
      * @polymer
+     * @appliesMixin MultiChart.mixin.ZoomableProperty
      * @appliesMixin MultiChart.mixin.D3Projection
      * @demo index.html#multi-choropleth-demo
      * @demo index.html#multi-feature-demo
      **/
     class MultiChartGeo extends 
-     MultiChart.mixin.ZoomableProperties(
+     MultiChart.mixin.ZoomableProperty(
       MultiChart.mixin.D3Projection(
         Polymer.Element)) {
 
