@@ -1,6 +1,6 @@
 {
   "name": "multi-geo",
-  "version": "2.0.0",
+  "version": "2.0.5",
   "description": "polymer building blocks elements for building geo visualization (based on d3.js v5).",
   "license": "MIT",
   "authors": [
