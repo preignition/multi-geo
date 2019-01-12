@@ -6,12 +6,18 @@
 <link rel="import" href="../projection/d3-projection-mixin.html">
 <link rel="import" href="../drawable/multi-drawable-path.html">
 <link rel="import" href="../../multi-chart/drawable/color-scale-mixin.html">
-<link rel="import" href="../../multi-chart/container/multi-container-g.html">
+<link rel="import" href="../../multi-chart/container/multi-container-layer.html">
 <link rel="import" href="../../multi-chart/d3-zoom/zoomable-property-mixin.html">
 
 <dom-module id="multi-chart-choropleth">
 	<template>
-		<topojson-feature 
+    <style>
+      :host {
+        display: block;
+      }
+      
+    </style>
+  	<topojson-feature 
 			feature="{{feature}}" 
 			data="{{geometries}}" 
 			name="[[featureName]]" 
@@ -44,7 +50,7 @@
       translate="[[translate]]"
       >
         <!-- group of geo elements. When choropleth changes, contained elements will redraw -->
-        <multi-container-g>
+        <multi-container-layer>
    
           <!-- draw choropleths with projected to projection -->
           <multi-drawable-choropleth 
@@ -59,12 +65,19 @@
      				domain-max="[[colorDomainMax]]" 
             range="[[colorRange]]"
             color-scale="{{colorScale}}" 
+            
             value-accessor-path="[[valueAccessorPath]]"  
-            value-accessor="[[valueAccessor]]"  
+            value-accessor="[[valueAccessor]]" 
+
             key-accessor-path="[[keyAccessorPath]]"  
-            key-accessor="[[keyAccessor]]"  
+            key-accessor="[[keyAccessor]]" 
+
             feature-accessor-path="[[featureAccessorPath]]"  
             feature-accessor="[[featureAccessor]]"  
+
+            label-accessor-path="[[labelAccessorPath]]"  
+            label-accessor="[[labelAccessor]]" 
+
             ></multi-drawable-choropleth>
           
           <!-- show mesh -->
@@ -76,7 +89,8 @@
 	            ></multi-drawable-path>
 					</template>
         
-        </multi-container-g>
+        </multi-container-layer>
+        <slot name="svg" slot="svg"></slot>
         <slot name="header" slot="header"></slot>
 				<slot></slot>			
 	  		<slot name="footer" slot="footer"></slot>
@@ -302,9 +316,17 @@
            * `featureAccessor the accessor function from featureAccessorPath.
            */
           featureAccessor: {
-            type: Function
+            type: Function,
+            notify: true
           },
 
+          /**
+           * `path` the [path](https://github.com/d3/d3-geo#geoPath) generator function
+           */
+          path: {
+            type: Function,
+            notify: true,
+          },
 
 				};
 			}

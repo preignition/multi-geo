@@ -1,4 +1,4 @@
-<dom-module id="multi-choropleth-demo">
+<dom-module id="multi-choropleth-compose-demo">
   <template>
     <style include="vaadin-component-demo-shared-styles">
       :host {
@@ -13,7 +13,8 @@
       }
               
     </style>
-    <h3>Geo Choropleth Demo</h3>
+    <h3>Geo Choropleth Compose Demo</h3>
+    <p>This example composes appropriate web-composants. A simpler approach for rendering a choropleth chart is to use <code>multi-chart-choropleth</code> element (see choroplet demo)</p>
     <p>Example largely inspired from <a href="http://bl.ocks.org/mbostock/4060606" title="">this block</a>!</p>
     <vaadin-demo-snippet id='multi-projection-serie-demo-binding'>
       <template preserve-content>
@@ -24,39 +25,56 @@
                 height: 500px;
               }
             </style>
-            <multi-chart-choropleth 
+            <!-- fetch topojson choropleths from  -->
+            <topojson-feature feature="{{feature}}" data="{{geometries}}" name="counties" url="us.json"></topojson-feature>
+            <!-- get a topojson mesh for states  -->
+            <topojson-mesh mesh="{{mesh}}" data="[[geometries]]" name="states"></topojson-mesh>
+            <!-- a multi-container-geo will expose path and projection -->
+            <multi-container-geo
               id="chart"
-              
-              feature-url="us.json"
-              feature-name="counties"
+              enable-zoom
+              projection="{{projection}}"
+              path="{{path}}"
               projection-type="[[projectionType]]"
-              
-              mesh-name="states"
-              mesh-attrs="[[meshAttrs]]"
-
-              color-domain="[[colorDomain]]"
-              color-range="[[colorRange]]"
-
-              choropleth-attrs="[[choroplethAttrs]]"
-
-              data="[[data]]"
-              value-accessor-path="+rate"  
-              key-accessor-path="id"  
-
-              color-scale="{{colorScale}}"
-
+              scale="{{scale}}"
               >
-              <multi-legend 
+                <!-- group of geo elements. When choropleth changes, contained elements will redraw -->
+                <multi-container-layer>
+           
+                  <!-- draw choropleths with projected to projection -->
+                  <multi-drawable-choropleth 
+                    data="[[data]]"
+                    auto-fit
+                    geo-data="[[feature]]"  
+                    path="[[path]]"
+                    attrs="[[choroplethAttrs]]" 
+                    scale-type="scaleQuantize"
+                    domain="[[colorDomain]]"
+                    range="[[colorRange]]"
+                    color-scale="{{colorScale}}" 
+                    value-accessor-path="+rate"  
+                    key-accessor-path="id"  
+                    ></multi-drawable-choropleth>
+                  
+                  <!-- show US States -->
+                  <multi-drawable-path 
+                    path="[[path]]" 
+                    attrs="[[meshAttrs]]" 
+                    geo-data="[[mesh]]"></multi-drawable-path>
+                </multi-container-layer>
+              
+                <!-- display a legend -->
+                <multi-legend 
                   scale="[[colorScale]]" 
                   padding="10" 
                   title="Unemployment Rate"
                   labels="[[labels]]"
                   label-format=".0%" 
                   position="right" > </multi-legend>
-              </multi-chart-choropleth>
-           
+              </multi-container-geo>
               <div id="control">
                 <paper-input  label="scale" min="0" step="50" type="number" value="{{scale}}"></paper-input>
+           
               </div>
           </template>
         </dom-bind>
@@ -94,7 +112,7 @@
 
     class ChoroplethDemo extends DemoReadyEventEmitter(MultiChart.Demo(Polymer.Element)) {
       static get is() {
-        return 'multi-choropleth-demo';
+        return 'multi-choropleth-compose-demo';
       }
     }
     customElements.define(ChoroplethDemo.is, ChoroplethDemo);

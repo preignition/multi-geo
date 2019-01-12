@@ -6,6 +6,7 @@
 <dom-module id="multi-drawable-choropleth">
   <template>
     <multi-accessor accessor="{{featureAccessor}}" path="[[featureAccessorPath]]"></multi-accessor>
+    <multi-accessor accessor="{{labelAccessor}}" path="[[labelAccessorPath]]"></multi-accessor>
     <multi-accessor accessor="{{valueAccessor}}" path="[[valueAccessorPath]]"></multi-accessor>
     <multi-accessor accessor="{{keyAccessor}}" path="[[keyAccessorPath]]"></multi-accessor>
     <multi-scale 
@@ -21,7 +22,7 @@
      	domain-max="[[domainMax]]" 
      	range="[[range]]"></multi-scale>
     <svg>
-      <g id="drawable" slot-svg="slot-g" class="drawable multi-drawable-feature" />
+      <g id="drawable" slot-svg="slot-layer" class="drawable multi-drawable-feature" />
     </svg>
   </template>
   <script>
@@ -40,14 +41,14 @@
      *    <!-- a multi-container-geo will expose path and projection -->
      *    <multi-container-geo id="chart" enable-zoom projection="{{projection}}" path="{{path}}" projection-type="[[projectionType]]" scale="{{scale}}">
      *        <!-- group of geo elements. When choropleth changes, contained elements will redraw -->
-     *        <multi-container-g>
+     *        <multi-container-layer>
      *
      *          <!-- draw choropleths with projected to projection -->
      *          <multi-drawable-choropleth data="[[data]]" auto-fit geo-data="[[feature]]" path="[[path]]" attrs="[[choroplethAttrs]]" scale-type="scaleQuantize" domain="[[colorDomain]]" range="[[colorRange]]" color-scale="{{colorScale}}" value-accessor-path="+rate" key-accessor-path="id"></multi-drawable-choropleth>
      *
      *          <!-- show US States -->
      *          <multi-drawable-path path="[[path]]" attrs="[[meshAttrs]]" geo-data="[[mesh]]"></multi-drawable-path>
-     *        </multi-container-g>
+     *        </multi-container-layer>
      *
      *        <!-- display a legend -->
      *        <multi-legend scale="[[colorScale]]" padding="10" title="Unemployment Rate" labels="[[labels]]" label-format=".0%" position="right"> </multi-legend>
@@ -119,14 +120,14 @@
 
       static get observers() {
         return [
-          '_observeData(data, data.*)'
+          '_processMap(data, data.*)'
         ];
       }
 
       /* 
        * `_observeData` will create a map for easy reference while applying the colorScale
        */
-      _observeData() {
+      _processMap() {
         if (this.data) {
           const map = d3.map();
           const valueAccessor = this.valueAccessor;
@@ -147,20 +148,33 @@
 
           // Note(cg): we adjust scale domain only if the sacle is marked as elastic
           if(this.elastic || !this.domain) {
-            this.domain = [min,max];
+            this.domain = [d3.min([min, this.domainMin]), d3.max([max,this.domainMax])];
           }
+          this._mapProcessed = true;
           this._map = map;
         }
+
       }
 
-      draw(data) {
-        let chart = super.draw(data);
+      draw(features) {
+        let chart = super.draw(features);
+        const emptyColor = this.emptyColor || '#ccc';
 
-        return chart
-          .attr('title', (d,i) => this._map.get(this.featureAccessor(d,i)))
+        //  we need to make sure _map holds latest values
+        if(!this._mapProcessed) {
+          this._processMap();
+        }
+
+        chart = chart
           .attr('fill', (d,i) => {
-            return this.colorScale(this._map.get(this.featureAccessor(d,i)));
+            const value = this._map.get(this.featureAccessor(d,i));
+            if( value === undefined) {
+              return emptyColor;
+            }
+            return this.colorScale(value);
           });
+        this._mapProcessed = false;
+        return chart;
       }
     }
 

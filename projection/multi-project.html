@@ -86,7 +86,7 @@
             d[key] = projection(coordinateAccessor(d));
           });
           this.set('projectedData', data);
-          this.fire('multi-refresh');
+           this.dispatchEvent(new CustomEvent('multi-refresh', {bubbles: true, composed: true})); 
         }
       }
     }

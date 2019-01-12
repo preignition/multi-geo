@@ -11,7 +11,19 @@
         "description": "a simple geo chart displaying geo features",
         "image": ""
       }
-    },  {
+    },
+    {
+      "name": "Choropleth Chart (compose)",
+      "url": "multi-choropleth-compose-demo",
+      "src": "multi-choropleth-compose-demo.html",
+      "meta":
+      {
+        "title": "multi-geo – Choropleth Chart example",
+        "description": "a simple choropleth chart",
+        "image": ""
+      }
+    },
+    {
       "name": "Choropleth Chart",
       "url": "multi-choropleth-demo",
       "src": "multi-choropleth-demo.html",

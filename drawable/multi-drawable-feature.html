@@ -15,8 +15,9 @@
 <dom-module id="multi-drawable-feature">
   <template>
     <multi-accessor accessor="{{featureAccessor}}" path="[[featureAccessorPath]]"></multi-accessor>
+    <multi-accessor accessor="{{labelAccessor}}" path="[[labelAccessorPath]]"></multi-accessor>
     <svg>
-      <g id="drawable" slot-svg="slot-g" class="drawable multi-drawable-feature" />
+      <g id="drawable" slot-svg="slot-layer" class="drawable multi-drawable-feature" />
     </svg>
   </template>
   <script>
@@ -44,11 +45,11 @@
      *      scale="[[scale]]"
      *      >
      *        <!-- group of geo elements. When feature changes, contained elements will redraw -->
-     *        <multi-container-g data="[[feature]]" >
+     *        <multi-container-layer data="[[feature]]" >
      *          <!-- draw features with projected to projection -->
      *          <multi-drawable-feature transition="[[transition]]" projection="[[projection]]" path="[[path]]">
      *          </multi-drawable-feature>
-     *        </multi-container-g>
+     *        </multi-container-layer>
      *      </multi-container-geo>
      * ```         
      * 
@@ -111,6 +112,21 @@
            * `featureAccessor the accessor function from featureAccessorPath.
            */
           featureAccessor: {
+            type: Function,
+            notify: true
+          },
+
+           /**
+           * `labelAccessorPath` the path for accessing the feature keys/ids
+           */
+          labelAccessorPath: {
+            type: String
+          },
+
+          /**
+           * `labelAccessor the accessor function from labelAccessorPath.
+           */
+          labelAccessor: {
             type: Function
           },
         };
@@ -148,19 +164,28 @@
         return 'feature';
       }
 
-      draw(data) {
+      draw(feature) {
 
-        this._log('draw feature');
+        this._log('draw feature', this.id);
 
         let chart = d3.select(this.targetElement).selectAll(`${this.shapeName}.${this.shapeClass}`);
-        chart = chart.data(data.features);
+        chart = chart.data(feature.features);
 
         chart.exit().remove();
 
         chart = chart.enter().append(this.shapeName)
           .attr('class', `${this.shapeClass} selectable`)
           .merge(chart);
-
+        
+        //  we add a title element when labelAccessor exists
+        if(this.labelAccessor) {
+          chart.selectAll('title')
+            .data(d=>[d])
+            .enter()
+            .append('title')
+              .text((d,i) => this.labelAccessor(d,i));
+        }
+        
         if (this.shallTransition && this.transition) {
           chart = this.applyTransition(chart, this.transition);
         }
@@ -169,6 +194,7 @@
           .attrs(this.attrs)
           .attr('key', (d,i) => this.featureAccessor(d, i))
           .attr('d', this.path);
+
       }
 
       onResize() {

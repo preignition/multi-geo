@@ -95,7 +95,7 @@
         };
 
         this._setProjection(projection);
-        this.fire('multi-refresh');
+        this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true})); 
       }
 
       /* 
@@ -108,7 +108,7 @@
             this[prop] = this.projection[prop]();
           }
          });
-        this.fire('multi-refresh');
+        this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true})); 
         this.activateObserver();
       }
 
@@ -118,7 +118,7 @@
       fitExtent(extent, object) {
         this.projection && this.projection.fitExtent(extent, object);
         this.syncProperties();
-        this.fire('multi-refresh');
+        this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true})); 
       }
 
       /**
@@ -127,7 +127,7 @@
       fitSize(size, object) {
         this.projection && this.projection.fitSize(size, object);
         this.syncProperties();
-        this.fire('multi-refresh');
+        this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true})); 
       }
 
       /**
@@ -136,7 +136,7 @@
       invert(point) {
         this.projection && this.projection.invert(point);
         this.syncProperties();
-        this.fire('multi-refresh');
+        this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true}));         
       }
     }
 
