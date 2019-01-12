@@ -4,11 +4,16 @@
 <dom-module id="multi-drawable-feature-style" theme-for="multi-container-svg">
   <template>
     <style>
-    .multi-drawable-feature {
-      stroke: var(--multi-drawable-feature-stroke-color, var(--secondary-text-color, grey));
-      fill: var(--multi-drawable-feature-fill-color, none);
-      @apply --multi-drawable-feature;
-    }
+      .multi-drawable-feature {
+        stroke: var(--multi-drawable-feature-stroke-color, var(--secondary-text-color, grey));
+        fill: var(--multi-drawable-feature-fill-color, none);
+        @apply --multi-drawable-feature;
+      }
+
+      .feature.selectable:hover  {
+        stroke-opacity: 0.7;
+        fill-opacity: 0.7;
+      }
     </style>
   </template>
 </dom-module>
