@@ -147,8 +147,8 @@
           });
 
           // Note(cg): we adjust scale domain only if the sacle is marked as elastic
-          if(this.elastic || !this.domain) {
-            this.domain = [d3.min([min, this.domainMin]), d3.max([max,this.domainMax])];
+          if(this.elastic) {
+            this._domain = [d3.min([min, this.domainMin]), d3.max([max,this.domainMax])];
           }
           this._mapProcessed = true;
           this._map = map;
@@ -164,11 +164,15 @@
         if(!this._mapProcessed) {
           this._processMap();
         }
+        if(this._domain) {
+          this.colorScale.domain(this._domain);
+          this._domain = null;
+        }
 
         chart = chart
           .attr('fill', (d,i) => {
             const value = this._map.get(this.featureAccessor(d,i));
-            if( value === undefined) {
+            if( value === undefined || value === 0) {
               return emptyColor;
             }
             return this.colorScale(value);

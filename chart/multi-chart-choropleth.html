@@ -13,7 +13,7 @@
 	<template>
     <style>
       :host {
-        display: block;
+        display: flex;
       }
       
     </style>
@@ -65,6 +65,7 @@
      				domain-max="[[colorDomainMax]]" 
             range="[[colorRange]]"
             color-scale="{{colorScale}}" 
+            elastic="[[elastic]]"
             
             value-accessor-path="[[valueAccessorPath]]"  
             value-accessor="[[valueAccessor]]" 
@@ -328,6 +329,12 @@
             notify: true,
           },
 
+          /*
+           * `elastic` indicate whether colorscale shall be re-computed on data-change
+           */
+          elastic: {
+            type: Boolean
+          }
 				};
 			}
 		}
