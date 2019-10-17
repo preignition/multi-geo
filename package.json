@@ -1,37 +1,5 @@
 {
-  "name": "multi-geo",
-  "version": "2.1.0",
-  "description": "polymer building blocks elements for building geo visualization (based on d3.js v5).",
-  "license": "MIT",
-  "repository": "https://github.com/polymerEl/multi-geo",
-  "homepage": "webcomponents.org/polymerEl/multi-geo",
-  "authors": [
-    "christophe.geiser <christophe.geiser@e-smile.org>"
-  ],
-  "main": "multi-geo.html",
-  "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0",
-    "iron-ajax": "PolymerElements/iron-ajax#^2.0.0",
-    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^2.0.0",
-    "iron-selector": "PolymerElements/iron-selector#^2.0.0",
-    "vaadin-themable-mixin": "^1.2.1",
-    "d3-bundle-element": "^2.0.0",
-    "multi-chart": "PolymerEl/multi-chart#^2.0.0"
-  },
-  "devDependencies": {
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
-    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
-    "paper-button": "PolymerElements/paper-radio-group#^2.0.0",
-    "paper-input": "^3.0.1",
-    "test-fixture": "PolymerElements/test-fixture#^3.0.0-rc.1",
-    "vaadin-demo-helpers": "^2.1.0",
-    "iron-component-page": "^3.0.0",
-    "paper-checkbox": "^2.0.0"
-  },
-  "resolutions": {
-    "polymer": "^2.0.0"
-  },
+  "description": "lit-element building blocks elements for building geo visualization (based on d3.js v5).",
   "keywords": [
     "web-component",
     "web-components",
@@ -39,12 +7,64 @@
     "maps",
     "geo",
     "charts",
+    "lit-element",
     "polymer",
     "analytics",
     "Polymer",
     "dataviz"
   ],
+  "repository": "https://github.com/preignition/multi-geo",
+  "homepage": "webcomponents.org/preignition/multi-geo",
+  "name": "@preignition/multi-geo",
+  "version": "4.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.js",
+  "dependencies": {
+    "@morbidick/lit-element-notify": "^1.0.2",
+    "@polymer/polymer": "^3.0.0",
+    "@preignition/multi-chart": "file:../multi-chart",
+    "@preignition/preignition-mixin": "file:../preignition-mixin",
+    "d3-array": "^2.3.2",
+    "d3-color": "^1.4.0",
+    "d3-dispatch": "^1.0.5",
+    "d3-ease": "^1.0.5",
+    "d3-format": "1",
+    "d3-geo": "^1.11.6",
+    "d3-interpolate": "^1.3.2",
+    "d3-scale": "^3.1.0",
+    "d3-scale-chromatic": "^1.5.0",
+    "d3-selection": "^1.4.0",
+    "d3-selection-multi": "^1.0.1",
+    "d3-timer": "^1.0.9",
+    "d3-transition": "^1.2.0",
+    "lit-element": "2",
+    "lit-html": "1",
+    "topojson-client": "^3.0.1",
+    "topojson-simplify": "^3.0.3"
+  },
+  "files": [
+    "src/**",
+    "elements/**",
+    "index.js",
+    "index.elements.js",
+    "index.class.js"
+  ],
+  "@pika/web": {
+    "webDependencies": [
+      "d3-geo"
+    ]
+  },
+  "devDependencies": {
+    "@open-wc/testing": "~0.11.1",
+    "@open-wc/testing-karma": "^3.0.0",
+    "@pika/web": "^0.6.1"
+  },
   "scripts": {
     "postpublish": "git push && git push --tags"
+  },
+  "author": {
+    "name": "Christophe Geiser",
+    "email": "christophe@preignition.org"
   }
 }
