@@ -51,25 +51,25 @@ class TopojsonFeature extends TopoBase {
 
   _observeData(data, name, geoType, filter, forEach) {
     if (data && name && geoType) {
-      let feature;
+      let feat;
 
       if (geoType === 'topojson') {
         if (!data.objects[name]) {
-          throw `no topologies for name ${name}`;
+          throw new Error(`no topologies for name ${name}`);
         }
-        feature = topofeature(data, data.objects[name]);
+        feat = topofeature(data, data.objects[name]);
       } else {
-        feature = data.objects[name].geometries;
+        feat = data.objects[name].geometries;
       }
 
-      if (feature && feature.features && filter && typeof filter === 'function') {
-        feature.features = feature.features.filter(filter);
+      if (feat && feat.features && filter && typeof filter === 'function') {
+        feat.features = feat.features.filter(filter);
       }
 
-      if (feature && feature.features && forEach && typeof forEach === 'function') {
-        feature.features.forEach(forEach);
+      if (feat && feat.features && forEach && typeof forEach === 'function') {
+        feat.features.forEach(forEach);
       }
-      this.feature = feature;
+      this.feature = feat;
     }
   }
 }

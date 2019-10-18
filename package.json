@@ -23,8 +23,8 @@
   "dependencies": {
     "@morbidick/lit-element-notify": "^1.0.2",
     "@polymer/polymer": "^3.0.0",
-    "@preignition/multi-chart": "file:../multi-chart",
-    "@preignition/preignition-mixin": "file:../preignition-mixin",
+    "@preignition/multi-chart": "^4",
+    "@preignition/preignition-mixin": "^1",
     "d3-array": "^2.3.2",
     "d3-color": "^1.4.0",
     "d3-dispatch": "^1.0.5",
@@ -50,11 +50,6 @@
     "index.elements.js",
     "index.class.js"
   ],
-  "@pika/web": {
-    "webDependencies": [
-      "d3-geo"
-    ]
-  },
   "devDependencies": {
     "@open-wc/testing": "~0.11.1",
     "@open-wc/testing-karma": "^3.0.0",
