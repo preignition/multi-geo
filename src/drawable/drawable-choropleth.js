@@ -65,8 +65,7 @@ class MultiDrawableChoropleth extends MultiDrawableFeature {
        * `colorScale` scale to use for the choropleth
        */
       colorScale: {
-        type: Function,
-        notify: true
+        type: Function
       },
 
     };
