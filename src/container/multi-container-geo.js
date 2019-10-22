@@ -80,6 +80,12 @@ class MultiContainerGeo extends
     this.addEventListener('multi-refresh', this.refresh);
   }
 
+  // onResize(rect, entry) {
+  //   super.onResize(...arguments)
+  //   // Note(cg): some elements need to be notified when projection changes (triggerred by a resize).
+  //   this.dispatchEvent(new CustomEvent(`projection-changed`, { detail: { value: this.projection }, bubbles: true, composed: true }));
+  // }
+
   update(props) {
     super.update(props);
     this.relayTo(props, 'd3-projection');

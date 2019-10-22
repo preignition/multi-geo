@@ -1,15 +1,16 @@
 import { html, css } from 'lit-element';
-import { default as MultiDrawable } from './multi-drawable.js';
-import { default as DrawableSerie } from './mixin/drawable-serie-mixin.js';
-import { default as Shaper } from './mixin/drawable-shaper-mixin.js';
+import { Drawable } from '@preignition/multi-chart';
+// import { default as MultiDrawable } from './multi-drawable.js';
 import { default as MultiGeoMixin } from './mixin/drawable-geo-mixin.js';
 
-import { Hexbin } from '../d3-wrapper/d3-hexbin.js';
-import { select } from 'd3-selection.js';
+import Hexbin  from '../d3-wrapper/d3-hexbin.js';
+import { select } from 'd3-selection';
+import { scaleSequential } from 'd3-scale';
+import { interpolateViridis } from 'd3-scale-chromatic';
 
 class MultiDrawableHexbin extends
 MultiGeoMixin(
-  MultiDrawable) {
+  Drawable) {
 
   // Note(cg): style to add to svghost while dispatching SVG.
   static get hostStyles() {
@@ -22,7 +23,7 @@ MultiGeoMixin(
   }
 
   render() {
-    return html `
+    return this.html `
     <d3-hexbin 
       @hexbin-changed="${this.onSetHexbin}" 
       @bins-changed="${this.onSetBins}" 
@@ -30,12 +31,15 @@ MultiGeoMixin(
       .x="${this.x}" 
       .extent="${this.extent}"
       .radius="${this.radius}" 
+      .points="${this.points}"
     ></d3-hexbin>
     <svg>
-      <g id="drawable" slot-svg="slot-chart" part="drawable-hexbin"  class="drawable hexbin"></g>
+      <g id="drawable"  part="drawable-hexbin"  class="drawable hexbin"></g>
     </svg>
 `;
   }
+
+
 
   static get properties() {
     return {
@@ -54,15 +58,23 @@ MultiGeoMixin(
       /*
        * `bins` [result of hexbin(data)](https://github.com/d3/d3-hexbin#_hexbin)
        */
-      bins: {
-        type: Array,
-      },
+
       /* 
        * `colorScale` scale to use for the choropleth
        */
       colorScale: {
         type: Function,
       },
+
+      /*
+       * `multiPosition` position used to re-order items when appended by dispatch-svg
+       * nodePosition larger than 0 will render on top. 
+       */
+       multiPosition: {
+         type: Number,
+         attribute:'multi-position',
+         value: 10 
+       },
 
     };
   }
@@ -77,11 +89,15 @@ MultiGeoMixin(
     return 'hexbin';
   }
 
-  onSetHexbin(hexbin) {
-    this.hexbin = hexbin;
+  get shapeName() {
+    return 'path';
   }
-  onSetBins(bins) {
-    this.geoData = bins;
+
+  onSetHexbin(e) {
+    this.hexbin = e.detail.value;
+  }
+  onSetBins(e) {
+    this.geoData = e.detail.value;
 
   }
 
@@ -95,28 +111,34 @@ MultiGeoMixin(
     }
   }
 
-  _draw() {
+  draw() {
     const data = this.drawableData;
-    if (!this.width || !this.height || !data || this.hexbin) {
+    if (!this.width || !this.height || !data || !this.hexbin) {
       return;
     }
 
     // TODO(cg): comment.
-    // const color = scaleSequential(interpolateViridis)
-    //   .domain([0, 50]);
+    
+     const color = this.colorScale || scaleSequential(interpolateViridis).domain([0, 50]);
 
-    let chart = select(this.targetElement);
+    let chart = select(this.targetElement).selectAll(`${this.shapeName}.${this.shapeClass}`);
 
     // if (this.shallTransition) {
     //   chart = this.applyTransition(chart, this.transition);
     // }
-     
+    
+    chart = chart.data(data)
+
+    chart.exit().remove();
+
+    chart = chart.enter().append(this.shapeName)
+      .attr('class',`${this.shapeClass} selectable shape`)
+      .merge(chart);
+
     chart
-      .data(data)
-      .enter().append('path')
-      .attr('d', function(d) { return 'M' + d.x + ',' + d.y + this.hexbin.hexagon(); })
+      .attr('d', (d) => { return 'M' + d.x + ',' + d.y + this.hexbin.hexagon(); })
       .style('fill', function(d) {
-        return this.colorScale(d.length);
+        return color(d.length);
       });
 
     return chart;

@@ -3,7 +3,7 @@ import { html, css } from 'lit-element';
 // import { select } from 'd3-selection-multi';
 import { select } from 'd3-selection';
 import { transition } from 'd3-transition';
-import  { multiSelection, multiTransition } from '../helper/utils.js'
+import { multiSelection, multiTransition } from '../helper/utils.js'
 
 import { default as MultiGeoMixin } from './mixin/drawable-geo-mixin.js';
 
@@ -70,27 +70,25 @@ MultiGeoMixin(Drawable) {
        * `attrs` default attributes to be set on the chart
        */
       attrs: {
-        type: Object,
-        value: function() {
-          return null;
-        }
-      },
-
-      registerOrder: {
-        type: Number,
-        attribute: 'register-order',
-        value: 50
+        type: Object
       }
     };
   }
 
-  _draw(data) {
+  /* 
+   * `registerOrder` - registerable elements are sorted on the basis of this property. 
+   */
+  get registerOrder() {
+    return 50;
+  }
+
+  draw(data) {
     if (!this.path) {
       this.log && console.warn('trying to draw path but geo path is not yet set');
       return false;
     }
 
-   if (!this.drawableData) {
+    if (!this.drawableData) {
       this.log && console.warn('data not yet set');
       return false;
     }

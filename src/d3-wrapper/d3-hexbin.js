@@ -1,7 +1,7 @@
 import { LitElement } from 'lit-element';
 
-import { shapeProperties } from '../helper/utils.js';
-import hexbin from 'd3-hexbin';
+import { shapeProperties } from '@preignition/multi-chart/src/helper/utils.js';
+import { hexbin } from 'd3-hexbin';
 
 const instance = hexbin();
 const keys = Object.keys(instance || {});
@@ -45,7 +45,7 @@ class D3Hexbin extends LitElement {
   update(props) {
     super.update(props);
     this.updateWrapper(props);
-    if(props.has('points')) {
+    if(props.has('points') || props.has('extent')) {
       this.updatePoints()
     }
 

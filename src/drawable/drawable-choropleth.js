@@ -75,8 +75,8 @@ class MultiDrawableChoropleth extends MultiDrawableFeature {
    * `_observeData` will create a map for easy reference while applying the colorScale
    */
 
-  _draw() {
-    let chart = super._draw();
+  draw() {
+    let chart = super.draw();
     if (chart) {
 
       const map = this.data;

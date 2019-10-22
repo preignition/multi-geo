@@ -175,7 +175,7 @@ class MultiDrawableFeature extends
     return 'feature';
   }
 
-  _draw(feature) {
+  draw(feature) {
     if (!this.path) {
       this.log && console.warn('trying to draw but geo path is not yet set');
       return false;

@@ -1,4 +1,6 @@
 import { default as Base } from '../base-class.js'
+// import { ObserverResizeMixin } from '@preignition/multi-chart'
+import { html } from 'lit-element'
 
 /**
  * ## MultiProject
@@ -32,6 +34,10 @@ class MultiProject extends Base {
        */
       projection: {
         type: Function,
+        // Note(cg): trigger an update anytime projection is set
+        hasChanged: (newVal, oldVal) => {
+          return true
+        }
       },
 
       /**
@@ -78,14 +84,22 @@ class MultiProject extends Base {
     };
   }
 
+  // onResize() {
+  //   console.info('ONRESIZE');
+
+  //   this._computeProjection()
+  // }
+
   updated(props) {
     super.updated(props)
-    if(props.has('projection') || props.has('coordinateAccessor') || props.has('data') || props.has('key')) {
-      this._computeProjection(this.projection, this.coordinateAccessor, this.data, this.key)
+    if (props.has('projection') || props.has('coordinateAccessor') || props.has('data') || props.has('key')) {
+      this._computeProjection()
     }
   }
 
-  _computeProjection(projection, coordinateAccessor, data, key) {
+  _computeProjection() {
+    const {projection, coordinateAccessor, data, key} = this;
+
     if (projection && coordinateAccessor && data && key) {
       data.forEach(function(d) {
         d[key] = projection(coordinateAccessor(d));
