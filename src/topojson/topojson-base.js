@@ -1,5 +1,5 @@
-import { html } from 'lit-element'
-import { default as Base } from '../base-class.js'
+import { html } from 'lit-element';
+import { default as Base } from '../base-class.js';
 
 
 class TopojsonBase extends Base {
@@ -8,15 +8,15 @@ class TopojsonBase extends Base {
     return html `<d3-fetch 
       .url="${this.url}" 
       .type="${this.handleAs}" 
-      @data-changed="${ e => this.data = e.detail.value}"
-      @error-changed="${ e => this.error = e.detail.value}"
-      ></d3-fetch>`
+      @data-changed="${e => this.data = e.detail.value}"
+      @error-changed="${e => this.error = e.detail.value}"
+      ></d3-fetch>`;
   }
 
   static get properties() {
     return {
 
-      ...super.properties, 
+      ...super.properties,
 
       /**
        * `feature` the GeoJSON Feature or FeatureCollection to be exposed by this component
@@ -26,7 +26,7 @@ class TopojsonBase extends Base {
         notify: true
       },
 
-      /* 
+      /*
        * `url` url to use for fetching geo mesh data.
        */
       url: {
@@ -57,15 +57,15 @@ class TopojsonBase extends Base {
       },
 
       /**
-       * [`handleAs`](https://elements.polymer-project.org/elements/iron-ajax#property-handleAs) 
+       * [`handleAs`](https://elements.polymer-project.org/elements/iron-ajax#property-handleAs)
        */
       handleAs: {
         type: String,
         value: 'json'
       },
 
-      /* 
-       * `error` 
+      /*
+       * `error`
        */
       error: {
         type: Object,

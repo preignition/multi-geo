@@ -3,7 +3,7 @@ import { html, css } from 'lit-element';
 // import { select } from 'd3-selection-multi';
 import { select } from 'd3-selection';
 import { transition } from 'd3-transition';
-import { multiSelection, multiTransition } from '../helper/utils.js'
+import { multiSelection, multiTransition } from '../helper/utils.js';
 
 import { default as MultiGeoMixin } from './mixin/drawable-geo-mixin.js';
 
@@ -19,18 +19,18 @@ multiTransition(transition().constructor);
  * ### Styling
  * `<multi-drawable-feature>` provides the following custom properties and mixins
  * for styling:
- * 
+ *
  * Custom property | Description | Default
  * ----------------|-------------|----------
- * `--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey 
- * `--multi-drawable-feature-fill-color` | fill color for features | none 
+ * `--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey
+ * `--multi-drawable-feature-fill-color` | fill color for features | none
  * `--multi-drawable-feature` | Mixin applied to features | `{}`
- * 
+ *
  * @memberof MultiChart
  * @customElement
  * @polymer
  * @appliesMixin MultiChart.mixin.MultiGeoMixin
- * @demo 
+ * @demo
  **/
 class MultiDrawablePath extends
 MultiGeoMixin(Drawable) {
@@ -75,8 +75,8 @@ MultiGeoMixin(Drawable) {
     };
   }
 
-  /* 
-   * `registerOrder` - registerable elements are sorted on the basis of this property. 
+  /*
+   * `registerOrder` - registerable elements are sorted on the basis of this property.
    */
   get registerOrder() {
     return 50;
@@ -95,7 +95,7 @@ MultiGeoMixin(Drawable) {
 
     this.log && console.info('draw path');
 
-    let chart = select(this.targetElement);
+    const chart = select(this.targetElement);
 
     chart.selectAll('*').remove();
 

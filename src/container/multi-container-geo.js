@@ -1,4 +1,4 @@
-import { Container } from '@preignition/multi-chart'
+import { Container } from '@preignition/multi-chart';
 import { default as Projection } from '../d3-wrapper/d3-projection.js';
 import { RelayTo, CacheId } from '@preignition/preignition-mixin';
 import { default as Path } from '../d3-wrapper/d3-geo-path.js';
@@ -7,7 +7,7 @@ import { default as Path } from '../d3-wrapper/d3-geo-path.js';
  * ## MultiContainerGeo
  *
  * `<multi-container-geo>` a container for geographical chart. It exposes the current geo projection
- * 
+ *
  *
  * @memberof MultiChart
  * @customElement
@@ -17,7 +17,7 @@ import { default as Path } from '../d3-wrapper/d3-geo-path.js';
  * @demo index.html#multi-choropleth-demo
  * @demo index.html#multi-feature-demo
  **/
-class MultiContainerGeo extends 
+class MultiContainerGeo extends
    CacheId(
       RelayTo(Container)) {
 
@@ -25,23 +25,23 @@ class MultiContainerGeo extends
     return this.html `
     <d3-projection 
       id="d3-projection"
-      @projection-changed=" ${ e => this.projection = e.detail.value}" 
+      @projection-changed=" ${e => this.projection = e.detail.value}" 
       ></d3-projection>
 
     <d3-geo-path 
       id="d3-path"
-      @path-changed=" ${ e => this.path = e.detail.value}" 
+      @path-changed=" ${e => this.path = e.detail.value}" 
       ></d3-geo-path>
-    `
+    `;
   }
 
   static get properties() {
     return {
 
-      ...super.properties, 
-      
+      ...super.properties,
+
       ...Path.properties,
-      
+
       ...Projection.properties,
 
       /**
@@ -52,7 +52,7 @@ class MultiContainerGeo extends
         notify: true,
         // Note(cg): trigger an update anytime projection is set
         hasChanged: (newVal, oldVal) => {
-          return true
+          return true;
         }
       },
 
@@ -65,7 +65,7 @@ class MultiContainerGeo extends
       },
 
       /**
-       * [`context`](https://github.com/d3/d3-geo#path_context) to be applied to the path  
+       * [`context`](https://github.com/d3/d3-geo#path_context) to be applied to the path
        */
       context: {
         type: Function

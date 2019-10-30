@@ -41,12 +41,12 @@ class MultiDrawableChoropleth extends MultiDrawableFeature {
         <multi-accessor 
           .path="${this.featurePath}"
           @accessor-changed="${e => this.featureAccessor = e.detail.value}" 
-        ></multi-accessor>` : '' }    
+        ></multi-accessor>` : ''}    
      ${this.labelPath ? this.html`
         <multi-accessor 
           .path="${this.labelPath}"
           @accessor-changed="${e => this.labelAccessor = e.detail.value}" 
-        ></multi-accessor>` : '' }    
+        ></multi-accessor>` : ''}    
         <svg>
           <g id="drawable" slot-svg="slot-layer" part="choropoleth" class="multi-drawable-choropleth"></g>
         </svg>
@@ -54,14 +54,14 @@ class MultiDrawableChoropleth extends MultiDrawableFeature {
   }
 
   get dataProcessType() {
-    return 'choropleth'
+    return 'choropleth';
   }
 
   static get properties() {
     return {
       ...super.properties,
 
-      /* 
+      /*
        * `colorScale` scale to use for the choropleth
        */
       colorScale: {
@@ -71,7 +71,7 @@ class MultiDrawableChoropleth extends MultiDrawableFeature {
     };
   }
 
-  /* 
+  /*
    * `_observeData` will create a map for easy reference while applying the colorScale
    */
 

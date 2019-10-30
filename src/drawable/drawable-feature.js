@@ -4,7 +4,7 @@ import { select } from 'd3-selection';
 
 // import { transition } from 'd3-transition';
 import { transition } from 'd3-transition';
-import { multiSelection, multiTransition } from '../helper/utils.js'
+import { multiSelection, multiTransition } from '../helper/utils.js';
 import { default as MultiGeoMixin } from './mixin/drawable-geo-mixin.js';
 
 // Note(cg): multi-select is not part of d3-selection.
@@ -39,18 +39,18 @@ multiTransition(transition().constructor);
  *          </multi-drawable-feature>
  *        </multi-container-layer>
  *      </multi-container-geo>
- * ```         
- * 
+ * ```
+ *
  * ### Styling
  * `<multi-drawable-feature>` provides the following custom properties and mixins
  * for styling:
- * 
+ *
  * Custom property | Description | Default
  * ----------------|-------------|----------
- * `--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey 
- * `--multi-drawable-feature-fill-color` | fill color for features | none 
+ * `--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey
+ * `--multi-drawable-feature-fill-color` | fill color for features | none
  * `--multi-drawable-feature` | Mixin applied to features | `{}`
- * 
+ *
  * @memberof MultiChart
  * @customElement
  * @polymer
@@ -88,12 +88,12 @@ class MultiDrawableFeature extends
         <multi-accessor 
           .path="${this.featurePath}"
           @accessor-changed="${e => this.featureAccessor = e.detail.value}" 
-        ></multi-accessor>` : '' }    
+        ></multi-accessor>` : ''}    
      ${this.labelPath ? this.html`
         <multi-accessor 
           .path="${this.labelPath}"
           @accessor-changed="${e => this.labelAccessor = e.detail.value}" 
-        ></multi-accessor>` : '' }
+        ></multi-accessor>` : ''}
     <svg>
       <g id="drawable" part="feature" slot-svg="slot-layer" class="multi-drawable-feature"></g>
     </svg>
@@ -122,9 +122,9 @@ class MultiDrawableFeature extends
         }
       },
 
-      /* 
-       * `autoFit` if true, will recalculate the projectoin so as to fit features 
-       * within chart size. 
+      /*
+       * `autoFit` if true, will recalculate the projectoin so as to fit features
+       * within chart size.
        */
       autoFit: {
         type: Boolean,
@@ -236,10 +236,9 @@ class MultiDrawableFeature extends
         [0, 0],
         [this.width, this.height]
       ], this.drawableData);
-      
+
     }
   }
 }
-
 
 export default MultiDrawableFeature;

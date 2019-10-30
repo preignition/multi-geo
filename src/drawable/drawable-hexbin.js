@@ -3,7 +3,7 @@ import { Drawable } from '@preignition/multi-chart';
 // import { default as MultiDrawable } from './multi-drawable.js';
 import { default as MultiGeoMixin } from './mixin/drawable-geo-mixin.js';
 
-import Hexbin  from '../d3-wrapper/d3-hexbin.js';
+import Hexbin from '../d3-wrapper/d3-hexbin.js';
 import { select } from 'd3-selection';
 import { scaleSequential } from 'd3-scale';
 import { interpolateViridis } from 'd3-scale-chromatic';
@@ -40,7 +40,6 @@ MultiGeoMixin(
   }
 
 
-
   static get properties() {
     return {
 
@@ -59,7 +58,7 @@ MultiGeoMixin(
        * `bins` [result of hexbin(data)](https://github.com/d3/d3-hexbin#_hexbin)
        */
 
-      /* 
+      /*
        * `colorScale` scale to use for the choropleth
        */
       colorScale: {
@@ -68,12 +67,12 @@ MultiGeoMixin(
 
       /*
        * `multiPosition` position used to re-order items when appended by dispatch-svg
-       * nodePosition larger than 0 will render on top. 
+       * nodePosition larger than 0 will render on top.
        */
        multiPosition: {
          type: Number,
-         attribute:'multi-position',
-         value: 10 
+         attribute: 'multi-position',
+         value: 10
        },
 
     };
@@ -118,7 +117,7 @@ MultiGeoMixin(
     }
 
     // TODO(cg): comment.
-    
+
      const color = this.colorScale || scaleSequential(interpolateViridis).domain([0, 50]);
 
     let chart = select(this.targetElement).selectAll(`${this.shapeName}.${this.shapeClass}`);
@@ -126,13 +125,13 @@ MultiGeoMixin(
     // if (this.shallTransition) {
     //   chart = this.applyTransition(chart, this.transition);
     // }
-    
-    chart = chart.data(data)
+
+    chart = chart.data(data);
 
     chart.exit().remove();
 
     chart = chart.enter().append(this.shapeName)
-      .attr('class',`${this.shapeClass} selectable shape`)
+      .attr('class', `${this.shapeClass} selectable shape`)
       .merge(chart);
 
     chart

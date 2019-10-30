@@ -1,11 +1,11 @@
-import {  scaleQuantize } from 'd3-scale';
-import {  schemeBlues } from 'd3-scale-chromatic';
-import { default as GeoContainer } from '../container/multi-container-geo.js'
+import { scaleQuantize } from 'd3-scale';
+import { schemeBlues } from 'd3-scale-chromatic';
+import { default as GeoContainer } from '../container/multi-container-geo.js';
 
 /**
  * ## MultiChartChoropleth
  *
- * `<multi-chart-choropleth>` a choropleth-chart 
+ * `<multi-chart-choropleth>` a choropleth-chart
  *
  * @memberof MultiChart
  * @customElement
@@ -23,8 +23,8 @@ GeoContainer {
     return this.html `
         ${super.getContentRender()}
         <topojson-feature
-          @feature-changed=" ${ e => this.feature = e.detail.value}" 
-          @data-changed=" ${ e => this.geometries = e.detail.value}" 
+          @feature-changed=" ${e => this.feature = e.detail.value}" 
+          @data-changed=" ${e => this.geometries = e.detail.value}" 
           .name="${this.featureName}" 
           .geoType="${this.geoType}"
           .filter="${this.featureFilter}"
@@ -36,19 +36,19 @@ GeoContainer {
           <topojson-mesh 
             @mesh-changed="${e => this.mesh = e.detail.value}" 
             .data="${this.geometries}" 
-            .name="${this.meshName}"></topojson-mesh>`: ''}
+            .name="${this.meshName}"></topojson-mesh>` : ''}
 
         ${this.valuePath ? this.html`
         <multi-accessor 
           .path="${this.valuePath}"
           @accessor-changed="${e => this.valueAccessor = e.detail.value}" 
-        ></multi-accessor>` : '' }    
+        ></multi-accessor>` : ''}    
 
         ${this.keyPath ? this.html`
         <multi-accessor 
           .path="${this.keyPath}"
           @accessor-changed="${e => this.keyAccessor = e.detail.value}" 
-        ></multi-accessor>` : '' }    
+        ></multi-accessor>` : ''}    
 
         <!-- group of geo elements. When feature changes, contained elements will redraw -->
           <multi-container-layer group="default">
@@ -74,10 +74,10 @@ GeoContainer {
               .path="${this.path}" 
               .attrs="${this.meshAttrs}" 
               .geoData="${this.mesh}"></multi-drawable-path>
-             `: '' }    
+             ` : ''}    
           
          
-       `
+       `;
   }
 
   constructor() {
@@ -94,7 +94,7 @@ GeoContainer {
   static get properties() {
     return {
 
-      ...super.properties, 
+      ...super.properties,
 
       /**
        * `feature` the GeoJSON Feature or FeatureCollection to be exposed by this component
@@ -104,7 +104,7 @@ GeoContainer {
         notify: true
       },
 
-      /* 
+      /*
        * `featureUrl` url to use for fetching geo mesh data.
        */
       featureUrl: {
@@ -137,7 +137,7 @@ GeoContainer {
         attribute: 'feature-name'
       },
 
-      /* 
+      /*
        * `featureFilter` the filter to use for filtering features
        * ex: function(f) {return f.id !== 10} // remove antartic from a world map
        */
@@ -146,7 +146,7 @@ GeoContainer {
         attribute: 'feature-filter'
       },
 
-      /* 
+      /*
        * `featureForEach` a function that will run for each feature
        * ex: function(f) {return f.properties.id = lookup(f.id) } // take lookup code
        */
@@ -172,7 +172,7 @@ GeoContainer {
         attribute: 'mesh-name'
       },
 
-      /* 
+      /*
        * `meshAttrs` attributes to be set on the mesh
        */
       meshAttrs: {
@@ -181,7 +181,7 @@ GeoContainer {
       },
 
 
-      /* 
+      /*
        * `colorScale` scale to use for the choropleth
        */
       colorScale: {
@@ -194,7 +194,7 @@ GeoContainer {
         },
        },
 
-      /* 
+      /*
        * `choroplethAttrs` default attributes to be set on the chart
        */
       choroplethAttrs: {
@@ -205,8 +205,8 @@ GeoContainer {
 
       /**
        * `valueAccessorPath` path for computing the `valueAccessor` function
-       * a value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´ 
-       * a value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´ 
+       * a value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´
+       * a value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´
        */
       valuePath: {
         type: String,
@@ -215,7 +215,7 @@ GeoContainer {
       },
 
       /**
-       * `valueAccessor` the value accessor function 
+       * `valueAccessor` the value accessor function
        * example function : `d => {return +d.count}`
        */
       valueAccessor: {
@@ -225,8 +225,8 @@ GeoContainer {
 
       /**
        * `keyAccessorPath` path for computing the `keyAccessor` function
-       * a key of ´key´ will generate  an accessor function like ´function(d) {return d.key}´ 
-       * a key of ´+key.count´ will generate  an accessor function like ´function(d) {return +d.key.count}´ 
+       * a key of ´key´ will generate  an accessor function like ´function(d) {return d.key}´
+       * a key of ´+key.count´ will generate  an accessor function like ´function(d) {return +d.key.count}´
        */
       keyPath: {
         type: String,
@@ -235,7 +235,7 @@ GeoContainer {
       },
 
       /**
-       * `keyAccessor` the value accessor function 
+       * `keyAccessor` the value accessor function
        * example function : `d => {return +d.count}`
        */
       keyAccessor: {
@@ -287,8 +287,7 @@ GeoContainer {
 
     };
   }
- 
-}
 
+}
 
 export default MultiChartChoropleth;

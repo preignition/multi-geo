@@ -1,12 +1,12 @@
-import {default as TopoBase} from './topojson-base.js'
-import { mesh } from 'topojson-client'
+import {default as TopoBase} from './topojson-base.js';
+import { mesh } from 'topojson-client';
 
 /**
  * ## TopojsonMesh
  *
- * `<topojson-mesh>` wrapper around [topoJSON.mesh](https://github.com/topojson/topojson-client/blob/master/README.md#mesh) 
- * exposes geo mesh from an url or topojson data 
- * 
+ * `<topojson-mesh>` wrapper around [topoJSON.mesh](https://github.com/topojson/topojson-client/blob/master/README.md#mesh)
+ * exposes geo mesh from an url or topojson data
+ *
  **/
 class TopojsonMesh extends TopoBase {
   static get properties() {
@@ -37,11 +37,11 @@ class TopojsonMesh extends TopoBase {
   }
 
   updated(props) {
-     super.updated(props)
-    if(props.has('data') || props.has('name') || props.has('filter' )) {
-      this._observeData(this.data, this.name, this.filter)
+     super.updated(props);
+    if (props.has('data') || props.has('name') || props.has('filter')) {
+      this._observeData(this.data, this.name, this.filter);
     }
-  } 
+  }
 
   _observeData(data, name, filter) {
     if (data && name) {
@@ -50,4 +50,4 @@ class TopojsonMesh extends TopoBase {
   }
 }
 
-export default  TopojsonMesh;
+export default TopojsonMesh;

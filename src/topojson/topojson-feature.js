@@ -1,12 +1,12 @@
-import { default as TopoBase } from './topojson-base.js'
-import { feature as topofeature } from 'topojson-client'
+import { default as TopoBase } from './topojson-base.js';
+import { feature as topofeature } from 'topojson-client';
 
 /**
  * ## TopojsonFeature
  *
  * `<topojson-feature>` a wrapper around [topojson feature](https://github.com/topojson/topojson-client/blob/master/README.md#feature)
  * exposes geo feature from an url
- * 
+ *
  **/
 class TopojsonFeature extends TopoBase {
   static get properties() {
@@ -22,7 +22,7 @@ class TopojsonFeature extends TopoBase {
         notify: true
       },
 
-      /* 
+      /*
        * `filter` the filter to use for filtering features
        * ex: function(f) {return f.id !== 10} // remove antartic from a world map
        */
@@ -30,7 +30,7 @@ class TopojsonFeature extends TopoBase {
         type: Function
       },
 
-      /* 
+      /*
        * `forEach` a function that will run for each feature
        * ex: function(f) {return f.properties.id = lookup(f.id) } // take lookup code
        */
@@ -41,12 +41,11 @@ class TopojsonFeature extends TopoBase {
   }
 
   updated(props) {
-    super.updated(props)
+    super.updated(props);
     if (props.has('data') || props.has('name') || props.has('geoType') || props.has('filter' || props.has('forEach'))) {
-      this._observeData(this.data, this.name, this.geoType, this.filter, this.forEach)
+      this._observeData(this.data, this.name, this.geoType, this.filter, this.forEach);
     }
   }
-
 
 
   _observeData(data, name, geoType, filter, forEach) {

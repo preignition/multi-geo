@@ -4,7 +4,7 @@ import { shapeProperties } from '@preignition/multi-chart/src/helper/utils.js';
 import { geoPath } from 'd3-geo';
 const instance = geoPath();
 const keys = Object.keys(instance || {});
-const props = shapeProperties(keys)
+const props = shapeProperties(keys);
 /**
  * ## D3GeoPath
  *
@@ -27,17 +27,17 @@ class D3GeoPath extends LitElement {
        */
 
       /**
-       * [`projection`]((https://github.com/d3/d3-geo#path_projection)) to be applied to the path  
+       * [`projection`]((https://github.com/d3/d3-geo#path_projection)) to be applied to the path
        */
       projection: {
         type: Function,
         hasChanged: (newVal, oldVal) => {
-          return true
+          return true;
         }
       }
-     
+
       /**
-       * [`context`](https://github.com/d3/d3-geo#path_context) to be applied to the path  
+       * [`context`](https://github.com/d3/d3-geo#path_context) to be applied to the path
        */
 
     };
@@ -50,12 +50,12 @@ class D3GeoPath extends LitElement {
 
   update(props) {
     super.update(props);
-    this.log && console.info(`d3-geo-path  update`, props)
+    this.log && console.info(`d3-geo-path  update`, props);
     this.updateWrapper(props);
   }
 
   updateWrapper(props) {
-    let shallNotify = false
+    let shallNotify = false;
     props.forEach((value, key) => {
       if ((this[key] !== undefined) && key !== 'path') {
         shallNotify = true;
@@ -69,25 +69,25 @@ class D3GeoPath extends LitElement {
   }
 
   /**
-   * [`area`](https://github.com/d3/d3-geo#path_area) returns the projected planar area for the specified GeoJSON `object` 
+   * [`area`](https://github.com/d3/d3-geo#path_area) returns the projected planar area for the specified GeoJSON `object`
    */
   area(object) {
     return this.path.area(object);
   }
 
   /**
-   * [`bounds`](https://github.com/d3/d3-geo#path_bounds) returns the projected planar bounding box for the specified GeoJSON `object` 
+   * [`bounds`](https://github.com/d3/d3-geo#path_bounds) returns the projected planar bounding box for the specified GeoJSON `object`
    */
   bounds(object) {
     return this.path.bounds(object);
   }
 
   /**
-   * [`centroid`](https://github.com/d3/d3-geo#path_centroid) returns the projected planar centroid for the specified GeoJSON `object` 
+   * [`centroid`](https://github.com/d3/d3-geo#path_centroid) returns the projected planar centroid for the specified GeoJSON `object`
    */
   centroid(object) {
     return this.path.centroid(object);
   }
 }
 
-export default D3GeoPath ;
+export default D3GeoPath;

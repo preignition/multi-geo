@@ -1,6 +1,6 @@
-import { default as Base } from '../base-class.js'
+import { default as Base } from '../base-class.js';
 // import { ObserverResizeMixin } from '@preignition/multi-chart'
-import { html } from 'lit-element'
+import { html } from 'lit-element';
 
 /**
  * ## MultiProject
@@ -18,10 +18,10 @@ class MultiProject extends Base {
   render() {
     return html `
      <multi-accessor 
-      @accessor-changed="${ e => {this.coordinateAccessor = e.detail.value}}"
+      @accessor-changed="${e => {this.coordinateAccessor = e.detail.value;}}"
       path="${this.coordinateAccessorPath}" 
       ></multi-accessor>
-      `
+      `;
   }
 
   static get properties() {
@@ -36,7 +36,7 @@ class MultiProject extends Base {
         type: Function,
         // Note(cg): trigger an update anytime projection is set
         hasChanged: (newVal, oldVal) => {
-          return true
+          return true;
         }
       },
 
@@ -58,8 +58,8 @@ class MultiProject extends Base {
 
       /**
        * `coordinateAccessorPath` path for computing the `valueAccessor` function
-       * a value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´ 
-       * a value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´ 
+       * a value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´
+       * a value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´
        */
       coordinateAccessorPath: {
         type: String,
@@ -91,9 +91,9 @@ class MultiProject extends Base {
   // }
 
   updated(props) {
-    super.updated(props)
+    super.updated(props);
     if (props.has('projection') || props.has('coordinateAccessor') || props.has('data') || props.has('key')) {
-      this._computeProjection()
+      this._computeProjection();
     }
   }
 

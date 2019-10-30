@@ -4,7 +4,7 @@ import { shapeProperties } from '@preignition/multi-chart/src/helper/utils.js';
 import * as geo from 'd3-geo';
 const instance = geo.geoAlbers();
 const keys = Object.keys(instance || {});
-const props = shapeProperties(keys)
+const props = shapeProperties(keys);
 
 // const projections = [
 //   'geoAlbers',
@@ -100,7 +100,7 @@ class D3Projection extends LitElement {
     }
 
     if (!this.projection || props.has('projectionType')) {
-      this.projection = geo[this.projectionType]()
+      this.projection = geo[this.projectionType]();
       this.dispatchProjectionChanged();
     }
 
@@ -137,7 +137,7 @@ class D3Projection extends LitElement {
   }
 
   /**
-   * [`fitExtent`](https://github.com/d3/d3-geo#projection_fitExtent) Sets the projection’s scale and translate to fit the specified GeoJSON object in the center of the given `extent`. 
+   * [`fitExtent`](https://github.com/d3/d3-geo#projection_fitExtent) Sets the projection’s scale and translate to fit the specified GeoJSON object in the center of the given `extent`.
    */
   fitExtent(extent, object) {
     this.projection && this.projection.fitExtent(extent, object);
@@ -181,11 +181,11 @@ class D3Projection extends LitElement {
   //   };
 
   //   this._setProjection(projection);
-  //   this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true})); 
+  //   this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true}));
   // }
 
-  // /* 
-  //  * `syncProperties` will sync component properties with projections  
+  // /*
+  //  * `syncProperties` will sync component properties with projections
   //  */
   // syncProperties() {
   //   this.pauseObserver();
@@ -194,7 +194,7 @@ class D3Projection extends LitElement {
   //       this[prop] = this.projection[prop]();
   //     }
   //    });
-  //   this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true})); 
+  //   this.dispatchEvent(new CustomEvent('multi-refresh', { bubbles: true, composed: true}));
   //   this.activateObserver();
   // }
 

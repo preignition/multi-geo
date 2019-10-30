@@ -22,12 +22,12 @@ class D3Hexbin extends LitElement {
        * [`y`](https://github.com/d3/d3-hexbin#y) y-coordinate accessor function
        */
       /**
-       * [`radius`](https://github.com/d3/d3-hexbin#radius) the radius of the hexagon 
+       * [`radius`](https://github.com/d3/d3-hexbin#radius) the radius of the hexagon
        */
       /**
-       * [`radius`](https://github.com/d3/d3-hexbin#radius) the radius of the hexagon 
+       * [`radius`](https://github.com/d3/d3-hexbin#radius) the radius of the hexagon
        */
-      
+
       /*
        * `points` [the hexbin points](https://github.com/d3/d3-hexbin#_hexbin)
        */
@@ -45,8 +45,8 @@ class D3Hexbin extends LitElement {
   update(props) {
     super.update(props);
     this.updateWrapper(props);
-    if(props.has('points') || props.has('extent')) {
-      this.updatePoints()
+    if (props.has('points') || props.has('extent')) {
+      this.updatePoints();
     }
 
   }
