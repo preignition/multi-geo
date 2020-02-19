@@ -1,4 +1,5 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://webcomponents.org/element/multi-geo)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/03374bac-1921-4bbc-a094-a6291b6e9cfe/deploy-status)](https://app.netlify.com/sites/multi-geo/deploys)
 
 # \<multi-geo\>
 Build composable, markup-based, extensible geo visualizations for the web. 
@@ -13,7 +14,7 @@ While building vizualisation for the web, it is difficult to find the right bala
 \<multi-geo\>, plays well with [\<multi-chart\>](https://github.com/PolymerEl/multi-chart) (similar library for standart charts) and [\<multi-verse\>](https://github.com/PolymerEl/multi-verse), a graphical interactive multi-dimensional analysis tool. Together, they offer a markup based alternative to tools like [dc.js](https://dc-js.github.io/dc.js/)
 
 ## Examples
-[Demo](https://webcomponents.org/element/multi-geo/demo/index.html) are [and API documentation available here](https://webcomponents.org/element/multi-geo).
+Demo and API available from https://multi-geo.netlify.com/
 
 ### Features
 <div>
@@ -24,16 +25,6 @@ While building vizualisation for the web, it is difficult to find the right bala
 <div>
   <img src="https://raw.githubusercontent.com/PolymerEl/multi-geo/master/images/choropleth.png" width="300"></img>
 </div>
-
-
-## Dependencies
-For using \<multi-geo\>, please make sure that the following packages are available on the client: 
-- [d3.js v5](https://d3js.org/) 
-- [d3-svg-legend](http://d3-legend.susielu.com/)
-- [d3-tip](https://github.com/Caged/d3-tip)
-- [topojson](https://github.com/topojson/topojson)
-
-The easiest is to import [d3-bundle-element/d3-bundle-element-multi.html](https://github.com/PolymerEl/d3-bundle) and [topojson-element/d3-bundle-element-multi.html](https://github.com/PolymerEl/d3-bundle), which already includes all required rependencies. 
 
 
 
