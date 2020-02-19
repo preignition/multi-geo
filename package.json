@@ -16,7 +16,7 @@
   "repository": "https://github.com/preignition/multi-geo",
   "homepage": "webcomponents.org/preignition/multi-geo",
   "name": "@preignition/multi-geo",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "license": "MIT",
   "type": "module",
   "main": "index.js",
