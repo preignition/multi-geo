@@ -47,8 +47,8 @@ class DemoGeo extends DemoRoot {
     return html `
       <div id="header">
         <span class="logo"><a href="https://preignition.org">${preignition}</a></span>
-        <h1>Multi chart - ${this.capitalize(this.activeTab)} API and demos</h1>
-        <a class="github" href="https://www.github.com/preignition/multi-chart" target="_blank">${github}</a>
+        <h1>Multi geo - ${this.capitalize(this.activeTab)} API and demos</h1>
+        <a class="github" href="https://www.github.com/preignition/multi-geo" target="_blank">${github}</a>
       </div>
 
       <vaadin-tabs class="${this.smallScreen ? 'nav' : ''}" orientation="${this.smallScreen ? 'vertical' : 'horizontal'}" selected=${this.tabs.indexOf(this.activeTab)} theme="${this.smallScreen ? '' : 'centered'}">

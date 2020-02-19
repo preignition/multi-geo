@@ -66,7 +66,7 @@ class DemoFeature extends LitElement {
                <label>scale</label><input  min="0" step="50"  type="number" .value="${this.scale}" @input=${(e) => this.scale= e.currentTarget.value}> 
             </div>     
             <div>
-               <label>scale</label><input  min="0" step="1"  type="number" .value="${this.rotate}" @input=${(e) => this.rotate= e.currentTarget.value}> 
+               <label>rotate</label><input  min="0" step="1"  type="number" .value="${this.rotate}" @input=${(e) => this.rotate= e.currentTarget.value}> 
             </div>
             
           </div>
