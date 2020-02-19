@@ -26,7 +26,7 @@ class DemoGeo extends DemoRoot {
   firstUpdated() {
     const router = new Router(this.shadowRoot.getElementById('outlet'));
     router.setRoutes([
-      { path: '/', component: 'helper-demos' },
+      { path: '/', component: 'demo-readme' },
       { path: '/intro', component: 'demo-readme' },
       { path: '/basic', component: 'basic-demo' },
       { path: '/chart', component: 'chart-demo' },
