@@ -1,5 +1,6 @@
 import { LitElement } from 'lit-element';
-import { shapeProperties } from '@preignition/multi-chart/src/helper/utils.js';
+// import { shapeProperties } from '@preignition/multi-chart/src/helper/utils.js';
+import { shapeProperties } from '@preignition/multi-chart';
 
 import * as geo from 'd3-geo';
 const instance = geo.geoAlbers();

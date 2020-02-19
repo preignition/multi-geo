@@ -1,0 +1,279 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "",
+      "path": "./../src/d3-wrapper/d3-projection.js",
+      "description": "## D3Projection\n\n`<d3-projection>` a webcompobent for wrapping geo projection as in [d3-geo](https://github.com/d3/d3-geo/blob/master/README.md#_projections)\nIt will expose `projection`.",
+      "attributes": [
+        {
+          "name": "projection-type",
+          "description": "`projectionType` projection type, one of `geoAlbers`,`geoAlbersUsa`,`geoAzimuthalEqualArea`,`geoAzimuthalEquidistant`,`geoConicConformal`,`geoConicEqualArea`,`geoConicEquidistant`,`geoEquirectangular`,`geoGnomonic`,`geoMercator`,`geoOrthographic`,`geoStereographic`,`geoTransverseMercator`",
+          "type": "string"
+        }
+      ],
+      "properties": [
+        {
+          "name": "projectionType",
+          "attribute": "projection-type",
+          "description": "`projectionType` projection type, one of `geoAlbers`,`geoAlbersUsa`,`geoAzimuthalEqualArea`,`geoAzimuthalEquidistant`,`geoConicConformal`,`geoConicEqualArea`,`geoConicEquidistant`,`geoEquirectangular`,`geoGnomonic`,`geoMercator`,`geoOrthographic`,`geoStereographic`,`geoTransverseMercator`",
+          "type": "string"
+        }
+      ],
+      "events": [
+        {
+          "name": "projection-changed"
+        }
+      ]
+    },
+    {
+      "name": "",
+      "path": "./../src/drawable/drawable-choropleth.js",
+      "description": "## MultiDrawableChoropleth\n\n`<multi-drawable-choropleth>` polymer elements responsible for drawing choropleth area in a geo-chart\n\n### Example\n  ```html\n     <topojson-feature feature=\"{{feature}}\" data=\"{{geometries}}\" name=\"counties\" url=\"us.json\"></topojson-feature>\n    <!-- get a topojson mesh for states  -->\n    <topojson-mesh mesh=\"{{mesh}}\" data=\"[[geometries]]\" name=\"states\"></topojson-mesh>\n    <!-- a multi-container-geo will expose path and projection -->\n    <multi-container-geo id=\"chart\" enable-zoom projection=\"{{projection}}\" path=\"{{path}}\" projection-type=\"[[projectionType]]\" scale=\"{{scale}}\">\n        <!-- group of geo elements. When choropleth changes, contained elements will redraw -->\n        <multi-container-layer>\n\n          <!-- draw choropleths with projected to projection -->\n          <multi-drawable-choropleth data=\"[[data]]\" auto-fit geo-data=\"[[feature]]\" path=\"[[path]]\" attrs=\"[[choroplethAttrs]]\" scale-type=\"scaleQuantize\" domain=\"[[colorDomain]]\" range=\"[[colorRange]]\" color-scale=\"{{colorScale}}\" value-accessor-path=\"+rate\" key-accessor-path=\"id\"></multi-drawable-choropleth>\n\n          <!-- show US States -->\n          <multi-drawable-path path=\"[[path]]\" attrs=\"[[meshAttrs]]\" geo-data=\"[[mesh]]\"></multi-drawable-path>\n        </multi-container-layer>\n\n        <!-- display a legend -->\n        <multi-legend scale=\"[[colorScale]]\" padding=\"10\" title=\"Unemployment Rate\" labels=\"[[labels]]\" label-format=\".0%\" position=\"right\"> </multi-legend>\n      </multi-container-geo>\n  ```",
+      "attributes": [
+        {
+          "name": "color-scale",
+          "description": "`colorScale` scale to use for the choropleth"
+        },
+        {
+          "name": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "auto-fit",
+          "description": "`autoFit` if true, will recalculate the projectoin so as to fit features\nwithin chart size.",
+          "type": "boolean"
+        },
+        {
+          "name": "feature-path",
+          "description": "`featureAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "label-path",
+          "description": "`labelAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string"
+        },
+        {
+          "name": "label-accessor",
+          "description": "`labelAccessor the accessor function from labelAccessorPath."
+        },
+        {
+          "name": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        }
+      ],
+      "properties": [
+        {
+          "name": "dataProcessType",
+          "type": "string"
+        },
+        {
+          "name": "colorScale",
+          "attribute": "color-scale",
+          "description": "`colorScale` scale to use for the choropleth"
+        },
+        {
+          "name": "path",
+          "attribute": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "attribute": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "autoFit",
+          "attribute": "auto-fit",
+          "description": "`autoFit` if true, will recalculate the projectoin so as to fit features\nwithin chart size.",
+          "type": "boolean"
+        },
+        {
+          "name": "featurePath",
+          "attribute": "feature-path",
+          "description": "`featureAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "featureAccessor",
+          "attribute": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "labelPath",
+          "attribute": "label-path",
+          "description": "`labelAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string"
+        },
+        {
+          "name": "labelAccessor",
+          "attribute": "label-accessor",
+          "description": "`labelAccessor the accessor function from labelAccessorPath."
+        },
+        {
+          "name": "shapeName",
+          "type": "string"
+        },
+        {
+          "name": "shapeClass",
+          "type": "string"
+        },
+        {
+          "name": "geoData",
+          "attribute": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        },
+        {
+          "name": "drawableData"
+        }
+      ]
+    },
+    {
+      "name": "",
+      "path": "./../src/drawable/drawable-path.js",
+      "description": "## MultiDrawablePath\n\n`<multi-drawable-path>` draw a line from a geo path in a given projection\n\n### Styling\n`<multi-drawable-feature>` provides the following custom properties and mixins\nfor styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey\n`--multi-drawable-feature-fill-color` | fill color for features | none\n`--multi-drawable-feature` | Mixin applied to features | `{}`",
+      "attributes": [
+        {
+          "name": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        }
+      ],
+      "properties": [
+        {
+          "name": "path",
+          "attribute": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "attribute": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "registerOrder",
+          "description": "`registerOrder` - registerable elements are sorted on the basis of this property.",
+          "type": "number"
+        },
+        {
+          "name": "geoData",
+          "attribute": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        },
+        {
+          "name": "drawableData"
+        }
+      ]
+    },
+    {
+      "name": "",
+      "path": "./../src/helper/multi-project.js",
+      "description": "## MultiProject\n\n`<multi-project>` use `projection` to project `data` and expose it under `projectedData`",
+      "attributes": [
+        {
+          "name": "projection",
+          "description": "`projection` the [projection](https://github.com/d3/d3-geo#projection) generator function"
+        },
+        {
+          "name": "data",
+          "description": "[`data`] data with points to be projected",
+          "type": "array"
+        },
+        {
+          "name": "projected-data",
+          "description": "[`data`] data with points to be projected",
+          "type": "array"
+        },
+        {
+          "name": "coordinate-accessor-path",
+          "description": "`coordinateAccessorPath` path for computing the `valueAccessor` function\na value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´\na value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´",
+          "type": "string"
+        },
+        {
+          "name": "coordinate-accessor",
+          "description": "`coordinates` accessor function returning [x,y] coordinates from the data. Passed directly or through a coordinatePath"
+        },
+        {
+          "name": "key",
+          "description": "`key` the key under which projected coordinates are stored",
+          "type": "string",
+          "default": "\"__point__\""
+        },
+        {
+          "name": "log",
+          "description": "`log`  true to show log",
+          "type": "boolean"
+        }
+      ],
+      "properties": [
+        {
+          "name": "projection",
+          "attribute": "projection",
+          "description": "`projection` the [projection](https://github.com/d3/d3-geo#projection) generator function"
+        },
+        {
+          "name": "data",
+          "attribute": "data",
+          "description": "[`data`] data with points to be projected",
+          "type": "array"
+        },
+        {
+          "name": "projectedData",
+          "attribute": "projected-data",
+          "description": "[`data`] data with points to be projected",
+          "type": "array"
+        },
+        {
+          "name": "coordinateAccessorPath",
+          "attribute": "coordinate-accessor-path",
+          "description": "`coordinateAccessorPath` path for computing the `valueAccessor` function\na value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´\na value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´",
+          "type": "string"
+        },
+        {
+          "name": "coordinateAccessor",
+          "attribute": "coordinate-accessor",
+          "description": "`coordinates` accessor function returning [x,y] coordinates from the data. Passed directly or through a coordinatePath"
+        },
+        {
+          "name": "key",
+          "attribute": "key",
+          "description": "`key` the key under which projected coordinates are stored",
+          "type": "string",
+          "default": "\"__point__\""
+        },
+        {
+          "name": "log",
+          "attribute": "log",
+          "description": "`log`  true to show log",
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

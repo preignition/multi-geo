@@ -1,6 +1,7 @@
 import { LitElement } from 'lit-element';
 
-import { shapeProperties } from '@preignition/multi-chart/src/helper/utils.js';
+// import { shapeProperties } from '@preignition/multi-chart/src/helper/utils.js';
+import { shapeProperties } from '@preignition/multi-chart';
 import { hexbin } from 'd3-hexbin';
 
 const instance = hexbin();

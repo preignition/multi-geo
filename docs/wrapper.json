@@ -1,0 +1,30 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "",
+      "path": "./../src/d3-wrapper/d3-projection.js",
+      "description": "## D3Projection\n\n`<d3-projection>` a webcompobent for wrapping geo projection as in [d3-geo](https://github.com/d3/d3-geo/blob/master/README.md#_projections)\nIt will expose `projection`.",
+      "attributes": [
+        {
+          "name": "projection-type",
+          "description": "`projectionType` projection type, one of `geoAlbers`,`geoAlbersUsa`,`geoAzimuthalEqualArea`,`geoAzimuthalEquidistant`,`geoConicConformal`,`geoConicEqualArea`,`geoConicEquidistant`,`geoEquirectangular`,`geoGnomonic`,`geoMercator`,`geoOrthographic`,`geoStereographic`,`geoTransverseMercator`",
+          "type": "string"
+        }
+      ],
+      "properties": [
+        {
+          "name": "projectionType",
+          "attribute": "projection-type",
+          "description": "`projectionType` projection type, one of `geoAlbers`,`geoAlbersUsa`,`geoAzimuthalEqualArea`,`geoAzimuthalEquidistant`,`geoConicConformal`,`geoConicEqualArea`,`geoConicEquidistant`,`geoEquirectangular`,`geoGnomonic`,`geoMercator`,`geoOrthographic`,`geoStereographic`,`geoTransverseMercator`",
+          "type": "string"
+        }
+      ],
+      "events": [
+        {
+          "name": "projection-changed"
+        }
+      ]
+    }
+  ]
+}

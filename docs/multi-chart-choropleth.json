@@ -1,0 +1,267 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "multi-chart-choropleth",
+      "path": "./../src/chart/multi-chart-choropleth.js",
+      "description": "## MultiChartChoropleth\n\n`<multi-chart-choropleth>` a choropleth-chart",
+      "attributes": [
+        {
+          "name": "feature",
+          "description": "`feature` the GeoJSON Feature or FeatureCollection to be exposed by this component",
+          "type": "array"
+        },
+        {
+          "name": "feature-url",
+          "description": "`featureUrl` url to use for fetching geo mesh data.",
+          "type": "string"
+        },
+        {
+          "name": "geometries",
+          "description": "`geometries` topojson or geojson object. It is either retrieved iron-ajax or passed as an argument",
+          "type": "object"
+        },
+        {
+          "name": "geo-type",
+          "description": "`geoType` the type of data object (topojson or geojson)",
+          "type": "string",
+          "default": "\"topojson\""
+        },
+        {
+          "name": "feature-name",
+          "description": "`featureName` the name of the property to extract from the geo data object",
+          "type": "string"
+        },
+        {
+          "name": "feature-filter",
+          "description": "`featureFilter` the filter to use for filtering features\nex: function(f) {return f.id !== 10} // remove antartic from a world map"
+        },
+        {
+          "name": "feature-for-each",
+          "description": "`featureForEach` a function that will run for each feature\nex: function(f) {return f.properties.id = lookup(f.id) } // take lookup code"
+        },
+        {
+          "name": "mesh",
+          "description": "`feature` the geo feature to be exposed by this component",
+          "type": "array"
+        },
+        {
+          "name": "mesh-name",
+          "description": "`meshName` the name of the property to extract from the geo data object",
+          "type": "string"
+        },
+        {
+          "name": "mesh-attrs",
+          "description": "`meshAttrs` attributes to be set on the mesh",
+          "type": "string"
+        },
+        {
+          "name": "color-scale",
+          "description": "`colorScale` scale to use for the choropleth"
+        },
+        {
+          "name": "choropleth-attrs",
+          "description": "`choroplethAttrs` default attributes to be set on the chart",
+          "type": "string"
+        },
+        {
+          "name": "value-path",
+          "description": "`valueAccessorPath` path for computing the `valueAccessor` function\na value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´\na value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´",
+          "type": "string",
+          "default": "\"key\""
+        },
+        {
+          "name": "value-accessor",
+          "description": "`valueAccessor` the value accessor function\nexample function : `d => {return +d.count}`"
+        },
+        {
+          "name": "key-path",
+          "description": "`keyAccessorPath` path for computing the `keyAccessor` function\na key of ´key´ will generate  an accessor function like ´function(d) {return d.key}´\na key of ´+key.count´ will generate  an accessor function like ´function(d) {return +d.key.count}´",
+          "type": "string",
+          "default": "\"key\""
+        },
+        {
+          "name": "key-accessor",
+          "description": "`keyAccessor` the value accessor function\nexample function : `d => {return +d.count}`"
+        },
+        {
+          "name": "feature-path",
+          "description": "`featurePath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "elastic",
+          "description": "`elastic` indicate whether colorscale shall be re-computed on data-change",
+          "type": "boolean"
+        },
+        {
+          "name": "auto-fit",
+          "description": "`autoFit` true to automatically fit geometries",
+          "type": "boolean"
+        },
+        {
+          "name": "projection",
+          "description": "`projection` the [projection](https://github.com/d3/d3-geo#projection) generator function"
+        },
+        {
+          "name": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "context",
+          "description": "[`context`](https://github.com/d3/d3-geo#path_context) to be applied to the path"
+        }
+      ],
+      "properties": [
+        {
+          "name": "feature",
+          "attribute": "feature",
+          "description": "`feature` the GeoJSON Feature or FeatureCollection to be exposed by this component",
+          "type": "array"
+        },
+        {
+          "name": "featureUrl",
+          "attribute": "feature-url",
+          "description": "`featureUrl` url to use for fetching geo mesh data.",
+          "type": "string"
+        },
+        {
+          "name": "geometries",
+          "attribute": "geometries",
+          "description": "`geometries` topojson or geojson object. It is either retrieved iron-ajax or passed as an argument",
+          "type": "object"
+        },
+        {
+          "name": "geoType",
+          "attribute": "geo-type",
+          "description": "`geoType` the type of data object (topojson or geojson)",
+          "type": "string",
+          "default": "\"topojson\""
+        },
+        {
+          "name": "featureName",
+          "attribute": "feature-name",
+          "description": "`featureName` the name of the property to extract from the geo data object",
+          "type": "string"
+        },
+        {
+          "name": "featureFilter",
+          "attribute": "feature-filter",
+          "description": "`featureFilter` the filter to use for filtering features\nex: function(f) {return f.id !== 10} // remove antartic from a world map"
+        },
+        {
+          "name": "featureForEach",
+          "attribute": "feature-for-each",
+          "description": "`featureForEach` a function that will run for each feature\nex: function(f) {return f.properties.id = lookup(f.id) } // take lookup code"
+        },
+        {
+          "name": "mesh",
+          "attribute": "mesh",
+          "description": "`feature` the geo feature to be exposed by this component",
+          "type": "array"
+        },
+        {
+          "name": "meshName",
+          "attribute": "mesh-name",
+          "description": "`meshName` the name of the property to extract from the geo data object",
+          "type": "string"
+        },
+        {
+          "name": "meshAttrs",
+          "attribute": "mesh-attrs",
+          "description": "`meshAttrs` attributes to be set on the mesh",
+          "type": "string"
+        },
+        {
+          "name": "colorScale",
+          "attribute": "color-scale",
+          "description": "`colorScale` scale to use for the choropleth"
+        },
+        {
+          "name": "choroplethAttrs",
+          "attribute": "choropleth-attrs",
+          "description": "`choroplethAttrs` default attributes to be set on the chart",
+          "type": "string"
+        },
+        {
+          "name": "valuePath",
+          "attribute": "value-path",
+          "description": "`valueAccessorPath` path for computing the `valueAccessor` function\na value of ´key´ will generate  an accessor function like ´function(d) {return d.key}´\na value of ´+value.count´ will generate  an accessor function like ´function(d) {return +d.value.count}´",
+          "type": "string",
+          "default": "\"key\""
+        },
+        {
+          "name": "valueAccessor",
+          "attribute": "value-accessor",
+          "description": "`valueAccessor` the value accessor function\nexample function : `d => {return +d.count}`"
+        },
+        {
+          "name": "keyPath",
+          "attribute": "key-path",
+          "description": "`keyAccessorPath` path for computing the `keyAccessor` function\na key of ´key´ will generate  an accessor function like ´function(d) {return d.key}´\na key of ´+key.count´ will generate  an accessor function like ´function(d) {return +d.key.count}´",
+          "type": "string",
+          "default": "\"key\""
+        },
+        {
+          "name": "keyAccessor",
+          "attribute": "key-accessor",
+          "description": "`keyAccessor` the value accessor function\nexample function : `d => {return +d.count}`"
+        },
+        {
+          "name": "featurePath",
+          "attribute": "feature-path",
+          "description": "`featurePath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "featureAccessor",
+          "attribute": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "elastic",
+          "attribute": "elastic",
+          "description": "`elastic` indicate whether colorscale shall be re-computed on data-change",
+          "type": "boolean"
+        },
+        {
+          "name": "autoFit",
+          "attribute": "auto-fit",
+          "description": "`autoFit` true to automatically fit geometries",
+          "type": "boolean"
+        },
+        {
+          "name": "processType",
+          "type": "string",
+          "default": "\"choropleth\""
+        },
+        {
+          "name": "valuePosition",
+          "type": "string",
+          "default": "\"color\""
+        },
+        {
+          "name": "projection",
+          "attribute": "projection",
+          "description": "`projection` the [projection](https://github.com/d3/d3-geo#projection) generator function"
+        },
+        {
+          "name": "path",
+          "attribute": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "context",
+          "attribute": "context",
+          "description": "[`context`](https://github.com/d3/d3-geo#path_context) to be applied to the path"
+        }
+      ]
+    }
+  ]
+}

@@ -41,21 +41,9 @@ multiTransition(transition().constructor);
  *      </multi-container-geo>
  * ```
  *
- * ### Styling
- * `<multi-drawable-feature>` provides the following custom properties and mixins
- * for styling:
- *
- * Custom property | Description | Default
- * ----------------|-------------|----------
- * `--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey
- * `--multi-drawable-feature-fill-color` | fill color for features | none
- * `--multi-drawable-feature` | Mixin applied to features | `{}`
- *
- * @memberof MultiChart
- * @customElement
- * @polymer
- * @appliesMixin MultiChart.mixin.MultiGeoDrawable
- * @demo index.html#multi-feature-demo
+ * @element multi-drawable-feature 
+ * @cssprops --multi-drawable-feature-stroke-color -  stroke color for features
+ * @cssprops --multi-drawable-feature-fill-color -  fill color for features
  **/
 
 class MultiDrawableFeature extends

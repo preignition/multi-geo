@@ -1,0 +1,274 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "multi-drawable-feature",
+      "path": "./../src/drawable/drawable-feature.js",
+      "description": "## MultiDrawableFeature\n\n`<multi-drawable-feature>` polymer elements responsible for drawing choropleth area in a geo-chart\n\n### Example\n```html\n    <!-- fetch topojson features from  -->\n    <topojson-feature id=\"feature\" feature=\"{{feature}}\" data=\"{{geometries}}\" name=\"countries\" url=\"worldSimplify01.json\"></topojson-feature>\n    <!-- configure transition for this chart  -->\n    <d3-transition transition=\"{{transition}}\" duration=\"500\"></d3-transition>\n    <!-- a multi-container-geo will expose path and projection -->\n    <multi-container-geo\n      id=\"chart\"\n      projection=\"{{projection}}\"\n      path=\"{{path}}\"\n      projection-type=\"[[projectionType]]\"\n      rotate=\"[[rotate]]\"\n      translate=\"[[translate]]\"\n      scale=\"[[scale]]\"\n      >\n        <!-- group of geo elements. When feature changes, contained elements will redraw -->\n        <multi-container-layer data=\"[[feature]]\" >\n          <!-- draw features with projected to projection -->\n          <multi-drawable-feature transition=\"[[transition]]\" projection=\"[[projection]]\" path=\"[[path]]\">\n          </multi-drawable-feature>\n        </multi-container-layer>\n      </multi-container-geo>\n```",
+      "attributes": [
+        {
+          "name": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "auto-fit",
+          "description": "`autoFit` if true, will recalculate the projectoin so as to fit features\nwithin chart size.",
+          "type": "boolean"
+        },
+        {
+          "name": "feature-path",
+          "description": "`featureAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "label-path",
+          "description": "`labelAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string"
+        },
+        {
+          "name": "label-accessor",
+          "description": "`labelAccessor the accessor function from labelAccessorPath."
+        },
+        {
+          "name": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        }
+      ],
+      "properties": [
+        {
+          "name": "path",
+          "attribute": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "attribute": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "autoFit",
+          "attribute": "auto-fit",
+          "description": "`autoFit` if true, will recalculate the projectoin so as to fit features\nwithin chart size.",
+          "type": "boolean"
+        },
+        {
+          "name": "featurePath",
+          "attribute": "feature-path",
+          "description": "`featureAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "featureAccessor",
+          "attribute": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "labelPath",
+          "attribute": "label-path",
+          "description": "`labelAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string"
+        },
+        {
+          "name": "labelAccessor",
+          "attribute": "label-accessor",
+          "description": "`labelAccessor the accessor function from labelAccessorPath."
+        },
+        {
+          "name": "shapeName",
+          "type": "string"
+        },
+        {
+          "name": "shapeClass",
+          "type": "string"
+        },
+        {
+          "name": "geoData",
+          "attribute": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        },
+        {
+          "name": "drawableData"
+        }
+      ]
+    },
+    {
+      "name": "",
+      "path": "./../src/drawable/drawable-choropleth.js",
+      "description": "## MultiDrawableChoropleth\n\n`<multi-drawable-choropleth>` polymer elements responsible for drawing choropleth area in a geo-chart\n\n### Example\n  ```html\n     <topojson-feature feature=\"{{feature}}\" data=\"{{geometries}}\" name=\"counties\" url=\"us.json\"></topojson-feature>\n    <!-- get a topojson mesh for states  -->\n    <topojson-mesh mesh=\"{{mesh}}\" data=\"[[geometries]]\" name=\"states\"></topojson-mesh>\n    <!-- a multi-container-geo will expose path and projection -->\n    <multi-container-geo id=\"chart\" enable-zoom projection=\"{{projection}}\" path=\"{{path}}\" projection-type=\"[[projectionType]]\" scale=\"{{scale}}\">\n        <!-- group of geo elements. When choropleth changes, contained elements will redraw -->\n        <multi-container-layer>\n\n          <!-- draw choropleths with projected to projection -->\n          <multi-drawable-choropleth data=\"[[data]]\" auto-fit geo-data=\"[[feature]]\" path=\"[[path]]\" attrs=\"[[choroplethAttrs]]\" scale-type=\"scaleQuantize\" domain=\"[[colorDomain]]\" range=\"[[colorRange]]\" color-scale=\"{{colorScale}}\" value-accessor-path=\"+rate\" key-accessor-path=\"id\"></multi-drawable-choropleth>\n\n          <!-- show US States -->\n          <multi-drawable-path path=\"[[path]]\" attrs=\"[[meshAttrs]]\" geo-data=\"[[mesh]]\"></multi-drawable-path>\n        </multi-container-layer>\n\n        <!-- display a legend -->\n        <multi-legend scale=\"[[colorScale]]\" padding=\"10\" title=\"Unemployment Rate\" labels=\"[[labels]]\" label-format=\".0%\" position=\"right\"> </multi-legend>\n      </multi-container-geo>\n  ```",
+      "attributes": [
+        {
+          "name": "color-scale",
+          "description": "`colorScale` scale to use for the choropleth"
+        },
+        {
+          "name": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "auto-fit",
+          "description": "`autoFit` if true, will recalculate the projectoin so as to fit features\nwithin chart size.",
+          "type": "boolean"
+        },
+        {
+          "name": "feature-path",
+          "description": "`featureAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "label-path",
+          "description": "`labelAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string"
+        },
+        {
+          "name": "label-accessor",
+          "description": "`labelAccessor the accessor function from labelAccessorPath."
+        },
+        {
+          "name": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        }
+      ],
+      "properties": [
+        {
+          "name": "dataProcessType",
+          "type": "string"
+        },
+        {
+          "name": "colorScale",
+          "attribute": "color-scale",
+          "description": "`colorScale` scale to use for the choropleth"
+        },
+        {
+          "name": "path",
+          "attribute": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "attribute": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "autoFit",
+          "attribute": "auto-fit",
+          "description": "`autoFit` if true, will recalculate the projectoin so as to fit features\nwithin chart size.",
+          "type": "boolean"
+        },
+        {
+          "name": "featurePath",
+          "attribute": "feature-path",
+          "description": "`featureAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string",
+          "default": "\"id\""
+        },
+        {
+          "name": "featureAccessor",
+          "attribute": "feature-accessor",
+          "description": "`featureAccessor the accessor function from featureAccessorPath."
+        },
+        {
+          "name": "labelPath",
+          "attribute": "label-path",
+          "description": "`labelAccessorPath` the path for accessing the feature keys/ids",
+          "type": "string"
+        },
+        {
+          "name": "labelAccessor",
+          "attribute": "label-accessor",
+          "description": "`labelAccessor the accessor function from labelAccessorPath."
+        },
+        {
+          "name": "shapeName",
+          "type": "string"
+        },
+        {
+          "name": "shapeClass",
+          "type": "string"
+        },
+        {
+          "name": "geoData",
+          "attribute": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        },
+        {
+          "name": "drawableData"
+        }
+      ]
+    },
+    {
+      "name": "",
+      "path": "./../src/drawable/drawable-path.js",
+      "description": "## MultiDrawablePath\n\n`<multi-drawable-path>` draw a line from a geo path in a given projection\n\n### Styling\n`<multi-drawable-feature>` provides the following custom properties and mixins\nfor styling:\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--multi-drawable-feature-stroke-color` | stroke color for features | `--secondary-text-color` or grey\n`--multi-drawable-feature-fill-color` | fill color for features | none\n`--multi-drawable-feature` | Mixin applied to features | `{}`",
+      "attributes": [
+        {
+          "name": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        }
+      ],
+      "properties": [
+        {
+          "name": "path",
+          "attribute": "path",
+          "description": "`path` the [path](https://github.com/d3/d3-geo#geoPath) generator function"
+        },
+        {
+          "name": "attrs",
+          "attribute": "attrs",
+          "description": "`attrs` default attributes to be set on the chart",
+          "type": "object"
+        },
+        {
+          "name": "registerOrder",
+          "description": "`registerOrder` - registerable elements are sorted on the basis of this property.",
+          "type": "number"
+        },
+        {
+          "name": "geoData",
+          "attribute": "geo-data",
+          "description": "`geoData` data to use for drawing geo chart.\nwe need another parameter as `data` because some chart - like choropleth - need both geo path data\nand value data to display on the chart.",
+          "type": "object"
+        },
+        {
+          "name": "drawableData"
+        }
+      ]
+    }
+  ]
+}

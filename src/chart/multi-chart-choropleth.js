@@ -7,17 +7,9 @@ import { default as GeoContainer } from '../container/multi-container-geo.js';
  *
  * `<multi-chart-choropleth>` a choropleth-chart
  *
- * @memberof MultiChart
- * @customElement
- * @polymer
- * @appliesMixin MultiChart.mixin.D3Projection
- * @appliesMixin MultiChart.mixin.ZoomableProperty
- * @appliesMixin MultiChart.mixin.ColorScale
- * @demo
+ * @element multi-chart-choropleth
  **/
-class MultiChartChoropleth extends
-// MultiChart.mixin.ColorScale(
-GeoContainer {
+class MultiChartChoropleth extends GeoContainer {
 
   getContentRender() {
     return this.html `

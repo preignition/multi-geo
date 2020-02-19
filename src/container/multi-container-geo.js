@@ -8,14 +8,8 @@ import { default as Path } from '../d3-wrapper/d3-geo-path.js';
  *
  * `<multi-container-geo>` a container for geographical chart. It exposes the current geo projection
  *
+ * * @element multi-container-geo
  *
- * @memberof MultiChart
- * @customElement
- * @polymer
- * @appliesMixin MultiChart.mixin.ZoomableProperty
- * @appliesMixin MultiChart.mixin.D3Projection
- * @demo index.html#multi-choropleth-demo
- * @demo index.html#multi-feature-demo
  **/
 class MultiContainerGeo extends
    CacheId(
@@ -79,12 +73,6 @@ class MultiContainerGeo extends
     super();
     this.addEventListener('multi-refresh', this.refresh);
   }
-
-  // onResize(rect, entry) {
-  //   super.onResize(...arguments)
-  //   // Note(cg): some elements need to be notified when projection changes (triggerred by a resize).
-  //   this.dispatchEvent(new CustomEvent(`projection-changed`, { detail: { value: this.projection }, bubbles: true, composed: true }));
-  // }
 
   update(props) {
     super.update(props);
