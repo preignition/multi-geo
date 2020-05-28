@@ -1,4 +1,5 @@
-import { select } from '../../../d3-selection.js';
+import '../../../common/local-f0e67514.js';
+import { s as select } from '../../../common/select-8eacb60c.js';
 
 function attrsFunction(transition, map) {
   return transition.each(function() {

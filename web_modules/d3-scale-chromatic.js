@@ -1,5 +1,5 @@
-import { b as cubehelix$1, r as rgb } from './common/index-887d0098.js';
-import { interpolateRgbBasis as rgbBasis, interpolateCubehelixLong as cubehelixLong } from './d3-interpolate.js';
+import { a as cubehelix$1, r as rgb } from './common/cubehelix-c56427ca.js';
+import { r as rgbBasis, e as cubehelixLong } from './common/cubehelix-dc76d2a7.js';
 
 function colors(specifier) {
   var n = specifier.length / 6 | 0, colors = new Array(n), i = 0;

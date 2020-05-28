@@ -66,10 +66,10 @@
     "es-dev-server": "^1.40.0",
     "marked": "^0.8.0",
     "pwa-helpers": "^0.9.1",
-    "snowpack": "^1.4.0"
+    "snowpack": "^2.0.2"
   },
   "snowpack": {
-    "webDependencies": [
+    "install": [
       "@morbidick/lit-element-notify",
       "@polymer/polymer/lib/utils/mixin.js",
       "@polymer/polymer/lib/utils/case-map.js",
@@ -107,16 +107,20 @@
       "lit-html/directives/style-map.js",
       "lit-html"
     ],
-    "dedupe": [
-      "lit-html",
-      "lit-element",
-      "marked",
-      "topojson-client",
-      "topojson-simplify",
-      "api-viewer-element",
-      "d3-selection",
-      "d3-transition"
-    ]
+    "installOptions": {
+      "rollup": {
+        "dedupe": [
+          "lit-html",
+          "lit-element",
+          "marked",
+          "topojson-client",
+          "topojson-simplify",
+          "api-viewer-element",
+          "d3-selection",
+          "d3-transition"
+        ]
+      }
+    }
   },
   "scripts": {
     "start": "es-dev-server -v",

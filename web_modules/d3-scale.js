@@ -1,7 +1,9 @@
-import './common/index-887d0098.js';
-import { interpolateNumber, interpolateRound, interpolate as interpolateValue } from './d3-interpolate.js';
-import { utcMonday, utcDay, timeMonday as monday, timeDay, utcYear, utcWeek as utcSunday, utcThursday, timeYear, timeWeek as sunday, timeThursday as thursday, timeMillisecond as utcMillisecond, timeSecond as utcSecond, timeMinute, timeHour, timeMonth, utcMinute, utcHour, utcMonth } from './d3-time.js';
-import { range as sequence, bisect, tickStep, ticks, tickIncrement, ascending, quantile as quantile$1, bisector } from './d3-array.js';
+import './common/cubehelix-c56427ca.js';
+import './common/cubehelix-dc76d2a7.js';
+import { i as interpolateValue, b as interpolateRound } from './common/round-8bdcd356.js';
+import { i as interpolateNumber } from './common/string-4249d4c4.js';
+import { u as utcMonday, a as utcDay, m as monday, d as day, b as utcYear, c as utcSunday, e as utcThursday, y as year, s as sunday, t as thursday, f as millisecond, g as second, h as minute, i as hour, j as month, k as utcMinute, l as utcHour, n as utcMonth } from './common/utcYear-a430c256.js';
+import { s as sequence, b as bisectRight, t as tickStep, h as ticks, i as tickIncrement, a as ascending, q as quantile$1, d as bisector } from './common/quantile-88781275.js';
 
 function initRange(domain, range) {
   switch (arguments.length) {
@@ -219,7 +221,7 @@ function polymap(domain, range, interpolate) {
   }
 
   return function(x) {
-    var i = bisect(domain, x, 1, j) - 1;
+    var i = bisectRight(domain, x, 1, j) - 1;
     return r[i](d[i](x));
   };
 }
@@ -1050,7 +1052,7 @@ function quantile() {
   }
 
   function scale(x) {
-    return isNaN(x = +x) ? unknown : range[bisect(thresholds, x)];
+    return isNaN(x = +x) ? unknown : range[bisectRight(thresholds, x)];
   }
 
   scale.invertExtent = function(y) {
@@ -1100,7 +1102,7 @@ function quantize() {
       unknown;
 
   function scale(x) {
-    return x <= x ? range[bisect(domain, x, 0, n)] : unknown;
+    return x <= x ? range[bisectRight(domain, x, 0, n)] : unknown;
   }
 
   function rescale() {
@@ -1151,7 +1153,7 @@ function threshold() {
       n = 1;
 
   function scale(x) {
-    return x <= x ? range[bisect(domain, x, 0, n)] : unknown;
+    return x <= x ? range[bisectRight(domain, x, 0, n)] : unknown;
   }
 
   scale.domain = function(_) {
@@ -1360,7 +1362,7 @@ function formatLocale$1(locale) {
     return function(string) {
       var d = newYear(1900),
           i = parseSpecifier(d, specifier, string += "", 0),
-          week, day;
+          week, day$1;
       if (i != string.length) return null;
 
       // If a UNIX timestamp is specified, return it.
@@ -1374,25 +1376,25 @@ function formatLocale$1(locale) {
         if (d.V < 1 || d.V > 53) return null;
         if (!("w" in d)) d.w = 1;
         if ("Z" in d) {
-          week = utcDate(newYear(d.y)), day = week.getUTCDay();
-          week = day > 4 || day === 0 ? utcMonday.ceil(week) : utcMonday(week);
+          week = utcDate(newYear(d.y)), day$1 = week.getUTCDay();
+          week = day$1 > 4 || day$1 === 0 ? utcMonday.ceil(week) : utcMonday(week);
           week = utcDay.offset(week, (d.V - 1) * 7);
           d.y = week.getUTCFullYear();
           d.m = week.getUTCMonth();
           d.d = week.getUTCDate() + (d.w + 6) % 7;
         } else {
-          week = newDate(newYear(d.y)), day = week.getDay();
-          week = day > 4 || day === 0 ? monday.ceil(week) : monday(week);
-          week = timeDay.offset(week, (d.V - 1) * 7);
+          week = newDate(newYear(d.y)), day$1 = week.getDay();
+          week = day$1 > 4 || day$1 === 0 ? monday.ceil(week) : monday(week);
+          week = day.offset(week, (d.V - 1) * 7);
           d.y = week.getFullYear();
           d.m = week.getMonth();
           d.d = week.getDate() + (d.w + 6) % 7;
         }
       } else if ("W" in d || "U" in d) {
         if (!("w" in d)) d.w = "u" in d ? d.u % 7 : "W" in d ? 1 : 0;
-        day = "Z" in d ? utcDate(newYear(d.y)).getUTCDay() : newDate(newYear(d.y)).getDay();
+        day$1 = "Z" in d ? utcDate(newYear(d.y)).getUTCDay() : newDate(newYear(d.y)).getDay();
         d.m = 0;
-        d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day + 5) % 7 : d.w + d.U * 7 - (day + 6) % 7;
+        d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day$1 + 5) % 7 : d.w + d.U * 7 - (day$1 + 6) % 7;
       }
 
       // If a time zone is specified, all fields are interpreted as UTC and then
@@ -1665,7 +1667,7 @@ function formatHour12(d, p) {
 }
 
 function formatDayOfYear(d, p) {
-  return pad(1 + timeDay.count(timeYear(d), d), p, 3);
+  return pad(1 + day.count(year(d), d), p, 3);
 }
 
 function formatMilliseconds(d, p) {
@@ -1694,13 +1696,13 @@ function formatWeekdayNumberMonday(d) {
 }
 
 function formatWeekNumberSunday(d, p) {
-  return pad(sunday.count(timeYear(d), d), p, 2);
+  return pad(sunday.count(year(d), d), p, 2);
 }
 
 function formatWeekNumberISO(d, p) {
   var day = d.getDay();
   d = (day >= 4 || day === 0) ? thursday(d) : thursday.ceil(d);
-  return pad(thursday.count(timeYear(d), d) + (timeYear(d).getDay() === 4), p, 2);
+  return pad(thursday.count(year(d), d) + (year(d).getDay() === 4), p, 2);
 }
 
 function formatWeekdayNumberSunday(d) {
@@ -1708,7 +1710,7 @@ function formatWeekdayNumberSunday(d) {
 }
 
 function formatWeekNumberMonday(d, p) {
-  return pad(monday.count(timeYear(d), d), p, 2);
+  return pad(monday.count(year(d), d), p, 2);
 }
 
 function formatYear(d, p) {
@@ -1981,11 +1983,11 @@ function calendar(year, month, week, day, hour, minute, second, millisecond, for
 }
 
 function time() {
-  return initRange.apply(calendar(timeYear, timeMonth, sunday, timeDay, timeHour, timeMinute, utcSecond, utcMillisecond, timeFormat).domain([new Date(2000, 0, 1), new Date(2000, 0, 2)]), arguments);
+  return initRange.apply(calendar(year, month, sunday, day, hour, minute, second, millisecond, timeFormat).domain([new Date(2000, 0, 1), new Date(2000, 0, 2)]), arguments);
 }
 
 function utcTime() {
-  return initRange.apply(calendar(utcYear, utcMonth, utcSunday, utcDay, utcHour, utcMinute, utcSecond, utcMillisecond, utcFormat).domain([Date.UTC(2000, 0, 1), Date.UTC(2000, 0, 2)]), arguments);
+  return initRange.apply(calendar(utcYear, utcMonth, utcSunday, utcDay, utcHour, utcMinute, second, millisecond, utcFormat).domain([Date.UTC(2000, 0, 1), Date.UTC(2000, 0, 2)]), arguments);
 }
 
 function transformer$1() {
@@ -2086,7 +2088,7 @@ function sequentialQuantile() {
       interpolator = identity;
 
   function scale(x) {
-    if (!isNaN(x = +x)) return interpolator((bisect(domain, x, 1) - 1) / (domain.length - 1));
+    if (!isNaN(x = +x)) return interpolator((bisectRight(domain, x, 1) - 1) / (domain.length - 1));
   }
 
   scale.domain = function(_) {

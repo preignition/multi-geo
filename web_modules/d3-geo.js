@@ -1,4 +1,4 @@
-import { m as merge, s as sequence } from './common/index-10c103aa.js';
+import './common/bisect-4c041d36.js';
 
 // Adds floating point numbers with twice the normal precision.
 // Reference: J. R. Shewchuk, Adaptive Precision Floating-Point Arithmetic and
@@ -923,6 +923,42 @@ function polygonContains(polygon, point) {
   // same side as the South pole.
 
   return (angle < -epsilon || angle < epsilon && sum < -epsilon) ^ (winding & 1);
+}
+
+function sequence(start, stop, step) {
+  start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+
+  var i = -1,
+      n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+      range = new Array(n);
+
+  while (++i < n) {
+    range[i] = start + i * step;
+  }
+
+  return range;
+}
+
+function merge(arrays) {
+  var n = arrays.length,
+      m,
+      i = -1,
+      j = 0,
+      merged,
+      array;
+
+  while (++i < n) j += arrays[i].length;
+  merged = new Array(j);
+
+  while (--n >= 0) {
+    array = arrays[n];
+    m = array.length;
+    while (--m >= 0) {
+      merged[--j] = array[m];
+    }
+  }
+
+  return merged;
 }
 
 function clip(pointVisible, clipLine, interpolate, start) {

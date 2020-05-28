@@ -1,15 +1,16 @@
 import '../common/directive-9885f5ff.js';
-import '../d3-selection.js';
-import '../d3-transition.js';
-import '../common/index-887d0098.js';
-import '../d3-interpolate.js';
-import { DefaultValueMixin, DoNotSetUndefinedValue } from './preignition-mixin.js';
-import { h as html, c as nothing } from '../common/lit-html-a0bff75d.js';
+import '../common/local-f0e67514.js';
+import { h as html, n as nothing } from '../common/lit-html-e2d510ee.js';
 import { LitElement, css } from '../lit-element.js';
-import { f as format } from '../common/index-2d17bda4.js';
-import '../d3-time.js';
+import '../common/index-7a73d836.js';
+import '../common/cubehelix-c56427ca.js';
+import '../common/cubehelix-dc76d2a7.js';
+import '../common/string-4249d4c4.js';
+import '../common/index-1705e9a2.js';
 import { unsafeHTML } from '../lit-html/directives/unsafe-html.js';
-import { D as DOMPurify, m as marked } from '../common/purify.es-a1cebf94.js';
+import { p as purify, m as marked_1 } from '../common/purify.es-f2019214.js';
+import { a as defaultValue, d as doNotSetUndefinedValue } from '../common/defaultValueMixin-57f58f21.js';
+import { f as format } from '../common/defaultLocale-d5f1845c.js';
 
 class GridCellFlag extends LitElement {
 
@@ -44,8 +45,8 @@ class GridCellFlag extends LitElement {
 customElements.define('grid-cell-flag', GridCellFlag);
 
 class GridCellNumber extends
-DefaultValueMixin(
-  DoNotSetUndefinedValue(
+defaultValue(
+  doNotSetUndefinedValue(
     LitElement)) {
 
   static get styles() {
@@ -350,7 +351,7 @@ const parse = (markdown) => {
   }
 
   return html`
-    ${unsafeHTML(DOMPurify.sanitize(marked(markdown)))}
+    ${unsafeHTML(purify.sanitize(marked_1(markdown)))}
   `;
 };
 

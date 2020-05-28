@@ -3032,4 +3032,4 @@ function createDOMPurify() {
 
 var purify = createDOMPurify();
 
-export { purify as D, marked_1 as m };
+export { marked_1 as m, purify as p };

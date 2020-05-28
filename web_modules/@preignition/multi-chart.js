@@ -1,10 +1,14 @@
 import '../common/directive-9885f5ff.js';
-import { select, event, customEvent, touch, mouse, selection, selectAll } from '../d3-selection.js';
-import { interrupt, transition } from '../d3-transition.js';
-import '../common/index-887d0098.js';
-import '../d3-interpolate.js';
-import { h as html$1 } from '../common/lit-html-a0bff75d.js';
+import { e as event, c as customEvent, s as selection } from '../common/local-f0e67514.js';
+import { s as select } from '../common/select-8eacb60c.js';
+import { t as touch, m as mouse, s as selectAll } from '../common/touch-fee1814e.js';
+import { h as html$1 } from '../common/lit-html-e2d510ee.js';
 import { LitElement, css } from '../lit-element.js';
+import { i as interrupt, t as transition } from '../common/index-7a73d836.js';
+import '../common/cubehelix-c56427ca.js';
+import '../common/cubehelix-dc76d2a7.js';
+import '../common/string-4249d4c4.js';
+import '../common/index-1705e9a2.js';
 
 /**
 @license
@@ -21,8 +25,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  * When using Closure Compiler, JSCompiler_renameProperty(property, object) is replaced by the munged name for object[property]
  * We cannot alias this function, so we have to use a small shim that has the same behavior when not compiling.
  *
- * @param {string} prop Property name
- * @param {?Object} obj Reference object
+ * @param {?} prop Property name
+ * @param {*} obj Reference object
  * @return {string} Potentially renamed property name
  */
 window.JSCompiler_renameProperty = function(prop, obj) {
@@ -71,13 +75,13 @@ const dedupingMixin = function(mixin) {
     if (!extended) {
       extended = /** @type {!Function} */(mixin)(base);
       map.set(base, extended);
+      // copy inherited mixin set from the extended class, or the base class
+      // NOTE: we avoid use of Set here because some browser (IE11)
+      // cannot extend a base Set via the constructor.
+      let mixinSet = Object.create(/** @type {!MixinFunction} */(extended).__mixinSet || baseSet || null);
+      mixinSet[mixinDedupeId] = true;
+      /** @type {!MixinFunction} */(extended).__mixinSet = mixinSet;
     }
-    // copy inherited mixin set from the extended class, or the base class
-    // NOTE: we avoid use of Set here because some browser (IE11)
-    // cannot extend a base Set via the constructor.
-    let mixinSet = Object.create(/** @type {!MixinFunction} */(extended).__mixinSet || baseSet || null);
-    mixinSet[mixinDedupeId] = true;
-    /** @type {!MixinFunction} */(extended).__mixinSet = mixinSet;
     return extended;
   }
 
@@ -310,6 +314,13 @@ const Registerable = superClass => {
       return 'multi-register'
     }
 
+    // Note(cg): some registerable (in particular multi-data-group) need to register before
+    // Othewise, multi-data-mixin_onMultiRegister fail to correctly proceed with onRegister 
+    // as seriGroup do not yet exist.
+    get registerAtConnected() {
+      return false;
+    }
+
     static get properties() {
 
       return {
@@ -349,8 +360,17 @@ const Registerable = superClass => {
     // Note(cg): we fire under first Updated and not connectedCallback so as to make sure nested slots have had time to 
     // be effective. .
     firstUpdated(props) {
+      if (!this.registerAtConnected) {
+        this.dispatchEvent(new CustomEvent(this.registerEventDispatch, { detail: this.group, bubbles: true, composed: true }));
+      }
       super.firstUpdated(props);
-      this.dispatchEvent(new CustomEvent(this.registerEventDispatch, { detail: this.group, bubbles: true, composed: true }));
+    }
+
+    connectedCallback() {
+      super.connectedCallback();
+      if (this.registerAtConnected) {
+        this.dispatchEvent(new CustomEvent(this.registerEventDispatch, { detail: this.group, bubbles: true, composed: true }));
+      }
     }
 
     disconnectedCallback() {
@@ -577,19 +597,20 @@ function formatLocale(locale) {
       } else {
         value = +value;
 
+        // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+        var valueNegative = value < 0 || 1 / value < 0;
+
         // Perform the initial formatting.
-        var valueNegative = value < 0;
         value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
 
         // Trim insignificant zeros.
         if (trim) value = formatTrim(value);
 
-        // If a negative value rounds to zero during formatting, treat as positive.
-        if (valueNegative && +value === 0) valueNegative = false;
+        // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+        if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
 
         // Compute the prefix and suffix.
         valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-
         valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
 
         // Break the formatted value into the integer “value” part that can be
@@ -1704,13 +1725,13 @@ const DispatchSVG = dedupingMixin(superClass => {
     }
 
     update(props) {
-      super.update(props);
       if (props.has('svgHost')) {
         if (this.svgHost && this.resize) {
           this.resize(this.svgHost.width, this.svgHost.height);
         }
         this.observeSvgHost(this.svgHost, props.get('svgHost'));
       }
+      super.update(props);
     }
 
     observeSvgHost(host, old) {
@@ -2133,8 +2154,6 @@ function axisLeft(scale) {
   return axis(left, scale);
 }
 
-
-
 var axis$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   axisTop: axisTop,
@@ -2187,7 +2206,6 @@ class D3Axis extends LitElement {
   }
 
   update(props) {
-    super.update(props);
     this.log && console.info(`d3-axis ${this.type} update`, props);
     if (!this.type && !props.has('type')) {
       this.type = 'bottom';
@@ -2205,6 +2223,7 @@ class D3Axis extends LitElement {
     if (this.axis) {
       this.updateWrapper(props);
     }
+    super.update(props);
   }
 
   updateWrapper(props) {
@@ -2245,7 +2264,6 @@ class Transition extends LitElement {
   }
 
   update(props) {
-    super.update(props);
     this.log && console.info(`d3-transition ${this.type} update`, props);
     const value = (transition) => {
       Object.keys(this.constructor.properties).forEach(pr => {
@@ -2254,6 +2272,7 @@ class Transition extends LitElement {
         }
       });
     };
+    super.update(props);
     this.dispatchEvent(new CustomEvent(`transition-changed`, { detail: { value: value }, bubbles: true, composed: true }));
   }
 }
@@ -2887,8 +2906,8 @@ function color(format) {
   format = (format + "").trim().toLowerCase();
   return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
       : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-      : l === 8 ? new Rgb(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-      : l === 4 ? new Rgb((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+      : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+      : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
       : null) // invalid hex
       : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
       : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
@@ -4485,8 +4504,6 @@ function divergingSqrt() {
   return divergingPow.apply(null, arguments).exponent(0.5);
 }
 
-
-
 var scales = /*#__PURE__*/Object.freeze({
   __proto__: null,
   scaleBand: band,
@@ -4590,7 +4607,6 @@ class D3Scale extends LitElement {
   }
 
   update(props) {
-    super.update(props);
     if (!this.scaleType && !props.has('scaleType')) {
       this.scaleType = 'linear';
     }
@@ -4605,6 +4621,7 @@ class D3Scale extends LitElement {
     if (this.scale) {
       this.updateWrapper(props);
     }
+    super.update(props);
   }
 
   updateWrapper(props) {
@@ -5332,33 +5349,355 @@ function continuous$1(deinterpolate, reinterpolate) {
   return rescale();
 }
 
+// Computes the decimal coefficient and exponent of the specified number x with
+// significant digits p, where x is positive and p is in [1, 21] or undefined.
+// For example, formatDecimal(1.23) returns ["123", 0].
+function formatDecimal$2(x, p) {
+  if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+  var i, coefficient = x.slice(0, i);
+
+  // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+  // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+  return [
+    coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+    +x.slice(i + 1)
+  ];
+}
+
+function exponent$2(x) {
+  return x = formatDecimal$2(Math.abs(x)), x ? x[1] : NaN;
+}
+
+function formatGroup$2(grouping, thousands) {
+  return function(value, width) {
+    var i = value.length,
+        t = [],
+        j = 0,
+        g = grouping[0],
+        length = 0;
+
+    while (i > 0 && g > 0) {
+      if (length + g + 1 > width) g = Math.max(1, width - length);
+      t.push(value.substring(i -= g, i + g));
+      if ((length += g + 1) > width) break;
+      g = grouping[j = (j + 1) % grouping.length];
+    }
+
+    return t.reverse().join(thousands);
+  };
+}
+
+function formatNumerals$1(numerals) {
+  return function(value) {
+    return value.replace(/[0-9]/g, function(i) {
+      return numerals[+i];
+    });
+  };
+}
+
+// [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+var re$2 = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+function formatSpecifier$2(specifier) {
+  if (!(match = re$2.exec(specifier))) throw new Error("invalid format: " + specifier);
+  var match;
+  return new FormatSpecifier$2({
+    fill: match[1],
+    align: match[2],
+    sign: match[3],
+    symbol: match[4],
+    zero: match[5],
+    width: match[6],
+    comma: match[7],
+    precision: match[8] && match[8].slice(1),
+    trim: match[9],
+    type: match[10]
+  });
+}
+
+formatSpecifier$2.prototype = FormatSpecifier$2.prototype; // instanceof
+
+function FormatSpecifier$2(specifier) {
+  this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+  this.align = specifier.align === undefined ? ">" : specifier.align + "";
+  this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+  this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+  this.zero = !!specifier.zero;
+  this.width = specifier.width === undefined ? undefined : +specifier.width;
+  this.comma = !!specifier.comma;
+  this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+  this.trim = !!specifier.trim;
+  this.type = specifier.type === undefined ? "" : specifier.type + "";
+}
+
+FormatSpecifier$2.prototype.toString = function() {
+  return this.fill
+      + this.align
+      + this.sign
+      + this.symbol
+      + (this.zero ? "0" : "")
+      + (this.width === undefined ? "" : Math.max(1, this.width | 0))
+      + (this.comma ? "," : "")
+      + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
+      + (this.trim ? "~" : "")
+      + this.type;
+};
+
+// Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+function formatTrim$1(s) {
+  out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+    switch (s[i]) {
+      case ".": i0 = i1 = i; break;
+      case "0": if (i0 === 0) i0 = i; i1 = i; break;
+      default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
+    }
+  }
+  return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+}
+
+var prefixExponent$2;
+
+function formatPrefixAuto$2(x, p) {
+  var d = formatDecimal$2(x, p);
+  if (!d) return x + "";
+  var coefficient = d[0],
+      exponent = d[1],
+      i = exponent - (prefixExponent$2 = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+      n = coefficient.length;
+  return i === n ? coefficient
+      : i > n ? coefficient + new Array(i - n + 1).join("0")
+      : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+      : "0." + new Array(1 - i).join("0") + formatDecimal$2(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+}
+
+function formatRounded$2(x, p) {
+  var d = formatDecimal$2(x, p);
+  if (!d) return x + "";
+  var coefficient = d[0],
+      exponent = d[1];
+  return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+      : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+      : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+}
+
+var formatTypes$2 = {
+  "%": function(x, p) { return (x * 100).toFixed(p); },
+  "b": function(x) { return Math.round(x).toString(2); },
+  "c": function(x) { return x + ""; },
+  "d": function(x) { return Math.round(x).toString(10); },
+  "e": function(x, p) { return x.toExponential(p); },
+  "f": function(x, p) { return x.toFixed(p); },
+  "g": function(x, p) { return x.toPrecision(p); },
+  "o": function(x) { return Math.round(x).toString(8); },
+  "p": function(x, p) { return formatRounded$2(x * 100, p); },
+  "r": formatRounded$2,
+  "s": formatPrefixAuto$2,
+  "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
+  "x": function(x) { return Math.round(x).toString(16); }
+};
+
+function identity$5(x) {
+  return x;
+}
+
+var map$3 = Array.prototype.map,
+    prefixes$2 = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+
+function formatLocale$3(locale) {
+  var group = locale.grouping === undefined || locale.thousands === undefined ? identity$5 : formatGroup$2(map$3.call(locale.grouping, Number), locale.thousands + ""),
+      currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+      currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+      decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+      numerals = locale.numerals === undefined ? identity$5 : formatNumerals$1(map$3.call(locale.numerals, String)),
+      percent = locale.percent === undefined ? "%" : locale.percent + "",
+      minus = locale.minus === undefined ? "-" : locale.minus + "",
+      nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+
+  function newFormat(specifier) {
+    specifier = formatSpecifier$2(specifier);
+
+    var fill = specifier.fill,
+        align = specifier.align,
+        sign = specifier.sign,
+        symbol = specifier.symbol,
+        zero = specifier.zero,
+        width = specifier.width,
+        comma = specifier.comma,
+        precision = specifier.precision,
+        trim = specifier.trim,
+        type = specifier.type;
+
+    // The "n" type is an alias for ",g".
+    if (type === "n") comma = true, type = "g";
+
+    // The "" type, and any invalid type, is an alias for ".12~g".
+    else if (!formatTypes$2[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+
+    // If zero fill is specified, padding goes after sign and before digits.
+    if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+    // Compute the prefix and suffix.
+    // For SI-prefix, the suffix is lazily computed.
+    var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+        suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+
+    // What format function should we use?
+    // Is this an integer type?
+    // Can this type generate exponential notation?
+    var formatType = formatTypes$2[type],
+        maybeSuffix = /[defgprs%]/.test(type);
+
+    // Set the default precision if not specified,
+    // or clamp the specified precision to the supported range.
+    // For significant precision, it must be in [1, 21].
+    // For fixed precision, it must be in [0, 20].
+    precision = precision === undefined ? 6
+        : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+        : Math.max(0, Math.min(20, precision));
+
+    function format(value) {
+      var valuePrefix = prefix,
+          valueSuffix = suffix,
+          i, n, c;
+
+      if (type === "c") {
+        valueSuffix = formatType(value) + valueSuffix;
+        value = "";
+      } else {
+        value = +value;
+
+        // Perform the initial formatting.
+        var valueNegative = value < 0;
+        value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+
+        // Trim insignificant zeros.
+        if (trim) value = formatTrim$1(value);
+
+        // If a negative value rounds to zero during formatting, treat as positive.
+        if (valueNegative && +value === 0) valueNegative = false;
+
+        // Compute the prefix and suffix.
+        valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+
+        valueSuffix = (type === "s" ? prefixes$2[8 + prefixExponent$2 / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+
+        // Break the formatted value into the integer “value” part that can be
+        // grouped, and fractional or exponential “suffix” part that is not.
+        if (maybeSuffix) {
+          i = -1, n = value.length;
+          while (++i < n) {
+            if (c = value.charCodeAt(i), 48 > c || c > 57) {
+              valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+              value = value.slice(0, i);
+              break;
+            }
+          }
+        }
+      }
+
+      // If the fill character is not "0", grouping is applied before padding.
+      if (comma && !zero) value = group(value, Infinity);
+
+      // Compute the padding.
+      var length = valuePrefix.length + value.length + valueSuffix.length,
+          padding = length < width ? new Array(width - length + 1).join(fill) : "";
+
+      // If the fill character is "0", grouping is applied after padding.
+      if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+
+      // Reconstruct the final output based on the desired alignment.
+      switch (align) {
+        case "<": value = valuePrefix + value + valueSuffix + padding; break;
+        case "=": value = valuePrefix + padding + value + valueSuffix; break;
+        case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+        default: value = padding + valuePrefix + value + valueSuffix; break;
+      }
+
+      return numerals(value);
+    }
+
+    format.toString = function() {
+      return specifier + "";
+    };
+
+    return format;
+  }
+
+  function formatPrefix(specifier, value) {
+    var f = newFormat((specifier = formatSpecifier$2(specifier), specifier.type = "f", specifier)),
+        e = Math.max(-8, Math.min(8, Math.floor(exponent$2(value) / 3))) * 3,
+        k = Math.pow(10, -e),
+        prefix = prefixes$2[8 + e / 3];
+    return function(value) {
+      return f(k * value) + prefix;
+    };
+  }
+
+  return {
+    format: newFormat,
+    formatPrefix: formatPrefix
+  };
+}
+
+var locale$3;
+var format$2;
+var formatPrefix$2;
+
+defaultLocale$3({
+  decimal: ".",
+  thousands: ",",
+  grouping: [3],
+  currency: ["$", ""],
+  minus: "-"
+});
+
+function defaultLocale$3(definition) {
+  locale$3 = formatLocale$3(definition);
+  format$2 = locale$3.format;
+  formatPrefix$2 = locale$3.formatPrefix;
+  return locale$3;
+}
+
+function precisionFixed$1(step) {
+  return Math.max(0, -exponent$2(Math.abs(step)));
+}
+
+function precisionPrefix$1(step, value) {
+  return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent$2(value) / 3))) * 3 - exponent$2(Math.abs(step)));
+}
+
+function precisionRound$1(step, max) {
+  step = Math.abs(step), max = Math.abs(max) - step;
+  return Math.max(0, exponent$2(max) - exponent$2(step)) + 1;
+}
+
 function tickFormat$1(domain, count, specifier) {
   var start = domain[0],
       stop = domain[domain.length - 1],
       step = tickStep$1(start, stop, count == null ? 10 : count),
       precision;
-  specifier = formatSpecifier(specifier == null ? ",f" : specifier);
+  specifier = formatSpecifier$2(specifier == null ? ",f" : specifier);
   switch (specifier.type) {
     case "s": {
       var value = Math.max(Math.abs(start), Math.abs(stop));
-      if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
-      return formatPrefix(specifier, value);
+      if (specifier.precision == null && !isNaN(precision = precisionPrefix$1(step, value))) specifier.precision = precision;
+      return formatPrefix$2(specifier, value);
     }
     case "":
     case "e":
     case "g":
     case "p":
     case "r": {
-      if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+      if (specifier.precision == null && !isNaN(precision = precisionRound$1(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
       break;
     }
     case "f":
     case "%": {
-      if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+      if (specifier.precision == null && !isNaN(precision = precisionFixed$1(step))) specifier.precision = precision - (specifier.type === "%") * 2;
       break;
     }
   }
-  return format(specifier);
+  return format$2(specifier);
 }
 
 function linearish$1(scale) {
@@ -5418,13 +5757,455 @@ colors("3182bd6baed69ecae1c6dbefe6550dfd8d3cfdae6bfdd0a231a35474c476a1d99bc7e9c0
 
 colors("1f77b4aec7e8ff7f0effbb782ca02c98df8ad62728ff98969467bdc5b0d58c564bc49c94e377c2f7b6d27f7f7fc7c7c7bcbd22dbdb8d17becf9edae5");
 
-cubehelixLong(cubehelix(300, 0.5, 0.0), cubehelix(-240, 0.5, 1.0));
+function define$1(constructor, factory, prototype) {
+  constructor.prototype = factory.prototype = prototype;
+  prototype.constructor = constructor;
+}
 
-var warm = cubehelixLong(cubehelix(-100, 0.75, 0.35), cubehelix(80, 1.50, 0.8));
+function extend$1(parent, definition) {
+  var prototype = Object.create(parent.prototype);
+  for (var key in definition) prototype[key] = definition[key];
+  return prototype;
+}
 
-var cool = cubehelixLong(cubehelix(260, 0.75, 0.35), cubehelix(80, 1.50, 0.8));
+function Color$1() {}
 
-var rainbow = cubehelix();
+var darker$1 = 0.7;
+var brighter$1 = 1 / darker$1;
+
+var reI$1 = "\\s*([+-]?\\d+)\\s*",
+    reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+    reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+    reHex$1 = /^#([0-9a-f]{3,8})$/,
+    reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
+    reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
+    reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
+    reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
+    reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
+    reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
+
+var named$1 = {
+  aliceblue: 0xf0f8ff,
+  antiquewhite: 0xfaebd7,
+  aqua: 0x00ffff,
+  aquamarine: 0x7fffd4,
+  azure: 0xf0ffff,
+  beige: 0xf5f5dc,
+  bisque: 0xffe4c4,
+  black: 0x000000,
+  blanchedalmond: 0xffebcd,
+  blue: 0x0000ff,
+  blueviolet: 0x8a2be2,
+  brown: 0xa52a2a,
+  burlywood: 0xdeb887,
+  cadetblue: 0x5f9ea0,
+  chartreuse: 0x7fff00,
+  chocolate: 0xd2691e,
+  coral: 0xff7f50,
+  cornflowerblue: 0x6495ed,
+  cornsilk: 0xfff8dc,
+  crimson: 0xdc143c,
+  cyan: 0x00ffff,
+  darkblue: 0x00008b,
+  darkcyan: 0x008b8b,
+  darkgoldenrod: 0xb8860b,
+  darkgray: 0xa9a9a9,
+  darkgreen: 0x006400,
+  darkgrey: 0xa9a9a9,
+  darkkhaki: 0xbdb76b,
+  darkmagenta: 0x8b008b,
+  darkolivegreen: 0x556b2f,
+  darkorange: 0xff8c00,
+  darkorchid: 0x9932cc,
+  darkred: 0x8b0000,
+  darksalmon: 0xe9967a,
+  darkseagreen: 0x8fbc8f,
+  darkslateblue: 0x483d8b,
+  darkslategray: 0x2f4f4f,
+  darkslategrey: 0x2f4f4f,
+  darkturquoise: 0x00ced1,
+  darkviolet: 0x9400d3,
+  deeppink: 0xff1493,
+  deepskyblue: 0x00bfff,
+  dimgray: 0x696969,
+  dimgrey: 0x696969,
+  dodgerblue: 0x1e90ff,
+  firebrick: 0xb22222,
+  floralwhite: 0xfffaf0,
+  forestgreen: 0x228b22,
+  fuchsia: 0xff00ff,
+  gainsboro: 0xdcdcdc,
+  ghostwhite: 0xf8f8ff,
+  gold: 0xffd700,
+  goldenrod: 0xdaa520,
+  gray: 0x808080,
+  green: 0x008000,
+  greenyellow: 0xadff2f,
+  grey: 0x808080,
+  honeydew: 0xf0fff0,
+  hotpink: 0xff69b4,
+  indianred: 0xcd5c5c,
+  indigo: 0x4b0082,
+  ivory: 0xfffff0,
+  khaki: 0xf0e68c,
+  lavender: 0xe6e6fa,
+  lavenderblush: 0xfff0f5,
+  lawngreen: 0x7cfc00,
+  lemonchiffon: 0xfffacd,
+  lightblue: 0xadd8e6,
+  lightcoral: 0xf08080,
+  lightcyan: 0xe0ffff,
+  lightgoldenrodyellow: 0xfafad2,
+  lightgray: 0xd3d3d3,
+  lightgreen: 0x90ee90,
+  lightgrey: 0xd3d3d3,
+  lightpink: 0xffb6c1,
+  lightsalmon: 0xffa07a,
+  lightseagreen: 0x20b2aa,
+  lightskyblue: 0x87cefa,
+  lightslategray: 0x778899,
+  lightslategrey: 0x778899,
+  lightsteelblue: 0xb0c4de,
+  lightyellow: 0xffffe0,
+  lime: 0x00ff00,
+  limegreen: 0x32cd32,
+  linen: 0xfaf0e6,
+  magenta: 0xff00ff,
+  maroon: 0x800000,
+  mediumaquamarine: 0x66cdaa,
+  mediumblue: 0x0000cd,
+  mediumorchid: 0xba55d3,
+  mediumpurple: 0x9370db,
+  mediumseagreen: 0x3cb371,
+  mediumslateblue: 0x7b68ee,
+  mediumspringgreen: 0x00fa9a,
+  mediumturquoise: 0x48d1cc,
+  mediumvioletred: 0xc71585,
+  midnightblue: 0x191970,
+  mintcream: 0xf5fffa,
+  mistyrose: 0xffe4e1,
+  moccasin: 0xffe4b5,
+  navajowhite: 0xffdead,
+  navy: 0x000080,
+  oldlace: 0xfdf5e6,
+  olive: 0x808000,
+  olivedrab: 0x6b8e23,
+  orange: 0xffa500,
+  orangered: 0xff4500,
+  orchid: 0xda70d6,
+  palegoldenrod: 0xeee8aa,
+  palegreen: 0x98fb98,
+  paleturquoise: 0xafeeee,
+  palevioletred: 0xdb7093,
+  papayawhip: 0xffefd5,
+  peachpuff: 0xffdab9,
+  peru: 0xcd853f,
+  pink: 0xffc0cb,
+  plum: 0xdda0dd,
+  powderblue: 0xb0e0e6,
+  purple: 0x800080,
+  rebeccapurple: 0x663399,
+  red: 0xff0000,
+  rosybrown: 0xbc8f8f,
+  royalblue: 0x4169e1,
+  saddlebrown: 0x8b4513,
+  salmon: 0xfa8072,
+  sandybrown: 0xf4a460,
+  seagreen: 0x2e8b57,
+  seashell: 0xfff5ee,
+  sienna: 0xa0522d,
+  silver: 0xc0c0c0,
+  skyblue: 0x87ceeb,
+  slateblue: 0x6a5acd,
+  slategray: 0x708090,
+  slategrey: 0x708090,
+  snow: 0xfffafa,
+  springgreen: 0x00ff7f,
+  steelblue: 0x4682b4,
+  tan: 0xd2b48c,
+  teal: 0x008080,
+  thistle: 0xd8bfd8,
+  tomato: 0xff6347,
+  turquoise: 0x40e0d0,
+  violet: 0xee82ee,
+  wheat: 0xf5deb3,
+  white: 0xffffff,
+  whitesmoke: 0xf5f5f5,
+  yellow: 0xffff00,
+  yellowgreen: 0x9acd32
+};
+
+define$1(Color$1, color$1, {
+  copy: function(channels) {
+    return Object.assign(new this.constructor, this, channels);
+  },
+  displayable: function() {
+    return this.rgb().displayable();
+  },
+  hex: color_formatHex$1, // Deprecated! Use color.formatHex.
+  formatHex: color_formatHex$1,
+  formatHsl: color_formatHsl$1,
+  formatRgb: color_formatRgb$1,
+  toString: color_formatRgb$1
+});
+
+function color_formatHex$1() {
+  return this.rgb().formatHex();
+}
+
+function color_formatHsl$1() {
+  return hslConvert$1(this).formatHsl();
+}
+
+function color_formatRgb$1() {
+  return this.rgb().formatRgb();
+}
+
+function color$1(format) {
+  var m, l;
+  format = (format + "").trim().toLowerCase();
+  return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
+      : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+      : l === 8 ? new Rgb$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+      : l === 4 ? new Rgb$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+      : null) // invalid hex
+      : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+      : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+      : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+      : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+      : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+      : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+      : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
+      : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
+      : null;
+}
+
+function rgbn$1(n) {
+  return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+}
+
+function rgba$1(r, g, b, a) {
+  if (a <= 0) r = g = b = NaN;
+  return new Rgb$1(r, g, b, a);
+}
+
+function rgbConvert$1(o) {
+  if (!(o instanceof Color$1)) o = color$1(o);
+  if (!o) return new Rgb$1;
+  o = o.rgb();
+  return new Rgb$1(o.r, o.g, o.b, o.opacity);
+}
+
+function rgb$2(r, g, b, opacity) {
+  return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
+}
+
+function Rgb$1(r, g, b, opacity) {
+  this.r = +r;
+  this.g = +g;
+  this.b = +b;
+  this.opacity = +opacity;
+}
+
+define$1(Rgb$1, rgb$2, extend$1(Color$1, {
+  brighter: function(k) {
+    k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+    return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+  },
+  darker: function(k) {
+    k = k == null ? darker$1 : Math.pow(darker$1, k);
+    return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+  },
+  rgb: function() {
+    return this;
+  },
+  displayable: function() {
+    return (-0.5 <= this.r && this.r < 255.5)
+        && (-0.5 <= this.g && this.g < 255.5)
+        && (-0.5 <= this.b && this.b < 255.5)
+        && (0 <= this.opacity && this.opacity <= 1);
+  },
+  hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
+  formatHex: rgb_formatHex$1,
+  formatRgb: rgb_formatRgb$1,
+  toString: rgb_formatRgb$1
+}));
+
+function rgb_formatHex$1() {
+  return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
+}
+
+function rgb_formatRgb$1() {
+  var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+  return (a === 1 ? "rgb(" : "rgba(")
+      + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+      + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+      + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+      + (a === 1 ? ")" : ", " + a + ")");
+}
+
+function hex$1(value) {
+  value = Math.max(0, Math.min(255, Math.round(value) || 0));
+  return (value < 16 ? "0" : "") + value.toString(16);
+}
+
+function hsla$1(h, s, l, a) {
+  if (a <= 0) h = s = l = NaN;
+  else if (l <= 0 || l >= 1) h = s = NaN;
+  else if (s <= 0) h = NaN;
+  return new Hsl$1(h, s, l, a);
+}
+
+function hslConvert$1(o) {
+  if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
+  if (!(o instanceof Color$1)) o = color$1(o);
+  if (!o) return new Hsl$1;
+  if (o instanceof Hsl$1) return o;
+  o = o.rgb();
+  var r = o.r / 255,
+      g = o.g / 255,
+      b = o.b / 255,
+      min = Math.min(r, g, b),
+      max = Math.max(r, g, b),
+      h = NaN,
+      s = max - min,
+      l = (max + min) / 2;
+  if (s) {
+    if (r === max) h = (g - b) / s + (g < b) * 6;
+    else if (g === max) h = (b - r) / s + 2;
+    else h = (r - g) / s + 4;
+    s /= l < 0.5 ? max + min : 2 - max - min;
+    h *= 60;
+  } else {
+    s = l > 0 && l < 1 ? 0 : h;
+  }
+  return new Hsl$1(h, s, l, o.opacity);
+}
+
+function hsl$1(h, s, l, opacity) {
+  return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
+}
+
+function Hsl$1(h, s, l, opacity) {
+  this.h = +h;
+  this.s = +s;
+  this.l = +l;
+  this.opacity = +opacity;
+}
+
+define$1(Hsl$1, hsl$1, extend$1(Color$1, {
+  brighter: function(k) {
+    k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+    return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+  },
+  darker: function(k) {
+    k = k == null ? darker$1 : Math.pow(darker$1, k);
+    return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+  },
+  rgb: function() {
+    var h = this.h % 360 + (this.h < 0) * 360,
+        s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+        l = this.l,
+        m2 = l + (l < 0.5 ? l : 1 - l) * s,
+        m1 = 2 * l - m2;
+    return new Rgb$1(
+      hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
+      hsl2rgb$1(h, m1, m2),
+      hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
+      this.opacity
+    );
+  },
+  displayable: function() {
+    return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+        && (0 <= this.l && this.l <= 1)
+        && (0 <= this.opacity && this.opacity <= 1);
+  },
+  formatHsl: function() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "hsl(" : "hsla(")
+        + (this.h || 0) + ", "
+        + (this.s || 0) * 100 + "%, "
+        + (this.l || 0) * 100 + "%"
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
+}));
+
+/* From FvD 13.37, CSS Color Module Level 3 */
+function hsl2rgb$1(h, m1, m2) {
+  return (h < 60 ? m1 + (m2 - m1) * h / 60
+      : h < 180 ? m2
+      : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+      : m1) * 255;
+}
+
+var deg2rad$1 = Math.PI / 180;
+var rad2deg$1 = 180 / Math.PI;
+
+var A$1 = -0.14861,
+    B$1 = +1.78277,
+    C$1 = -0.29227,
+    D$1 = -0.90649,
+    E$1 = +1.97294,
+    ED$1 = E$1 * D$1,
+    EB$1 = E$1 * B$1,
+    BC_DA$1 = B$1 * C$1 - D$1 * A$1;
+
+function cubehelixConvert$1(o) {
+  if (o instanceof Cubehelix$1) return new Cubehelix$1(o.h, o.s, o.l, o.opacity);
+  if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
+  var r = o.r / 255,
+      g = o.g / 255,
+      b = o.b / 255,
+      l = (BC_DA$1 * b + ED$1 * r - EB$1 * g) / (BC_DA$1 + ED$1 - EB$1),
+      bl = b - l,
+      k = (E$1 * (g - l) - C$1 * bl) / D$1,
+      s = Math.sqrt(k * k + bl * bl) / (E$1 * l * (1 - l)), // NaN if l=0 or l=1
+      h = s ? Math.atan2(k, bl) * rad2deg$1 - 120 : NaN;
+  return new Cubehelix$1(h < 0 ? h + 360 : h, s, l, o.opacity);
+}
+
+function cubehelix$2(h, s, l, opacity) {
+  return arguments.length === 1 ? cubehelixConvert$1(h) : new Cubehelix$1(h, s, l, opacity == null ? 1 : opacity);
+}
+
+function Cubehelix$1(h, s, l, opacity) {
+  this.h = +h;
+  this.s = +s;
+  this.l = +l;
+  this.opacity = +opacity;
+}
+
+define$1(Cubehelix$1, cubehelix$2, extend$1(Color$1, {
+  brighter: function(k) {
+    k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+    return new Cubehelix$1(this.h, this.s, this.l * k, this.opacity);
+  },
+  darker: function(k) {
+    k = k == null ? darker$1 : Math.pow(darker$1, k);
+    return new Cubehelix$1(this.h, this.s, this.l * k, this.opacity);
+  },
+  rgb: function() {
+    var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad$1,
+        l = +this.l,
+        a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
+        cosh = Math.cos(h),
+        sinh = Math.sin(h);
+    return new Rgb$1(
+      255 * (l + a * (A$1 * cosh + B$1 * sinh)),
+      255 * (l + a * (C$1 * cosh + D$1 * sinh)),
+      255 * (l + a * (E$1 * cosh)),
+      this.opacity
+    );
+  }
+}));
+
+cubehelixLong(cubehelix$2(300, 0.5, 0.0), cubehelix$2(-240, 0.5, 1.0));
+
+var warm = cubehelixLong(cubehelix$2(-100, 0.75, 0.35), cubehelix$2(80, 1.50, 0.8));
+
+var cool = cubehelixLong(cubehelix$2(260, 0.75, 0.35), cubehelix$2(80, 1.50, 0.8));
+
+var rainbow = cubehelix$2();
 
 function ramp(range) {
   var n = range.length;
@@ -5763,7 +6544,7 @@ var helper = {
   d3_defaultDelimiter: "to"
 };
 
-function color$1() {
+function color$2() {
   var scale = linear$2(),
       shape = "rect",
       shapeWidth = 15,
@@ -6509,7 +7290,7 @@ var legendHelpers = {
 };
 
 var index = {
-  legendColor: color$1,
+  legendColor: color$2,
   legendSize: size,
   legendSymbol: symbol,
   legendHelpers: legendHelpers
@@ -6517,7 +7298,7 @@ var index = {
 
 var legend = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  legendColor: color$1,
+  legendColor: color$2,
   legendSize: size,
   legendSymbol: symbol,
   legendHelpers: legendHelpers,
@@ -6560,7 +7341,6 @@ class D3Legend extends LitElement {
   }
 
   update(props) {
-    super.update(props);
     if (!this.type && !props.has('type')) {
       this.type = 'color';
     }
@@ -6572,6 +7352,7 @@ class D3Legend extends LitElement {
     if (this.legend) {
       this.updateWrapper(props);
     }
+    super.update(props);
   }
 
   updateWrapper(props) {
@@ -7305,8 +8086,6 @@ function brush$1(dim) {
   return brush;
 }
 
-
-
 var brush$2 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   brush: brush,
@@ -7341,7 +8120,6 @@ class D3Brush extends LitElement {
   }
 
   update(props) {
-    super.update(props);
     this.log && console.info(`d3-brush${this.type} update`, props);
     if (!this.type && !props.has('type')) {
       this.type = 'brushX';
@@ -7354,6 +8132,7 @@ class D3Brush extends LitElement {
     if (this.brush) {
       this.updateWrapper(props);
     }
+    super.update(props);
   }
 
   updateWrapper(props) {
@@ -7580,10 +8359,12 @@ let microtaskCurrHandle = 0;
 let microtaskLastHandle = 0;
 let microtaskCallbacks = [];
 let microtaskNodeContent = 0;
+let microtaskScheduled = false;
 let microtaskNode = document.createTextNode('');
 new window.MutationObserver(microtaskFlush).observe(microtaskNode, {characterData: true});
 
 function microtaskFlush() {
+  microtaskScheduled = false;
   const len = microtaskCallbacks.length;
   for (let i = 0; i < len; i++) {
     let cb = microtaskCallbacks[i];
@@ -7668,7 +8449,10 @@ const microTask = {
    * @return {number} Handle used for canceling task
    */
   run(callback) {
-    microtaskNode.textContent = microtaskNodeContent++;
+    if (!microtaskScheduled) {
+      microtaskScheduled = true;
+      microtaskNode.textContent = microtaskNodeContent++;
+    }
     microtaskCallbacks.push(callback);
     return microtaskCurrHandle++;
   },
@@ -7901,16 +8685,16 @@ const Draw = superClass => {
 
     update(props) {
       this.log && console.info('update props', props, this);
-      super.update(props);
       if(props.has('data')) {
         this._shaped = this.shape(this.data);
       }
+      super.update(props);
     }
 
     updated(props) {
       this.log && console.info('updated props', props, this);
-      super.updated(props);
       this.debounceDraw();
+      super.updated(props);
     }
 
     /* 
@@ -7973,60 +8757,40 @@ const Draw = superClass => {
 
 /**
  * Returns the event name for the given property.
+ * @param  {string}                       name    property name
+ * @param  {PropertyDeclaration} options property declaration
+ * @return                                event name to fire
  */
-function eventNameForProperty(name, options = {}) {
-    if (options.notify && typeof options.notify === 'string') {
-        return options.notify;
+function eventNameForProperty(name, { notify, attribute } = {}) {
+    if (notify && typeof notify === 'string') {
+        return notify;
+    } else if (attribute && typeof attribute === 'string') {
+        return `${attribute}-changed`;
+    } else {
+        return `${name.toLowerCase()}-changed`;
     }
-
-    if (options.attribute && typeof options.attribute === 'string') {
-        return `${options.attribute}-changed`;
-    }
-
-    return `${name.toLowerCase()}-changed`;
 }
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Enables the nofity option for properties to fire change notification events
  *
- * @param {LitElement} baseElement - the LitElement to extend
+ * @template TBase
+ * @param {Constructor<TBase>} baseElement
  */
-const LitNotify = (baseElement) => class extends baseElement {
-    /**
-     * Extend the LitElement `createProperty` method to map properties to events
-     */
-    static createProperty(name, options) {
-        super.createProperty(name, options);
-
-        if (!this.hasOwnProperty('_propertyEventMap')) {
-            this._propertyEventMap = new Map();
-        }
-
-        if (options.notify) {
-            this._propertyEventMap.set(name, eventNameForProperty(name, options));
-        }
-    }
-
+const LitNotify = (baseElement) => class NotifyingElement extends baseElement {
     /**
      * check for changed properties with notify option and fire the events
      */
     update(changedProps) {
         super.update(changedProps);
 
-        if (!this.constructor._propertyEventMap) {
-            return;
-        }
-
-        for (const [eventProp, eventName] of this.constructor._propertyEventMap.entries()) {
-            if (changedProps.has(eventProp)) {
-                this.dispatchEvent(new CustomEvent(eventName, {
-                    detail: {
-                        value: this[eventProp],
-                    },
-                    bubbles: false,
-                    composed: true,
-                }));
-            }
+        for (const prop of changedProps.keys()) {
+            const declaration = this.constructor._classProperties.get(prop);
+            if (!declaration || !declaration.notify) continue;
+            const type = eventNameForProperty(prop, declaration);
+            const value = this[prop];
+            this.dispatchEvent(new CustomEvent(type, { detail: { value } }));
         }
     }
 };
@@ -9442,12 +10206,12 @@ function descending(a, b) {
   return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
 }
 
-function identity$5(d) {
+function identity$6(d) {
   return d;
 }
 
 function pie() {
-  var value = identity$5,
+  var value = identity$6,
       sortValues = descending,
       sort = null,
       startAngle = constant$4(0),
@@ -10845,8 +11609,6 @@ function reverse(series) {
   return none$1(series).reverse();
 }
 
-
-
 var shapes = /*#__PURE__*/Object.freeze({
   __proto__: null,
   arc: arc,
@@ -10924,9 +11686,9 @@ class WrapperBase extends LitElement {
   }
 
   update(props) {
-    super.update(props);
     this.log && console.info(`d3-shape ${this.name} update`, props);
     this.updateWrapper(props);
+    super.update(props);
   }
 
   updateWrapper(props) {
@@ -11153,10 +11915,10 @@ doNotSetUndefinedValue(LitElement) {
   }
 
   update(props) {
-    super.update(props);
     if (props.has('path') || props.has('subPath')) {
       this._observePath(this.path, this.subPath);
     }
+    super.update(props);
   }
 
   _observePath(path, subPath) {
@@ -11923,7 +12685,7 @@ Transform.prototype = {
   }
 };
 
-var identity$6 = new Transform(1, 0, 0);
+var identity$7 = new Transform(1, 0, 0);
 
 function nopropagation$1() {
   event.stopImmediatePropagation();
@@ -11953,7 +12715,7 @@ function defaultExtent$1() {
 }
 
 function defaultTransform() {
-  return this.__zoom || identity$6;
+  return this.__zoom || identity$7;
 }
 
 function defaultWheelDelta() {
@@ -12054,7 +12816,7 @@ function zoom() {
       var e = extent.apply(this, arguments),
           t = this.__zoom,
           p0 = p == null ? centroid(e) : typeof p === "function" ? p.apply(this, arguments) : p;
-      return constrain(identity$6.translate(p0[0], p0[1]).scale(t.k).translate(
+      return constrain(identity$7.translate(p0[0], p0[1]).scale(t.k).translate(
         typeof x === "function" ? -x.apply(this, arguments) : -x,
         typeof y === "function" ? -y.apply(this, arguments) : -y
       ), e, translateExtent);
@@ -12381,7 +13143,6 @@ const Zoomable = superClass => {
     }
 
     updated(props) {
-      super.updated(props);
       if (props.has('enableZoom')) {
         this._observeEnableZoom(this.enableZoom);
       }
@@ -12393,6 +13154,7 @@ const Zoomable = superClass => {
       if (props.has('scaleExtent') && this._zoom) {
         this._zoom.scaleExtent(this.scaleExtent);
       }
+      super.updated(props);
 
     }
 
@@ -12754,18 +13516,18 @@ MultiData(
   }
 
   updated(props) {
-    super.updated(props);
     if (props.has('topMargin') || props.has('rightMargin') || props.has('bottomMargin') || props.has('leftMargin')) {
       this.onResize();
     }
+    super.updated(props);
   }
 
   firstUpdated(changedProperties) {
-    super.firstUpdated(changedProperties);
     // Note(cg): chart container might be registered against multi-verse. We nee to notify their creation upwards.
     this.dispatchEvent(new CustomEvent('multi-verse-added', { detail: this.multiVerseGroup, bubbles: true, composed: true }));
     this.onResize();
     this.assignSlottedSVG();
+    super.firstUpdated(changedProperties);
   }
   
   disconnectedCallback() {
@@ -13254,10 +14016,10 @@ const MultiHighlight = dedupingMixin(superClass => {
     }
 
     updated(props) {
-      super.updated(props);
       if(props.has('highlightedKeys')) {
         this._observeHighlightedKeys();
       }
+      super.updated(props);
     }
 
     // static get observers() {
@@ -13364,9 +14126,9 @@ render() {
 
 
   firstUpdated(props) {
-    super.firstUpdated(props);
     // Note(cg): chart container might be registered against multi-verse. We nee to notify their creation upwards.
     this.dispatchEvent(new CustomEvent('multi-verse-added', { detail: this.group, bubbles: true, composed: true }));
+    super.firstUpdated(props);
   }
   disconnectedCallback() {
     // TODO(cg): replace multi-removed -> multi-verse-remover
@@ -13424,6 +14186,10 @@ Registerable(
   get registerEventDispatch() {
     return 'multi-data-group-register';
   }
+  
+  get registerAtConnected() {
+    return true;
+  }
 
   static get properties() {
 
@@ -13470,11 +14236,15 @@ Registerable(
         attribute: 'process-type'
       },
 
-    }
+    };
   }
+  
+  // connectedCallback() {
+  //   super.connectedCallback();
+  //   this.dispatchEvent(new CustomEvent(this.registerEventDispatch, { detail: this.group, bubbles: true, composed: true }));
+  // }
 
   updated(props) {
-    super.updated(props);
     if (props.has('data') || props.has('series')) {
       this._debouceDataChanged();
     }
@@ -13484,6 +14254,7 @@ Registerable(
     if (props.has('stacked')) {
       this._handleStackedChanged();
     }
+    super.updated(props);
   }
 
   _debouceDataChanged() {
@@ -14432,8 +15203,6 @@ var html = parser("text/html");
 
 var svg = parser("image/svg+xml");
 
-
-
 var fetch$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   blob: blob,
@@ -14510,7 +15279,6 @@ class Fetch extends MultiNotify {
 
   update(props) {
     this.log && console.info(`d3-fetch ${this.type} update`, props);
-    super.update(props);
     if (!this.type && !props.has('type')) {
       this.type = 'json';
     }
@@ -14539,6 +15307,7 @@ class Fetch extends MultiNotify {
         this.data = null;
       }
     }
+    super.update(props);
   }
 }
 
@@ -14639,7 +15408,7 @@ Registerable(
       group: { type: String }
 
 
-    }
+    };
   }
 }
 
@@ -14903,10 +15672,10 @@ DispatchSVG(
   }
 
   updated(props) {
-    super.updated(props);
     if (props.has('position')) {
       this.debounceDraw();
     }
+    super.updated(props);
   }
 
   resize() {
@@ -15136,13 +15905,13 @@ DispatchSVG(
   }
 
   update(props) {
-    super.update(props);
     if (props.has('selectedValues')) {
       this.updateSelectedValues();
     }
     if (props.has('selected')) {
       this.updateSelected();
     }
+    super.update(props);
   }
 
   dataChanged() {
@@ -15594,7 +16363,7 @@ DispatchSVG(
   }
 }
 
-const define$1 = (name, cls) => {
+const define$2 = (name, cls) => {
   if(customElements.get(name)) {
     return console.warn(`custom element ${name} has already been registered`);
   }
@@ -15604,76 +16373,76 @@ const define$1 = (name, cls) => {
 const d3 = 'd3';
 const multi = 'multi';
 
-define$1(`${d3}-axis`, D3Axis);
+define$2(`${d3}-axis`, D3Axis);
 
-define$1(`${d3}-legend`, D3Legend);
+define$2(`${d3}-legend`, D3Legend);
 
-define$1(`${d3}-shape-line`, Line);
+define$2(`${d3}-shape-line`, Line);
 
-define$1(`${d3}-shape-line-radial`, LineRadial);
+define$2(`${d3}-shape-line-radial`, LineRadial);
 
-define$1(`${multi}-accessor`, MultiAccessor);
+define$2(`${multi}-accessor`, MultiAccessor);
 
-define$1(`${multi}-chart-bubble`, MultiChartLine$1);
+define$2(`${multi}-chart-bubble`, MultiChartLine$1);
 
-define$1(`${multi}-container`, MultiContainer);
+define$2(`${multi}-container`, MultiContainer);
 
-define$1(`${multi}-drawable-bubble`, MultiDrawableBubble);
+define$2(`${multi}-drawable-bubble`, MultiDrawableBubble);
 
-define$1(`${multi}-legend`, MultiLegend);
+define$2(`${multi}-legend`, MultiLegend);
 
-define$1(`${d3}-brush`, D3Brush);
+define$2(`${d3}-brush`, D3Brush);
 
-define$1(`${d3}-scale`, D3Scale);
+define$2(`${d3}-scale`, D3Scale);
 
-define$1(`${d3}-shape-pie`, Pie);
+define$2(`${d3}-shape-pie`, Pie);
 
-define$1(`${multi}-axis`, MultiAxis);
+define$2(`${multi}-axis`, MultiAxis);
 
-define$1(`${multi}-radar-axes`, MultiRadarAxes);
+define$2(`${multi}-radar-axes`, MultiRadarAxes);
 
-define$1(`${multi}-drawable-radar`, MultiDrawableRadar);
+define$2(`${multi}-drawable-radar`, MultiDrawableRadar);
 
-define$1(`${multi}-chart-line`, MultiChartLine);
+define$2(`${multi}-chart-line`, MultiChartLine);
 
-define$1(`${multi}-chart-radar`, MultiChartRadar);
+define$2(`${multi}-chart-radar`, MultiChartRadar);
 
-define$1(`${multi}-container-layer`, MultiContainerLayer);
+define$2(`${multi}-container-layer`, MultiContainerLayer);
 
-define$1(`${multi}-drawable-line`, MultiDrawableLine);
+define$2(`${multi}-drawable-line`, MultiDrawableLine);
 
-define$1(`${multi}-select`, MultiSelect);
+define$2(`${multi}-select`, MultiSelect);
 
-define$1(`${d3}-fetch`, Fetch);
+define$2(`${d3}-fetch`, Fetch);
 
-define$1(`${d3}-shape-arc`, Arc);
+define$2(`${d3}-shape-arc`, Arc);
 
-define$1(`${d3}-shape-stack`, Stack);
+define$2(`${d3}-shape-stack`, Stack);
 
-define$1(`${multi}-brush`, MultiBrush);
+define$2(`${multi}-brush`, MultiBrush);
 
-define$1(`${multi}-chart-pie`, MultiChartPie);
+define$2(`${multi}-chart-pie`, MultiChartPie);
 
-define$1(`${multi}-data-group`, MultiSerieGroup);
+define$2(`${multi}-data-group`, MultiSerieGroup);
 
-define$1(`${multi}-drawable-line-path`, MultiDrawableLinePath);
+define$2(`${multi}-drawable-line-path`, MultiDrawableLinePath);
 
-define$1(`${multi}-serie`, MultiSerie);
+define$2(`${multi}-serie`, MultiSerie);
 
-define$1(`${d3}-format`, D3Format);
+define$2(`${d3}-format`, D3Format);
 
-define$1(`${d3}-shape-area`, Area);
+define$2(`${d3}-shape-area`, Area);
 
-define$1(`${d3}-transition`, Transition);
+define$2(`${d3}-transition`, Transition);
 
-define$1(`${multi}-chart-bar`, MultiBarLine);
+define$2(`${multi}-chart-bar`, MultiBarLine);
 
-define$1(`${multi}-container-axis`, MultiContainerAxis);
+define$2(`${multi}-container-axis`, MultiContainerAxis);
 
-define$1(`${multi}-container-radar`, MultiContainerRadar);
+define$2(`${multi}-container-radar`, MultiContainerRadar);
 
-define$1(`${multi}-drawable-bar`, MultiDrawableBar);
+define$2(`${multi}-drawable-bar`, MultiDrawableBar);
 
-define$1(`${multi}-drawable-pie`, MultiDrawablePie);
+define$2(`${multi}-drawable-pie`, MultiDrawablePie);
 
-export { MultiAccessor as Accessor, MultiBarLine as Bar, MultiBrush as Brush, MultiChartLine$1 as Bubble, MultiContainer as Container, MultiContainerAxis as ContainerAxis, MultiContainerRadar as ContainerRadar, D3Axis, D3Brush, D3Legend, D3Scale, Transition as D3Transition, MultiSerieGroup as DataGroup, DispatchSVG as DispatchMixin, MultiDrawable as Drawable, MultiAxis as DrawableAxis, MultiDrawableBar as DrawableBar, MultiDrawableBubble as DrawableBubble, MultiDrawableLine as DrawableLine, MultiDrawableLinePath as DrawableLinePath, MultiDrawablePie as DrawablePie, MultiDrawableRadar as DrawableRadar, MultiRadarAxes as DrawableRadarAxes, ExtendProperty as ExtendPropertyMixin, Fetch, D3Format as Format, Format as FormatMixin, MultiContainerLayer as Layer, MultiLegend as Legend, MultiChartLine as Line, Resizable as ObserverResizeMixin, MultiChartPie as Pie, MultiChartRadar as Radar, MultiRegister as RegisterMixin, Registerable as RegisterableMixin, MultiSelect as Select, MultiSerie as Serie, camelToDashCase, capitalize, dashToCamelCase, define$1 as define, fitTo, shapeProperties, wrap };
+export { MultiAccessor as Accessor, MultiBarLine as Bar, MultiBrush as Brush, MultiChartLine$1 as Bubble, MultiContainer as Container, MultiContainerAxis as ContainerAxis, MultiContainerRadar as ContainerRadar, D3Axis, D3Brush, D3Legend, D3Scale, Transition as D3Transition, MultiSerieGroup as DataGroup, DispatchSVG as DispatchMixin, MultiDrawable as Drawable, MultiAxis as DrawableAxis, MultiDrawableBar as DrawableBar, MultiDrawableBubble as DrawableBubble, MultiDrawableLine as DrawableLine, MultiDrawableLinePath as DrawableLinePath, MultiDrawablePie as DrawablePie, MultiDrawableRadar as DrawableRadar, MultiRadarAxes as DrawableRadarAxes, ExtendProperty as ExtendPropertyMixin, Fetch, D3Format as Format, Format as FormatMixin, MultiContainerLayer as Layer, MultiLegend as Legend, MultiChartLine as Line, Resizable as ObserverResizeMixin, MultiChartPie as Pie, MultiChartRadar as Radar, MultiRegister as RegisterMixin, Registerable as RegisterableMixin, MultiSelect as Select, MultiSerie as Serie, camelToDashCase, capitalize, dashToCamelCase, define$2 as define, fitTo, shapeProperties, wrap };

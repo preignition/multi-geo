@@ -1,9 +1,8 @@
 import '../common/directive-9885f5ff.js';
 import '../common/boot-5426e289.js';
-import '../@polymer/polymer/lib/utils/mixin.js';
 import { idlePeriod } from '../@polymer/polymer/lib/utils/async.js';
 import { Debouncer, enqueueDebouncer } from '../@polymer/polymer/lib/utils/debounce.js';
-import { h as html } from '../common/lit-html-a0bff75d.js';
+import { h as html } from '../common/lit-html-e2d510ee.js';
 import { CSSResult, css, LitElement, unsafeCSS, property, customElement } from '../lit-element.js';
 import { __decorate } from '../tslib.js';
 
@@ -140,14 +139,6 @@ let rootPath = pathFromUrl(document.baseURI || window.location.href);
  * @type {(function(*,string,string,Node):*)|undefined}
  */
 let sanitizeDOMValue = window.Polymer && window.Polymer.sanitizeDOMValue || undefined;
-
-/**
- * Setting to ensure Polymer template evaluation only occurs based on tempates
- * defined in trusted script.  When true, `<dom-module>` re-registration is
- * disallowed, `<dom-bind>` is disabled, and `<dom-if>`/`<dom-repeat>`
- * templates will only evaluate in the context of a trusted element template.
- */
-let strictTemplatePolicy = false;
 
 /**
 @license
@@ -293,12 +284,6 @@ class DomModule extends HTMLElement {
   register(id) {
     id = id || this.id;
     if (id) {
-      // Under strictTemplatePolicy, reject and null out any re-registered
-      // dom-module since it is ambiguous whether first-in or last-in is trusted
-      if (strictTemplatePolicy && findModule(id) !== undefined) {
-        setModule(id, null);
-        throw new Error(`strictTemplatePolicy: dom-module ${id} re-registered`);
-      }
       this.id = id;
       setModule(id, this);
       styleOutsideTemplateCheck(this);

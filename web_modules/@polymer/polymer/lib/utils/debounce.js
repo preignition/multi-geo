@@ -1,5 +1,4 @@
 import '../../../../common/boot-5426e289.js';
-import './mixin.js';
 import './async.js';
 
 /**
