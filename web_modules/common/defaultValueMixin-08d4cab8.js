@@ -117,4 +117,4 @@ const defaultValue = (baseElement) => class extends baseElement {
   
 };
 
-export { defaultValue as a, doNotSetUndefinedValue as d };
+export { doNotSetUndefinedValue as a, defaultValue as d };

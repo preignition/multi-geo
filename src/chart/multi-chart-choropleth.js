@@ -43,10 +43,11 @@ class MultiChartChoropleth extends GeoContainer {
         ></multi-accessor>` : ''}    
 
         <!-- group of geo elements. When feature changes, contained elements will redraw -->
-          <multi-container-layer group="default">
+          <multi-container-layer sub-group="choropleth">
             
           <!-- draw features with with projected path-->
           <multi-drawable-choropleth 
+            group="choropleth"
             .log="${this.log}"
             ?auto-fit="${this.autoFit}"
             
