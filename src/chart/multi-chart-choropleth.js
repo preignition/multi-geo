@@ -181,7 +181,6 @@ class MultiChartChoropleth extends GeoContainer {
         type: Function,
         notify: true,
         attribute: 'color-scale',
-        // hasChanged: () => {return true;},
         value: () => {
           return scaleQuantize().range(schemeBlues[8]).unknown('#ccc');
         },
