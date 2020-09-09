@@ -1,5 +1,7 @@
-import { t as tickStep, s as sequence, b as bisectRight, q as quantile, a as ascending, m as min } from './common/quantile-88781275.js';
-export { a as ascending, b as bisect, c as bisectLeft, b as bisectRight, d as bisector, e as max, m as min, q as quantile, f as quantileSorted, g as quickselect, s as range, i as tickIncrement, t as tickStep, h as ticks } from './common/quantile-88781275.js';
+import { t as ticks, b as bisectRight, q as quantile, a as ascending, m as min } from './common/quantile-308ce90f.js';
+export { a as ascending, b as bisect, d as bisectCenter, c as bisectLeft, b as bisectRight, e as bisector, f as max, m as min, q as quantile, g as quantileSorted, h as quickselect, i as tickIncrement, j as tickStep, t as ticks } from './common/quantile-308ce90f.js';
+export { A as Adder, f as fsum, m as merge } from './common/merge-03e3dc03.js';
+export { s as range } from './common/range-95515382.js';
 
 function count(values, valueof) {
   let count = 0;
@@ -52,6 +54,13 @@ function cross(...values) {
       index[i--] = 0;
     }
   }
+}
+
+function cumsum(values, valueof) {
+  var sum = 0, index = 0;
+  return Float64Array.from(values, valueof === undefined
+    ? v => (sum += +v || 0)
+    : v => (sum += +valueof(v, index++, values) || 0));
 }
 
 function descending(a, b) {
@@ -139,6 +148,19 @@ function rollups(values, reduce, ...keys) {
   return nest(values, Array.from, reduce, keys);
 }
 
+function index(values, ...keys) {
+  return nest(values, identity, unique, keys);
+}
+
+function indexes(values, ...keys) {
+  return nest(values, Array.from, unique, keys);
+}
+
+function unique(values) {
+  if (values.length !== 1) throw new Error("duplicate key");
+  return values[0];
+}
+
 function nest(values, map, reduce, keys) {
   return (function regroup(values, i) {
     if (i >= keys.length) return reduce(values);
@@ -196,8 +218,8 @@ function bin() {
 
     // Convert number of thresholds into uniform thresholds.
     if (!Array.isArray(tz)) {
-      tz = tickStep(x0, x1, tz);
-      tz = sequence(Math.ceil(x0 / tz) * tz, x1, tz); // exclusive
+      tz = ticks(x0, x1, tz);
+      if (tz[tz.length - 1] === x1) tz.pop(); // exclusive
     }
 
     // Remove any thresholds outside the domain.
@@ -294,16 +316,6 @@ function mean(values, valueof) {
 
 function median(values, valueof) {
   return quantile(values, 0.5, valueof);
-}
-
-function* flatten(arrays) {
-  for (const array of arrays) {
-    yield* array;
-  }
-}
-
-function merge(arrays) {
-  return Array.from(flatten(arrays));
 }
 
 function minIndex(values, valueof) {
@@ -444,19 +456,18 @@ function scan(values, compare) {
   return index < 0 ? undefined : index;
 }
 
-function shuffle(array, i0 = 0, i1 = array.length) {
-  var m = i1 - (i0 = +i0),
-      t,
-      i;
+var shuffle = shuffler(Math.random);
 
-  while (m) {
-    i = Math.random() * m-- | 0;
-    t = array[m + i0];
-    array[m + i0] = array[i + i0];
-    array[i + i0] = t;
-  }
-
-  return array;
+function shuffler(random) {
+  return function shuffle(array, i0 = 0, i1 = array.length) {
+    let m = i1 - (i0 = +i0);
+    while (m) {
+      const i = random() * m-- | 0, t = array[m + i0];
+      array[m + i0] = array[i + i0];
+      array[i + i0] = t;
+    }
+    return array;
+  };
 }
 
 function sum(values, valueof) {
@@ -496,4 +507,4 @@ function zip() {
   return transpose(arguments);
 }
 
-export { bin, count, cross, descending, deviation, extent, greatest, greatestIndex, group, groups, bin as histogram, least, leastIndex, maxIndex, mean, median, merge, minIndex, pairs, permute, rollup, rollups, scan, shuffle, sum, freedmanDiaconis as thresholdFreedmanDiaconis, scott as thresholdScott, sturges as thresholdSturges, transpose, variance, zip };
+export { bin, count, cross, cumsum, descending, deviation, extent, greatest, greatestIndex, group, groups, bin as histogram, index, indexes, least, leastIndex, maxIndex, mean, median, minIndex, pairs, permute, rollup, rollups, scan, shuffle, shuffler, sum, freedmanDiaconis as thresholdFreedmanDiaconis, scott as thresholdScott, sturges as thresholdSturges, transpose, variance, zip };

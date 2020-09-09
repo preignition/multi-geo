@@ -1,12 +1,13 @@
-import { R as Rgb, b as rgbConvert, d as define, e as extend, f as rad2deg, g as deg2rad, C as Color, h as hsl$2 } from './common/cubehelix-c56427ca.js';
-import { h as hue$1, n as nogamma } from './common/cubehelix-dc76d2a7.js';
-export { b as interpolateBasis, a as interpolateBasisClosed, d as interpolateCubehelix, e as interpolateCubehelixLong, i as interpolateRgb, r as interpolateRgbBasis, c as interpolateRgbBasisClosed } from './common/cubehelix-dc76d2a7.js';
-export { i as interpolate, a as interpolateArray, d as interpolateDate, o as interpolateObject, b as interpolateRound } from './common/round-8bdcd356.js';
-export { i as interpolateNumber, a as interpolateString } from './common/string-4249d4c4.js';
-export { a as interpolateTransformCss, i as interpolateTransformSvg } from './common/index-1705e9a2.js';
+import { R as Rgb, r as rgbConvert, d as define, e as extend, C as Color, h as hue$1, a as hsl$2, n as nogamma } from './common/rgb-3087d777.js';
+export { b as interpolateBasis, f as interpolateBasisClosed, i as interpolateRgb, g as interpolateRgbBasis, j as interpolateRgbBasisClosed } from './common/rgb-3087d777.js';
+import { d as degrees, r as radians } from './common/cubehelix-9ef55b5f.js';
+export { c as interpolateCubehelix, a as interpolateCubehelixLong } from './common/cubehelix-9ef55b5f.js';
+export { i as interpolate, a as interpolateArray, d as interpolateDate, n as interpolateNumberArray, o as interpolateObject, b as interpolateRound, p as piecewise } from './common/piecewise-9083328b.js';
+export { i as interpolateNumber, a as interpolateString } from './common/string-25a4a3cd.js';
+export { a as interpolateTransformCss, i as interpolateTransformSvg } from './common/index-181a2926.js';
 
 // https://observablehq.com/@mbostock/lab-and-rgb
-var K = 18,
+const K = 18,
     Xn = 0.96422,
     Yn = 1,
     Zn = 0.82521,
@@ -84,7 +85,7 @@ function hclConvert(o) {
   if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
   if (!(o instanceof Lab)) o = labConvert(o);
   if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-  var h = Math.atan2(o.b, o.a) * rad2deg;
+  var h = Math.atan2(o.b, o.a) * degrees;
   return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
 }
 
@@ -101,7 +102,7 @@ function Hcl(h, c, l, opacity) {
 
 function hcl2lab(o) {
   if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-  var h = o.h * deg2rad;
+  var h = o.h * radians;
   return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
 }
 
@@ -132,10 +133,7 @@ function hue(a, b) {
   };
 }
 
-var rho = Math.SQRT2,
-    rho2 = 2,
-    rho4 = 4,
-    epsilon2 = 1e-12;
+var epsilon2 = 1e-12;
 
 function cosh(x) {
   return ((x = Math.exp(x)) + 1 / x) / 2;
@@ -149,53 +147,63 @@ function tanh(x) {
   return ((x = Math.exp(2 * x)) - 1) / (x + 1);
 }
 
-// p0 = [ux0, uy0, w0]
-// p1 = [ux1, uy1, w1]
-function zoom(p0, p1) {
-  var ux0 = p0[0], uy0 = p0[1], w0 = p0[2],
-      ux1 = p1[0], uy1 = p1[1], w1 = p1[2],
-      dx = ux1 - ux0,
-      dy = uy1 - uy0,
-      d2 = dx * dx + dy * dy,
-      i,
-      S;
+var zoom = (function zoomRho(rho, rho2, rho4) {
 
-  // Special case for u0 ≅ u1.
-  if (d2 < epsilon2) {
-    S = Math.log(w1 / w0) / rho;
-    i = function(t) {
-      return [
-        ux0 + t * dx,
-        uy0 + t * dy,
-        w0 * Math.exp(rho * t * S)
-      ];
-    };
+  // p0 = [ux0, uy0, w0]
+  // p1 = [ux1, uy1, w1]
+  function zoom(p0, p1) {
+    var ux0 = p0[0], uy0 = p0[1], w0 = p0[2],
+        ux1 = p1[0], uy1 = p1[1], w1 = p1[2],
+        dx = ux1 - ux0,
+        dy = uy1 - uy0,
+        d2 = dx * dx + dy * dy,
+        i,
+        S;
+
+    // Special case for u0 ≅ u1.
+    if (d2 < epsilon2) {
+      S = Math.log(w1 / w0) / rho;
+      i = function(t) {
+        return [
+          ux0 + t * dx,
+          uy0 + t * dy,
+          w0 * Math.exp(rho * t * S)
+        ];
+      };
+    }
+
+    // General case.
+    else {
+      var d1 = Math.sqrt(d2),
+          b0 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1),
+          b1 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1),
+          r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0),
+          r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
+      S = (r1 - r0) / rho;
+      i = function(t) {
+        var s = t * S,
+            coshr0 = cosh(r0),
+            u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh(r0));
+        return [
+          ux0 + u * dx,
+          uy0 + u * dy,
+          w0 * coshr0 / cosh(rho * s + r0)
+        ];
+      };
+    }
+
+    i.duration = S * 1000 * rho / Math.SQRT2;
+
+    return i;
   }
 
-  // General case.
-  else {
-    var d1 = Math.sqrt(d2),
-        b0 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1),
-        b1 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1),
-        r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0),
-        r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
-    S = (r1 - r0) / rho;
-    i = function(t) {
-      var s = t * S,
-          coshr0 = cosh(r0),
-          u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh(r0));
-      return [
-        ux0 + u * dx,
-        uy0 + u * dy,
-        w0 * coshr0 / cosh(rho * s + r0)
-      ];
-    };
-  }
+  zoom.rho = function(_) {
+    var _1 = Math.max(1e-3, +_), _2 = _1 * _1, _4 = _2 * _2;
+    return zoomRho(_1, _2, _4);
+  };
 
-  i.duration = S * 1000;
-
-  return i;
-}
+  return zoom;
+})(Math.SQRT2, 2, 4);
 
 function hsl(hue) {
   return function(start, end) {
@@ -249,19 +257,10 @@ function hcl$1(hue) {
 var hcl$2 = hcl$1(hue$1);
 var hclLong = hcl$1(nogamma);
 
-function piecewise(interpolate, values) {
-  var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
-  while (i < n) I[i] = interpolate(v, v = values[++i]);
-  return function(t) {
-    var i = Math.max(0, Math.min(n - 1, Math.floor(t *= n)));
-    return I[i](t - i);
-  };
-}
-
 function quantize(interpolator, n) {
   var samples = new Array(n);
   for (var i = 0; i < n; ++i) samples[i] = interpolator(i / (n - 1));
   return samples;
 }
 
-export { discrete as interpolateDiscrete, hcl$2 as interpolateHcl, hclLong as interpolateHclLong, hsl$1 as interpolateHsl, hslLong as interpolateHslLong, hue as interpolateHue, lab$1 as interpolateLab, zoom as interpolateZoom, piecewise, quantize };
+export { discrete as interpolateDiscrete, hcl$2 as interpolateHcl, hclLong as interpolateHclLong, hsl$1 as interpolateHsl, hslLong as interpolateHslLong, hue as interpolateHue, lab$1 as interpolateLab, zoom as interpolateZoom, quantize };

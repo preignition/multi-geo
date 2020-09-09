@@ -1,39 +1,39 @@
 dependencies:
-  '@morbidick/lit-element-notify': 1.0.2_lit-element@2.2.1+lit-html@1.1.2
+  '@morbidick/lit-element-notify': 1.0.2_lit-element@2.4.0+lit-html@1.3.0
   '@polymer/polymer': 3.3.0
   '@preignition/multi-chart': 'link:../multi-chart'
-  '@preignition/preignition-mixin': 'link:../preignition-mixin'
-  d3-array: 2.3.3
-  d3-color: 1.4.0
-  d3-dispatch: 1.0.5
-  d3-ease: 1.0.5
-  d3-format: 1.4.1
-  d3-geo: 1.11.6
+  '@preignition/preignition-mixin': 1.9.1
+  d3-array: 2.7.1
+  d3-color: 2.0.0
+  d3-dispatch: 2.0.0
+  d3-ease: 2.0.0
+  d3-format: 2.0.0
+  d3-geo: 2.0.1
   d3-hexbin: 0.2.2
-  d3-interpolate: 1.3.2
-  d3-scale: 3.1.0
-  d3-scale-chromatic: 1.5.0
-  d3-selection: 1.4.0
+  d3-interpolate: 2.0.1
+  d3-scale: 3.2.2
+  d3-scale-chromatic: 2.0.0
+  d3-selection: 2.0.0
   d3-selection-multi: 1.0.1
-  d3-time: 1.1.0
-  d3-timer: 1.0.9
-  d3-transition: 1.2.0
-  lit-element: 2.2.1
-  lit-html: 1.1.2
-  topojson-client: 3.0.1
+  d3-time: 2.0.0
+  d3-timer: 2.0.0
+  d3-transition: 2.0.0_d3-selection@2.0.0
+  lit-element: 2.4.0
+  lit-html: 1.3.0
+  topojson-client: 3.1.0
   topojson-simplify: 3.0.3
 devDependencies:
-  '@open-wc/testing': 0.11.7_lit-html@1.1.2
+  '@open-wc/testing': 0.11.7_lit-html@1.3.0
   '@open-wc/testing-karma': 3.1.40
   '@preignition/preignition-demo': 'link:../preignition-demo'
   '@preignition/preignition-widget': 0.1.0
   '@vaadin/router': 1.6.0
-  '@vaadin/vaadin-tabs': 4.0.0-alpha2
+  '@vaadin/vaadin-tabs': 3.2.0
   '@webcomponents/webcomponentsjs': 1.3.3
   api-viewer-element: 0.3.13
   d3-svg-legend: github.com/christophe-g/d3-legend/bf7ba113d793f1bce3e291d799ec6545eb6e601a
   es-dev-server: 1.40.0
-  marked: 0.8.0
+  marked: 1.1.1
   pwa-helpers: 0.9.1
   snowpack: 2.0.2
 lockfileVersion: 5.1
@@ -1594,10 +1594,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-iGmVYw2/zJCoqyKTtWEYCtFmMyi8WmACQKtky0lpNyEKWX0YIOpKWGD7saMXL+tPpllss0otilxV0SLwyi3Ytg==
-  /@morbidick/lit-element-notify/1.0.2_lit-element@2.2.1+lit-html@1.1.2:
+  /@morbidick/lit-element-notify/1.0.2_lit-element@2.4.0+lit-html@1.3.0:
     dependencies:
-      lit-element: 2.2.1
-      lit-html: 1.1.2
+      lit-element: 2.4.0
+      lit-html: 1.3.0
     dev: false
     peerDependencies:
       lit-element: ^2.0.1
@@ -1688,9 +1688,9 @@ packages:
     dev: true
     resolution:
       integrity: sha512-HuoB6udX2pR5wvQu1zZAprQRJE/MLUsNxw6j003vMkn31UEUi4L6HJHif3I5HDNFkxQOcmRpU4ug68yS/PGa8Q==
-  /@open-wc/testing-helpers/0.8.10_lit-html@1.1.2:
+  /@open-wc/testing-helpers/0.8.10_lit-html@1.3.0:
     dependencies:
-      lit-html: 1.1.2
+      lit-html: 1.3.0
     dev: true
     peerDependencies:
       lit-html: ^1.0.0
@@ -1712,12 +1712,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-SavQPRMdHmKLg1QWEujCgyk6+H649a0KXyvxEXb1TJb2DGaty4f5NJwbvcBWpuKlRFicaeL1gXAsx9hUkRgRcA==
-  /@open-wc/testing/0.11.7_lit-html@1.1.2:
+  /@open-wc/testing/0.11.7_lit-html@1.3.0:
     dependencies:
       '@bundled-es-modules/chai': 4.2.2
       '@open-wc/chai-dom-equals': 0.11.7
       '@open-wc/semantic-dom-diff': 0.10.7
-      '@open-wc/testing-helpers': 0.8.10_lit-html@1.1.2
+      '@open-wc/testing-helpers': 0.8.10_lit-html@1.3.0
       '@types/chai': 4.2.3
       '@types/mocha': 5.2.7
       mocha: 5.2.0
@@ -1753,13 +1753,29 @@ packages:
     dev: true
     resolution:
       integrity: sha512-pWguPugiLYmWFV9UWxLWzZ6gm4wBwQdDy4VULKwdHCqR7OP7u98h+XDdGZsSlDPv6qoryV/e3tGHlTIT0mbzJA==
+  /@polymer/iron-resizable-behavior/3.0.1:
+    dependencies:
+      '@polymer/polymer': 3.3.0
+    dev: true
+    resolution:
+      integrity: sha512-FyHxRxFspVoRaeZSWpT3y0C9awomb4tXXolIJcZ7RvXhMP632V5lez+ch5G5SwK0LpnAPkg35eB0LPMFv+YMMQ==
   /@polymer/polymer/3.3.0:
     dependencies:
       '@webcomponents/shadycss': 1.9.2
     resolution:
       integrity: sha512-rij7suomS7DxdBamnwr/Xa0V5hpypf7I9oYKseF2FWz5Xh2a3wJNpVjgJy1adXVCxqIyPhghsrthnfCt7EblsQ==
+  /@preignition/preignition-mixin/1.9.1:
+    dependencies:
+      d3-selection: 2.0.0
+      d3-transition: 2.0.0_d3-selection@2.0.0
+      lit-element: 2.4.0
+      lit-html: 1.3.0
+    dev: false
+    resolution:
+      integrity: sha512-1mt++H0iFWMiezmM/3hNCqx8PpqB6T0PBgOtch5s9PZ/IKA5v1Ri+PGeqA03UY5IZj2dwKd1DofajDXX/l4VbQ==
   /@preignition/preignition-widget/0.1.0:
     dependencies:
+      '@preignition/preignition-mixin': 'link:../preignition-mixin'
       d3-format: 1.4.3
       d3-scale: 3.2.1
       d3-selection: 1.4.1
@@ -1971,69 +1987,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-6jtHrHpmiXOXoJ31Cg9R+iEVwuEKPf0XHwFUI93eEPXx492/J2JHyafkleKE2EYzZprayk9FSjTyK1GDqcwDng==
-  /@vaadin/active-state-mixin/0.1.2:
-    dependencies:
-      '@vaadin/disabled-state-mixin': 0.1.0
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-EnFU6LKelyknOkaakDskzP1sgbjM5Af2iJzTd8C3LlDD/j1bltnndfSLk1NFNRfwrfOr6SyIGthM3vksRKovzw==
-  /@vaadin/direction-mixin/0.1.0:
-    dependencies:
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-hbOqFAgRJk6q2ixQddC9Y0yH9Sz4j/Ho7YNCRALpvG6gg3oQAYHwr9k2hFPM+ZIQ+eBMG8LmTNadYzpWI9x8Zg==
-  /@vaadin/disabled-state-mixin/0.1.0:
-    dependencies:
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-IQIP2NckXzABEBHCD7BZINTAu/loRytxXdOv5g02M+6C/lG9qupNhm2qNcm3LyXLJwlW5t0Sh8s6PTqYhvVwHw==
-  /@vaadin/element-base/0.2.0:
-    dependencies:
-      '@polymer/polymer': 3.3.0
-      '@vaadin/themable-element': 0.1.2
-      '@vaadin/vaadin-element-mixin': 2.3.0
-      lit-element: 2.2.1
-    dev: true
-    resolution:
-      integrity: sha512-rPf7gktiiztOu85Ao8F03mYZ2ngffKqqrjrzwUOqsP6Xg4dGOMFKD1X1X6DIaTfoUC3z2om+ZrfBecfgjMzNVg==
-  /@vaadin/focus-visible-mixin/0.1.2:
-    dependencies:
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-6LMBrW1lCaZ4JctvepP+2k4IyD5eGzgOE+hXJWfal+t2/wXqg86M0NcSUKVsHEPo5OzBY6Shh9ccvYhgluQVzQ==
-  /@vaadin/keyboard-direction-mixin/0.1.4:
-    dependencies:
-      '@vaadin/direction-mixin': 0.1.0
-      '@vaadin/slotted-items-mixin': 0.1.3
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-0ut3Qy943BKILeHPlvN8zjXS44YzlC0OxQQ2d+b2DUYln5yoxoaXWm+9wYGjMnT5ZZmIbvush2jmf2Uk2l9QkQ==
-  /@vaadin/orientation-mixin/0.1.1:
-    dependencies:
-      '@vaadin/direction-mixin': 0.1.0
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-4b0XvL/RHY3dfd/Tw0HZFkKZo3a2mErkA7Ift33LKQ86B3ff9nzWvnND8rE4OTKb2wJSMjhkag2A5BfU6uK8zw==
-  /@vaadin/resizable-mixin/0.1.0:
-    dependencies:
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-      resize-observer-polyfill: 1.5.1
-    dev: true
-    resolution:
-      integrity: sha512-uko8QpBX5OtsMqbAb6fMFnnt77bdXQjBQnqe4Vu1d++NZKx3fxes3kkMYijVYEsbeo6C+trazXShpZnIU1Yn2A==
   /@vaadin/router/1.6.0:
     dependencies:
       '@vaadin/vaadin-usage-statistics': 2.1.0
@@ -2041,72 +1994,35 @@ packages:
     dev: true
     resolution:
       integrity: sha512-uBmk84cSQt4BwFJE/n3SutAd3TSzUceQsbMIN3ss9bjuhAcSXPJoX39uaUiQrAtdz44TlveEzYuzNgPStQqWmA==
-  /@vaadin/roving-tabindex-mixin/0.1.5:
-    dependencies:
-      '@vaadin/keyboard-direction-mixin': 0.1.4
-      '@vaadin/slotted-items-mixin': 0.1.3
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-vB2ZnIzT4g2xa+16kCZKeaXm0dIIcirNG9TTJipNpFjHckdDpaQiGvn1VEKt675LFiZt0UcitcPn9udQtZUGcA==
-  /@vaadin/selected-state-mixin/0.1.1:
-    dependencies:
-      '@vaadin/disabled-state-mixin': 0.1.0
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-YjTmzcEwe57t3nKr4hxXxd7BWjXMbMhjp7MeWTxuM85CtBGkpc70yTHhuu3wNvllAiUew4InW96jeSA2q5M1JQ==
-  /@vaadin/selection-in-view-mixin/0.1.7:
-    dependencies:
-      '@vaadin/direction-mixin': 0.1.0
-      '@vaadin/keyboard-direction-mixin': 0.1.4
-      '@vaadin/single-selection-mixin': 0.1.4
-      '@vaadin/slotted-items-mixin': 0.1.3
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-ZKTACpawXloKUpl+dlXsfIYGeJRkDQR6DUdyVYGMSoqwjm7DfJWy3eOYp4OytZTzrDhUGNP23olOUqnCvLBfKg==
-  /@vaadin/single-selection-mixin/0.1.4:
-    dependencies:
-      '@vaadin/disabled-state-mixin': 0.1.0
-      '@vaadin/selected-state-mixin': 0.1.1
-      '@vaadin/slotted-items-mixin': 0.1.3
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-PfRiQVn7UcsmGpTZUSZ4pztzGdmvlXSpJc0thUkuQCF1DatYr3g8zwWNWEn26CpUm1B3MN917TOLnkB58ERhzw==
-  /@vaadin/slotted-items-mixin/0.1.3:
-    dependencies:
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-O+LSUkWso5o8vbcZviKs7H3AkVrBXQdl2BZJSo0jZc+TEckJzjj38lQrX25qXb5M10qlnqhjRgVJPmgEG72+fQ==
-  /@vaadin/themable-element/0.1.2:
-    dependencies:
-      '@polymer/polymer': 3.3.0
-      '@vaadin/vaadin-themable-mixin': 1.5.2
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-    dev: true
-    resolution:
-      integrity: sha512-XCqhUmPfPOJszDiUUPu2HV768L5Jq+rxUayJ5yCTYmBrEF/ZTbziLVS/CLuYvo9Zgyd10CddKybOra0WVEK91w==
   /@vaadin/vaadin-development-mode-detector/2.0.4:
     dev: true
     resolution:
       integrity: sha512-S+PaFrZpK8uBIOnIHxjntTrgumd5ztuCnZww96ydGKXgo9whXfZsbMwDuD/102a/IuPUMyF+dh/n3PbWzJ6igA==
-  /@vaadin/vaadin-element-mixin/2.3.0:
+  /@vaadin/vaadin-element-mixin/2.4.1:
     dependencies:
       '@polymer/polymer': 3.3.0
       '@vaadin/vaadin-development-mode-detector': 2.0.4
       '@vaadin/vaadin-usage-statistics': 2.1.0
     dev: true
     resolution:
-      integrity: sha512-9gQb6Y3c/KlkJkITr+JncBZQ3iAjLpU/B6Ykeis+AHjPn6p+f4x3xsJ09IJKtb5YqD5wy9Zu7ANdM++97abQ2g==
+      integrity: sha512-Ie7fwcOmg1C71UFuRwcuo2GKS+HbKvLedfs3hGdICiuwJ56cQvQsbIlxa4utKWWCVlf6yuSvMrny8efPPenfTA==
+  /@vaadin/vaadin-item/2.3.0:
+    dependencies:
+      '@polymer/polymer': 3.3.0
+      '@vaadin/vaadin-element-mixin': 2.4.1
+      '@vaadin/vaadin-lumo-styles': 1.6.0
+      '@vaadin/vaadin-material-styles': 1.3.2
+      '@vaadin/vaadin-themable-mixin': 1.6.1
+    dev: true
+    resolution:
+      integrity: sha512-hG1MQ8cLaFlsoqSZFm8bqXrHxMry6vtkJrpiXArxpaZXMwPkJnfrUT3D6Qm/NG/rZHvOzZa5U/1k5+dyledlHA==
+  /@vaadin/vaadin-list-mixin/2.5.0:
+    dependencies:
+      '@polymer/polymer': 3.3.0
+      '@vaadin/vaadin-element-mixin': 2.4.1
+    dev: true
+    resolution:
+      integrity: sha512-NyQMJZ4sQ35gQxCOdoeBbGW2ou+MfqZRc9DSWotVgJheusRCV7wMHqUmKU/KyFa/IQ8ZoxWbVPdap8I9hyMKfA==
   /@vaadin/vaadin-lumo-styles/1.6.0:
     dependencies:
       '@polymer/iron-icon': 3.0.1
@@ -2121,37 +2037,26 @@ packages:
     dev: true
     resolution:
       integrity: sha512-EFrvGScoxhLNrPnWtT2Ia77whjF2TD4jrcyeh1jv9joCA2n5SUba+4XJciVSGmopqqQato6lwRnZSvMLJX7cyw==
-  /@vaadin/vaadin-tabs/4.0.0-alpha2:
+  /@vaadin/vaadin-tabs/3.2.0:
     dependencies:
-      '@vaadin/active-state-mixin': 0.1.2
-      '@vaadin/disabled-state-mixin': 0.1.0
-      '@vaadin/element-base': 0.2.0
-      '@vaadin/focus-visible-mixin': 0.1.2
-      '@vaadin/keyboard-direction-mixin': 0.1.4
-      '@vaadin/orientation-mixin': 0.1.1
-      '@vaadin/resizable-mixin': 0.1.0
-      '@vaadin/roving-tabindex-mixin': 0.1.5
-      '@vaadin/selected-state-mixin': 0.1.1
-      '@vaadin/selection-in-view-mixin': 0.1.7
-      '@vaadin/single-selection-mixin': 0.1.4
-      '@vaadin/slotted-items-mixin': 0.1.3
-      '@vaadin/themable-element': 0.1.2
+      '@polymer/iron-resizable-behavior': 3.0.1
+      '@polymer/polymer': 3.3.0
+      '@vaadin/vaadin-element-mixin': 2.4.1
+      '@vaadin/vaadin-item': 2.3.0
+      '@vaadin/vaadin-list-mixin': 2.5.0
       '@vaadin/vaadin-lumo-styles': 1.6.0
       '@vaadin/vaadin-material-styles': 1.3.2
-      '@vaadin/vaadin-themable-mixin': 1.5.2
-      lit-element: 2.2.1
-      lit-html: 1.1.2
-      tslib: 1.10.0
+      '@vaadin/vaadin-themable-mixin': 1.6.1
     dev: true
     resolution:
-      integrity: sha512-EfCuz4rrZafOnGvJSNjVd6Kn7eUunBkaE0ePYB9Ob3/PivuDonHRUb18viiFEocZP62xJ2lVyTxwS6E+AUPSzw==
-  /@vaadin/vaadin-themable-mixin/1.5.2:
+      integrity: sha512-Uwn6/Ys8lmc+ChVBRF8VhLWOoSu9JQ2yVFlvOiWygAgTEhTAWcKe9CkiE7SivFGJ43bNr/aW9pf35ft0jjDU5A==
+  /@vaadin/vaadin-themable-mixin/1.6.1:
     dependencies:
       '@polymer/polymer': 3.3.0
-      lit-element: 2.2.1
+      lit-element: 2.4.0
     dev: true
     resolution:
-      integrity: sha512-3EsVOhE5lo/nRyX27+nOyPNsV5TtKInTKirldUqucGZZtcyWT4ZxqAxswIz3bAolnb17UDb8eJKHOH6ERMLEhg==
+      integrity: sha512-UXjOlEfMEk/QxpBjpiO0QTjPOSiO88bhhtV+0UTfpqk8ILvJYO+6vbwcja33xY5Wi9sTAXtHixAjM0LthyXglQ==
   /@vaadin/vaadin-usage-statistics/2.1.0:
     dependencies:
       '@vaadin/vaadin-development-mode-detector': 2.0.4
@@ -3063,97 +2968,95 @@ packages:
     dev: true
     resolution:
       integrity: sha1-N1wCh0/NlsFu2fG89bSnvlPzWOc=
-  /d3-array/1.2.4:
-    resolution:
-      integrity: sha512-KHW6M86R+FUPYGb3R5XiYjXPq7VzwxZ22buHhAEVG5ztoEcZZMLov530mmccaqA1GghZArjQV46fuc8kUqhhHw==
-  /d3-array/2.3.3:
-    dev: false
-    resolution:
-      integrity: sha512-syv3wp0U5aB6toP2zb2OdBkhTy1MWDsCAaYk6OXJZv+G4u7bSWEmYgxLoFyc88RQUhZYGCebW9a9UD1gFi5+MQ==
   /d3-array/2.4.0:
     dev: true
     resolution:
       integrity: sha512-KQ41bAF2BMakf/HdKT865ALd4cgND6VcIztVQZUTt0+BH3RWy6ZYnHghVXf6NFjt2ritLr8H1T8LreAAlfiNcw==
+  /d3-array/2.7.1:
+    dev: false
+    resolution:
+      integrity: sha512-dYWhEvg1L2+osFsSqNHpXaPQNugLT4JfyvbLE046I2PDcgYGFYc0w24GSJwbmcjjZYOPC3PNP2S782bWUM967Q==
   /d3-collection/1.0.7:
     dev: true
     resolution:
       integrity: sha512-ii0/r5f4sjKNTfh84Di+DpztYwqKhEyUlKoPrzUFfeSkWxjW49xU2QzO9qrPrNkpdI0XJkfzvmTu8V2Zylln6A==
-  /d3-color/1.4.0:
+  /d3-color/1.4.1:
     resolution:
-      integrity: sha512-TzNPeJy2+iEepfiL92LAAB7fvnp/dV2YwANPVHdDWmYMm23qIJBYww3qT8I8C1wXrmrg4UWs7BKc2tKIgyjzHg==
+      integrity: sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q==
+  /d3-color/2.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-SPXi0TSKPD4g9tw0NMZFnR95XVgUZiBH+uUTqQuDu1OsE2zomHU7ho0FISciaPvosimixwHFl3WHLGabv6dDgQ==
   /d3-dispatch/1.0.1:
     dev: true
     resolution:
       integrity: sha1-S9ZaQ87P9DGN653yRVKqi/KBqEA=
-  /d3-dispatch/1.0.5:
+  /d3-dispatch/1.0.6:
     resolution:
-      integrity: sha512-vwKx+lAqB1UuCeklr6Jh1bvC4SZgbSqbkGBLClItFBIYH4vqDJCA7qfoy14lXmJdnBOdxndAMxjCbImJYW7e6g==
-  /d3-ease/1.0.5:
+      integrity: sha512-fVjoElzjhCEy+Hbn8KygnmMS7Or0a9sI2UzGwoB7cCtvI1XpVN9GpoYlnb3xt2YV66oXYb1fLJ8GMvP4hdU1RA==
+  /d3-dispatch/2.0.0:
+    dev: false
     resolution:
-      integrity: sha512-Ct1O//ly5y5lFM9YTdu+ygq7LleSgSE4oj7vUt9tPLHUi8VCV7QoizGpdWRWAwCO9LdYzIrQDg97+hGVdsSGPQ==
+      integrity: sha512-S/m2VsXI7gAti2pBoLClFFTMOO1HTtT0j99AuXLoGFKO6deHDdnv6ZGTxSTTUTgO1zVcv82fCOtDjYK4EECmWA==
+  /d3-ease/1.0.7:
+    resolution:
+      integrity: sha512-lx14ZPYkhNx0s/2HX5sLFUI3mbasHjSSpwO/KaaNACweVwxUruKyWVcb293wMv1RqTPZyZ8kSZ2NogUZNcLOFQ==
+  /d3-ease/2.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-68/n9JWarxXkOWMshcT5IcjbB+agblQUaIsbnXmrzejn2O82n3p2A9R2zEB9HIEFWKFwPAEDDN8gR0VdSAyyAQ==
   /d3-format/1.0.2:
     dev: true
     resolution:
       integrity: sha1-E4YYMgtLvrQ7XA/zBRkHn7vXN14=
-  /d3-format/1.4.1:
-    dev: false
-    resolution:
-      integrity: sha512-TUswGe6hfguUX1CtKxyG2nymO+1lyThbkS1ifLX0Sr+dOQtAD5gkrffpHnx+yHNKUZ0Bmg5T4AjUQwugPDrm0g==
   /d3-format/1.4.3:
     dev: true
     resolution:
       integrity: sha512-mm/nE2Y9HgGyjP+rKIekeITVgBtX97o1nrvHCWX8F/yBYyevUTvu9vb5pUnKwrcSw7o7GuwMOWjS9gFDs4O+uQ==
-  /d3-geo/1.11.6:
-    dependencies:
-      d3-array: 1.2.4
+  /d3-format/2.0.0:
     dev: false
     resolution:
-      integrity: sha512-z0J8InXR9e9wcgNtmVnPTj0TU8nhYT6lD/ak9may2PdKqXIeHUr8UbFLoCtrPYNsjv6YaLvSDQVl578k6nm7GA==
+      integrity: sha512-Ab3S6XuE/Q+flY96HXT0jOXcM4EAClYFnRGY5zsjRGNy6qCYrQsMffs7cV5Q9xejb35zxW5hf/guKw34kvIKsA==
+  /d3-geo/2.0.1:
+    dependencies:
+      d3-array: 2.7.1
+    dev: false
+    resolution:
+      integrity: sha512-M6yzGbFRfxzNrVhxDJXzJqSLQ90q1cCyb3EWFZ1LF4eWOBYxFypw7I/NFVBNXKNqxv1bqLathhYvdJ6DC+th3A==
   /d3-hexbin/0.2.2:
     dev: false
     resolution:
       integrity: sha1-nFg32s/UcasFM3qeke8Qv8T5iDE=
-  /d3-interpolate/1.3.2:
-    dependencies:
-      d3-color: 1.4.0
-    dev: false
-    resolution:
-      integrity: sha512-NlNKGopqaz9qM1PXh9gBF1KSCVh+jSFErrSlD/4hybwoNX/gt1d8CDbDW+3i+5UOHhjC6s6nMvRxcuoMVNgL2w==
   /d3-interpolate/1.4.0:
     dependencies:
-      d3-color: 1.4.0
-    dev: true
+      d3-color: 1.4.1
     resolution:
       integrity: sha512-V9znK0zc3jOPV4VD2zZn0sDhZU3WAE2bmlxdIwwQPPzPjvyLkd8B3JUVdS1IDUFDkWZ72c9qnv1GK2ZagTZ8EA==
-  /d3-scale-chromatic/1.5.0:
+  /d3-interpolate/2.0.1:
     dependencies:
-      d3-color: 1.4.0
-      d3-interpolate: 1.3.2
+      d3-color: 2.0.0
     dev: false
     resolution:
-      integrity: sha512-ACcL46DYImpRFMBcpk9HhtIyC7bTBR4fNOPxwVSl0LfulDAwyiHyPOTqcDG1+t5d4P9W7t/2NAuWu59aKko/cg==
+      integrity: sha512-c5UhwwTs/yybcmTpAVqwSFl6vrQ8JZJoT5F7xNFK9pymv5C0Ymcc9/LIJHtYIggg/yS9YHw8i8O8tgb9pupjeQ==
+  /d3-scale-chromatic/2.0.0:
+    dependencies:
+      d3-color: 2.0.0
+      d3-interpolate: 2.0.1
+    dev: false
+    resolution:
+      integrity: sha512-LLqy7dJSL8yDy7NRmf6xSlsFZ6zYvJ4BcWFE4zBrOPnQERv9zj24ohnXKRbyi9YHnYV+HN1oEO3iFK971/gkzA==
   /d3-scale/1.0.3:
     dependencies:
-      d3-array: 1.2.4
+      d3-array: 1.0.1
       d3-collection: 1.0.7
-      d3-color: 1.4.0
-      d3-format: 1.4.3
+      d3-color: 1.4.1
+      d3-format: 1.0.2
       d3-interpolate: 1.4.0
       d3-time: 1.1.0
-      d3-time-format: 2.2.3
+      d3-time-format: 2.3.0
     dev: true
     resolution:
       integrity: sha1-T56PDMLqDzkl/wSsJ63AkEX6TJA=
-  /d3-scale/3.1.0:
-    dependencies:
-      d3-array: 2.3.3
-      d3-format: 1.4.1
-      d3-interpolate: 1.3.2
-      d3-time: 1.1.0
-      d3-time-format: 2.1.3
-    dev: false
-    resolution:
-      integrity: sha512-3edyEBwbwQG400VbgaepQC9ZYFX3h92flLHIUa1+nvZp/mqCYdxNM9zGTjKtPcSAuBCyPePdMQOapsD0qNALrg==
   /d3-scale/3.2.1:
     dependencies:
       d3-array: 2.4.0
@@ -3164,10 +3067,20 @@ packages:
     dev: true
     resolution:
       integrity: sha512-huz5byJO/6MPpz6Q8d4lg7GgSpTjIZW/l+1MQkzKfu2u8P6hjaXaStOpmyrD6ymKoW87d2QVFCKvSjLwjzx/rA==
+  /d3-scale/3.2.2:
+    dependencies:
+      d3-array: 2.7.1
+      d3-format: 2.0.0
+      d3-interpolate: 2.0.1
+      d3-time: 2.0.0
+      d3-time-format: 3.0.0
+    dev: false
+    resolution:
+      integrity: sha512-3Mvi5HfqPFq0nlyeFlkskGjeqrR/790pINMHc4RXKJ2E6FraTd3juaRIRZZHyMAbi3LjAMW0EH4FB1WgoGyeXg==
   /d3-selection-multi/1.0.1:
     dependencies:
-      d3-selection: 1.4.0
-      d3-transition: 1.2.0
+      d3-selection: 1.4.2
+      d3-transition: 1.3.2
     dev: false
     resolution:
       integrity: sha1-zWwlQT0EosuXRw54byzYd/PjT1g=
@@ -3175,54 +3088,85 @@ packages:
     dev: true
     resolution:
       integrity: sha1-rmYq/UcCrJxdoDmyEHoXZPockHA=
-  /d3-selection/1.4.0:
-    dev: false
-    resolution:
-      integrity: sha512-EYVwBxQGEjLCKF2pJ4+yrErskDnz5v403qvAid96cNdCMr8rmCYfY5RGzWz24mdIbxmDf6/4EAH+K9xperD5jg==
   /d3-selection/1.4.1:
     dev: true
     resolution:
       integrity: sha512-BTIbRjv/m5rcVTfBs4AMBLKs4x8XaaLkwm28KWu9S2vKNqXkXt2AH2Qf0sdPZHjFxcWg/YL53zcqAz+3g4/7PA==
-  /d3-time-format/2.1.3:
-    dependencies:
-      d3-time: 1.1.0
+  /d3-selection/1.4.2:
+    resolution:
+      integrity: sha512-SJ0BqYihzOjDnnlfyeHT0e30k0K1+5sR3d5fNueCNeuhZTnGw4M4o8mqJchSwgKMXCNFo+e2VTChiSJ0vYtXkg==
+  /d3-selection/2.0.0:
     dev: false
     resolution:
-      integrity: sha512-6k0a2rZryzGm5Ihx+aFMuO1GgelgIz+7HhB4PH4OEndD5q2zGn1mDfRdNrulspOfR6JXkb2sThhDK41CSK85QA==
+      integrity: sha512-XoGGqhLUN/W14NmaqcO/bb1nqjDAw5WtSYb2X8wiuQWvSZUsUVYsOSkOybUrNvcBjaywBdYPy03eXHMXjk9nZA==
   /d3-time-format/2.2.3:
     dependencies:
       d3-time: 1.1.0
     dev: true
     resolution:
       integrity: sha512-RAHNnD8+XvC4Zc4d2A56Uw0yJoM7bsvOlJR33bclxq399Rak/b9bhvu/InjxdWhPtkgU53JJcleJTGkNRnN6IA==
+  /d3-time-format/2.3.0:
+    dependencies:
+      d3-time: 1.1.0
+    dev: true
+    resolution:
+      integrity: sha512-guv6b2H37s2Uq/GefleCDtbe0XZAuy7Wa49VGkPVPMfLL9qObgBST3lEHJBMUp8S7NdLQAGIvr2KXk8Hc98iKQ==
+  /d3-time-format/3.0.0:
+    dependencies:
+      d3-time: 2.0.0
+    dev: false
+    resolution:
+      integrity: sha512-UXJh6EKsHBTjopVqZBhFysQcoXSv/5yLONZvkQ5Kk3qbwiUYkdX17Xa1PT6U1ZWXGGfB1ey5L8dKMlFq2DO0Ag==
   /d3-time/1.1.0:
+    dev: true
     resolution:
       integrity: sha512-Xh0isrZ5rPYYdqhAVk8VLnMEidhz5aP7htAADH6MfzgmmicPkTo8LhkLxci61/lCB7n7UmE3bN0leRt+qvkLxA==
-  /d3-timer/1.0.9:
+  /d3-time/2.0.0:
+    dev: false
     resolution:
-      integrity: sha512-rT34J5HnQUHhcLvhSB9GjCkN0Ddd5Y8nCwDBG2u6wQEeYxT/Lf51fTFFkldeib/sE/J0clIe0pnCfs6g/lRbyg==
+      integrity: sha512-2mvhstTFcMvwStWd9Tj3e6CEqtOivtD8AUiHT8ido/xmzrI9ijrUUihZ6nHuf/vsScRBonagOdj0Vv+SEL5G3Q==
+  /d3-timer/1.0.10:
+    resolution:
+      integrity: sha512-B1JDm0XDaQC+uvo4DT79H0XmBskgS3l6Ve+1SBCfxgmtIb1AVrPIoqd+nPSv+loMX8szQ0sVUhGngL7D5QPiXw==
+  /d3-timer/2.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-TO4VLh0/420Y/9dO3+f9abDEFYeCUr2WZRlxJvbp4HPTQcSylXNiL6yZa9FIUvV1yRiFufl1bszTCLDqv9PWNA==
   /d3-transition/1.0.3:
     dependencies:
-      d3-color: 1.4.0
-      d3-dispatch: 1.0.5
-      d3-ease: 1.0.5
+      d3-color: 1.4.1
+      d3-dispatch: 1.0.6
+      d3-ease: 1.0.7
       d3-interpolate: 1.4.0
-      d3-selection: 1.4.1
-      d3-timer: 1.0.9
+      d3-selection: 1.4.2
+      d3-timer: 1.0.10
     dev: true
     resolution:
       integrity: sha1-kdyYa92zCXNjkyCoXbcs5KsaJ7s=
-  /d3-transition/1.2.0:
+  /d3-transition/1.3.2:
     dependencies:
-      d3-color: 1.4.0
-      d3-dispatch: 1.0.5
-      d3-ease: 1.0.5
-      d3-interpolate: 1.3.2
-      d3-selection: 1.4.0
-      d3-timer: 1.0.9
+      d3-color: 1.4.1
+      d3-dispatch: 1.0.6
+      d3-ease: 1.0.7
+      d3-interpolate: 1.4.0
+      d3-selection: 1.4.2
+      d3-timer: 1.0.10
     dev: false
     resolution:
-      integrity: sha512-VJ7cmX/FPIPJYuaL2r1o1EMHLttvoIuZhhuAlRoOxDzogV8iQS6jYulDm3xEU3TqL80IZIhI551/ebmCMrkvhw==
+      integrity: sha512-sc0gRU4PFqZ47lPVHloMn9tlPcv8jxgOQg+0zjhfZXMQuvppjG6YuwdMBE0TuqCZjeJkLecku/l9R0JPcRhaDA==
+  /d3-transition/2.0.0_d3-selection@2.0.0:
+    dependencies:
+      d3-color: 2.0.0
+      d3-dispatch: 2.0.0
+      d3-ease: 2.0.0
+      d3-interpolate: 2.0.1
+      d3-selection: 2.0.0
+      d3-timer: 2.0.0
+    dev: false
+    peerDependencies:
+      d3-selection: '2'
+    resolution:
+      integrity: sha512-42ltAGgJesfQE3u9LuuBHNbGrI/AJjNL2OAUdclE70UE6Vy239GCBEYD38uBPoLeNsOhFStGpPI0BAOV+HMxog==
   /dashdash/1.14.1:
     dependencies:
       assert-plus: 1.0.0
@@ -4791,11 +4735,21 @@ packages:
   /lit-element/2.2.1:
     dependencies:
       lit-html: 1.1.2
+    dev: true
     resolution:
       integrity: sha512-ipDcgQ1EpW6Va2Z6dWm79jYdimVepO5GL0eYkZrFvdr0OD/1N260Q9DH+K5HXHFrRoC7dOg+ZpED2XE0TgGdXw==
+  /lit-element/2.4.0:
+    dependencies:
+      lit-html: 1.3.0
+    resolution:
+      integrity: sha512-pBGLglxyhq/Prk2H91nA0KByq/hx/wssJBQFiYqXhGDvEnY31PRGYf1RglVzyLeRysu0IHm2K0P196uLLWmwFg==
   /lit-html/1.1.2:
+    dev: true
     resolution:
       integrity: sha512-FFlUMKHKi+qG1x1iHNZ1hrtc/zHmfYTyrSvs3/wBTvaNtpZjOZGWzU7efGYVpgp6KvWeKF6ql9/KsCq6Z/mEDA==
+  /lit-html/1.3.0:
+    resolution:
+      integrity: sha512-0Q1bwmaFH9O14vycPHw8C/IeHMk/uSDldVLIefu/kfbTBGIc44KGH6A8p1bDfxUfHdc8q6Ct7kQklWoHgr4t1Q==
   /load-json-file/4.0.0:
     dependencies:
       graceful-fs: 4.2.2
@@ -4940,6 +4894,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-MyUe+T/Pw4TZufHkzAfDj6HarCBWia2y27/bhuYkTaiUnfDYFnCP3KUN+9oM7Wi6JA2rymtVYbQu3spE0GCmxQ==
+  /marked/1.1.1:
+    dev: true
+    engines:
+      node: '>= 8.16.2'
+    hasBin: true
+    resolution:
+      integrity: sha512-mJzT8D2yPxoPh7h0UXkB+dBj4FykPJ2OIfxAWeIHrvoHDkFxukV/29QxoFQoPM6RLEwhIFdJpmKBlqVM3s2ZIw==
   /media-typer/0.3.0:
     dev: true
     engines:
@@ -5930,10 +5891,6 @@ packages:
     dev: true
     resolution:
       integrity: sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
-  /resize-observer-polyfill/1.5.1:
-    dev: true
-    resolution:
-      integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
   /resolve-alpn/1.0.0:
     dev: true
     resolution:
@@ -6523,17 +6480,17 @@ packages:
       node: '>=0.6'
     resolution:
       integrity: sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
-  /topojson-client/3.0.1:
+  /topojson-client/3.1.0:
     dependencies:
       commander: 2.20.3
     dev: false
     hasBin: true
     resolution:
-      integrity: sha512-rfGGzyqefpxOaxvV9OTF9t+1g+WhjGEbAIuCcmKYrQkxr0nttjMMyzZsK+NhLW4cTl2g1bz2jQczPUtEshpbVQ==
+      integrity: sha512-605uxS6bcYxGXw9qi62XyrV6Q3xwbndjachmNxu8HWTtVPxZfEJN9fd/SZS1Q54Sn2y0TMyMxFj/cJINqGHrKw==
   /topojson-simplify/3.0.3:
     dependencies:
       commander: 2.20.3
-      topojson-client: 3.0.1
+      topojson-client: 3.1.0
     dev: false
     hasBin: true
     resolution:
@@ -7036,33 +6993,33 @@ specifiers:
   '@polymer/polymer': ^3.0.0
   '@preignition/multi-chart': 'file:../multi-chart'
   '@preignition/preignition-demo': 'link:../preignition-demo'
-  '@preignition/preignition-mixin': 'file:../preignition-mixin'
+  '@preignition/preignition-mixin': ^1
   '@preignition/preignition-widget': ^0.1.0
   '@vaadin/router': ^1.6.0
-  '@vaadin/vaadin-tabs': ^4.0.0-alpha2
+  '@vaadin/vaadin-tabs': 3.2.0
   '@webcomponents/webcomponentsjs': ^1.3.3
   api-viewer-element: ^0.3.13
-  d3-array: ^2.3.2
-  d3-color: ^1.4.0
-  d3-dispatch: ^1.0.5
-  d3-ease: ^1.0.5
-  d3-format: '1'
-  d3-geo: ^1.11.6
+  d3-array: ^2.7.1
+  d3-color: ^2.0.0
+  d3-dispatch: ^2.0.0
+  d3-ease: ^2.0.0
+  d3-format: ^2.0.0
+  d3-geo: ^2.0.1
   d3-hexbin: ^0.2.2
-  d3-interpolate: ^1.3.2
-  d3-scale: ^3.1.0
-  d3-scale-chromatic: ^1.5.0
-  d3-selection: ^1.4.0
+  d3-interpolate: ^2.0.1
+  d3-scale: ^3.2.2
+  d3-scale-chromatic: ^2.0.0
+  d3-selection: ^2.0.0
   d3-selection-multi: ^1.0.1
   d3-svg-legend: 'github:christophe-g/d3-legend#promise'
-  d3-time: ^1.1.0
-  d3-timer: ^1.0.9
-  d3-transition: ^1.2.0
+  d3-time: ^2.0.0
+  d3-timer: ^2.0.0
+  d3-transition: ^2.0.0
   es-dev-server: ^1.40.0
-  lit-element: '2'
-  lit-html: '1'
-  marked: ^0.8.0
+  lit-element: ^2.4.0
+  lit-html: ^1.3.0
+  marked: ^1.1.1
   pwa-helpers: ^0.9.1
   snowpack: ^2.0.2
-  topojson-client: ^3.0.1
+  topojson-client: ^3.1.0
   topojson-simplify: ^3.0.3
