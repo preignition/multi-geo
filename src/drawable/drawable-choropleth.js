@@ -79,7 +79,7 @@ class MultiDrawableChoropleth extends MultiDrawableFeature {
     let chart = super.draw();
     // XXX(cg): adding this.data.get is preventing the chart to be redrawn
     // with wrong data type. .
-    if (chart && this.data.get) {
+    if (chart && this.data && this.data.get) {
 
       const map = this.data;
 
