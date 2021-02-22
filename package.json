@@ -22,7 +22,6 @@
   "main": "index.js",
   "module": "index.js",
   "dependencies": {
-    "@morbidick/lit-element-notify": "^1.0.2",
     "@polymer/polymer": "^3.0.0",
     "@preignition/multi-chart": "file:../multi-chart",
     "@preignition/preignition-mixin": "^1",
